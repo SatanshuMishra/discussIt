@@ -101,27 +101,14 @@ integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="ano
         <button class="slider-control-btn" id="moveSliderRightBtn"><i class="fa-solid fa-right-long"></i></button>
     </div>
   </div>
-  <div class="dashboard">
-    <div class="options-container">
-      <div class="options-bar-horizontal fixed">
-        <div class="filter-options">
-          <div class="top">
-            <i class="fa-solid fa-ranking-star"></i>
-            <span>Top</span>
-          </div>
-          <div class="new">
-            <i class="fa-solid fa-hourglass-start"></i>
-            <span>New</span>
-          </div>
-        </div>
-      </div>
-    </div>
   <div class="page-body">
     <!-- OPTIONS -->
     <div class="feed">
       <div class="feed-header">
         <h1>Discussions & Articles</h1>
-        <button class="start-discussion-btn"><a href= "Creatediscussion.php">Start Discussion</a></button>
+        <a id="start-discussion-btn-link" href= "Creatediscussion.php">
+          <button class="start-discussion-btn">Start Discussion</button>
+        </a>
       </div>
       <div class="feed-body">
       <?php

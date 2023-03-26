@@ -177,13 +177,18 @@ body {
   padding: 1em 0 1.2em 0;
 }
 
+#start-discussion-btn-link {
+  text-decoration: none;
+  color: #fff;
+}
+
 .feed-header > h1 {
   font-size: 24px;
   color: #fff;
   padding-top: 0.1em;
 }
 
-.feed-header > .start-discussion-btn {
+.feed-header > #start-discussion-btn-link > .start-discussion-btn {
   width: fit-content;
   padding: 0.5em;
   background-color: #0077ff;
@@ -195,7 +200,7 @@ body {
   border-color: transparent;
 }
 
-.feed-header > .start-discussion-btn:hover {
+.feed-header > #start-discussion-btn-link > .start-discussion-btn:hover {
   background-color: #0065d8;
   color: #fff;
 }
@@ -457,4 +462,24 @@ particle {
 
 .solid-red-color {
   color: #fa187f;
+}
+
+.nothing-happening {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  overflow: hidden;
+  width: 80%;
+}
+
+.nothing-happening > span {
+  text-align: center;
+  margin-bottom: 1em;
+  width: 80%;
+}
+
+.nothing-happening > .nothing-image {
+  margin-right: 4em;
+  width: 100%;
 }
