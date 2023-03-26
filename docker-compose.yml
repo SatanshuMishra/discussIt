@@ -1,0 +1,62 @@
+version: "3.9"
+services:
+  webserver:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+      - ./app:/app
+  app:
+    build:
+      context: .
+      dockerfile: ./php/Dockerfile
+    volumes:
+      - ./app:/app
+  # postgres:
+  #   image: postgres:latest
+  #   restart: always
+  #   environment:
+  #     POSTGRES_DB: "discussItDatabase"
+  #     POSTGRES_USER: "discussIt"
+  #     POSTGRES_PASSWORD: "password"
+  #   ports:
+  #     - "5432:5432"
+  #   expose:
+  #     - "5432"
+  #   volumes:
+  #     - data:/var/lib/postgresql/data
+  # pg-admin:
+  #   image: dpage/pgadmin4:latest
+  #   environment:
+  #     - PGADMIN_DEFAULT_EMAIL=satanshumishra@outlook.com
+  #     - PGADMIN_DEFAULT_PASSWORD=admin
+  #     - PGADMIN_LISTEN_PORT=5050
+  #   ports:
+  #     - "5050:5050"
+  db:
+    image: mysql:8.0
+    container_name: discussIt-mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: "discussItDatabase"
+      MYSQL_USER: "discussIt"
+      MYSQL_PASSWORD: "password"
+      MYSQL_ROOT_PASSWORD: "password"
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    volumes:
+      - mysql-db:/var/lib/mysql
+      - ./ddl:/docker-entrypoint-initdb.d
+  mysql-admin:
+    image: phpmyadmin:latest
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+volumes:
+  # data:
+  mysql-db:
