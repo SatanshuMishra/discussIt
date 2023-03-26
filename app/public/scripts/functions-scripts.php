@@ -608,6 +608,37 @@ function getContributionsByAuthor($conn, $authorid){
 
 
 
+/**
+ * Gets the user associated with a given ID.
+ * @param mysqli|false $conn MySQLi Connection Object
+ * @param integer $userid Discussion ID
+ * @return array|false Returns array with query results for user matching given ID.
+ */ 
+function getUsers($conn){
+  $sql = "SELECT * FROM user;";
+  $stmt = mysqli_stmt_init($conn);
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    header("location: ../signup.php?error=stmtfailedgetusers");
+    exit();
+  }
+
+  // EXECUTE $STMT PREPARED STATEMENT
+  mysqli_stmt_execute($stmt);
+
+  // GET RESULT FROM $STMT PREPARED STATEMENT
+  $results = mysqli_stmt_get_result($stmt);
+  if($rows = $results->fetch_all(MYSQLI_ASSOC)){
+    // RETURN DATA FROM PREPARED STATEMENT
+    return $rows;
+  }
+  else {
+    $results = false;
+    return $results;
+  }
+
+  // CLOSE STATEMENT
+  mysqli_stmt_close($stmt);
+}
 
 
 
@@ -805,7 +836,7 @@ function removeReaction($conn, $userid, $discussid){
   $stmt = mysqli_stmt_init($conn);
   
   if(!mysqli_stmt_prepare($stmt, $sql)){
-    header("location: ../index.php?error=stmtfailedinsertreaction");
+    header("location: ../index.php?error=stmtfailedremovereaction");
     exit();
   }
 
@@ -993,6 +1024,45 @@ function hasAdministratorPermissions($conn, $userid){
 
 
 
+function updateUser($conn, $userid, $enteredUsername, $enteredFirstName, $enteredLastName, $enteredDemeritPoints, $enteredAdministratorPerms) {
+  $sql = "UPDATE user SET username = ?, firstName = ?, lastName = ?, demeritPoints = ?, administratorPermissions = ? WHERE id = ? ;";
+  $stmt = mysqli_stmt_init($conn);
 
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    return false;
+  }
+
+  // SET DATA IN PREPARED STATEMENT
+  mysqli_stmt_bind_param($stmt, "sssiii", $enteredUsername, $enteredFirstName, $enteredLastName, $enteredDemeritPoints, $enteredAdministratorPerms, $userid);
+
+  // EXECUTE STATEMENT
+  $wasSuccessful = mysqli_stmt_execute($stmt);
+
+  // CLOSE STATEMENT
+  mysqli_stmt_close($stmt);
+
+  return $wasSuccessful;
+}
+
+function removeUserByID($conn, $userid) {
+  $sql = "DELETE FROM user WHERE id = ?;";
+  $stmt = mysqli_stmt_init($conn);
+  
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    header("location: ../index.php?error=stmtfailedremoveuser");
+    exit();
+  }
+
+  // SET DATA INTO PREPARED STATEMENT
+  mysqli_stmt_bind_param($stmt, "i", $userid);
+
+  // EXECUTE $STMT PREPARED STATEMENT
+  $wasSuccessful = mysqli_stmt_execute($stmt);
+
+  // CLOSE STATEMENT
+  mysqli_stmt_close($stmt);
+
+  return $wasSuccessful;
+}
 
 ?>
