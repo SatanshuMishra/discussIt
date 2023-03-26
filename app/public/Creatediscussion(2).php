@@ -3,18 +3,11 @@
 <!DOCTYPE html>
 <html lang= "en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="css/Creatediscussion(2).css">
-
-
-  <!-- Script -->
-  <script src="https://kit.fontawesome.com/ec7e0e3eb8.js" crossorigin="anonymous"></script>
-
-  <title>Create a Discussion - 2</title>
+    <!-- EXTERNAL CSS -->
+    <link rel="stylesheet" href="css/Creatediscussion(2).css">
+    <!-- HEADER INCLUDE -->
+    <?php include_once "./includes/header-information.php"; ?>
+    <title>Create a Discussion</title>
 </head>
 <body>
     <!--<script src = "discussion(2).js"></script>-->
