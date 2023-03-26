@@ -1,18 +1,20 @@
-<?php session_start();?>
+<?php session_start();
+  if(!isset($_SESSION["uid"])){
+    header("location: index.php?error=usernotloggedin");;
+  }
+?>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <!-- CSS -->
-       <link rel="stylesheet" href="css/colourscheme.css">
-        <!-- Script -->
-        <script src="https://kit.fontawesome.com/ec7e0e3eb8.js" crossorigin="anonymous"></script>
-        <title>Change Colour Scheme</title>
-
+<head>        
+    <!-- EXTERNAL CSS -->
+    <link rel="stylesheet" href="css/colourscheme.css">
+    <!-- LOCAL JS -->
+    <script src="js/welcome.js"></script>
+    <!-- HEADER INCLUDE -->
+    <?php include_once "./includes/header-information.php"; ?>
+    <title>Change Colour Scheme</title>
 </head>
-    <body>
+<body>
     <?php include 'components/navigation-bar-v2-no-search.php'; ?>
     <h1>Change Colour Scheme</h1>
     <div class = "light">
