@@ -23,7 +23,7 @@ body {
   width: 20%;
   height: 100%;
   position: fixed;
-  background-color: #081f4c;
+  background-color: #0a1525;
   border-radius: 15px;
   padding: 2em 2.5em;
 }
@@ -234,11 +234,11 @@ hr.solid {
   height: fit-content;
   padding: 0.5em;
   align-items: center;
-  font-size: 17px;
+  font-size: 15px;
 }
 
 .name-cell > img {
-  width: 5.8em;
+  width: 3.8em;
   padding: 0.5em;
 }
 
@@ -247,19 +247,22 @@ hr.solid {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: starts;
+  align-items: start;
+  width: 100%;
 }
 
 .text-info > .name {
   color: #fff;
   font-size: 17px;
   font-family: 400;
+  width: 100%;
 }
 
 .text-info > .username {
   color: grey;
   font-size: 15px;
   font-weight: 200;
+  width: 100%;
 }
 
 .member {
@@ -283,4 +286,104 @@ hr.solid {
 
 .option > i {
   margin-right: 0.2em;
+}
+
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #0000009a;
+  text-align: center;
+  display: none;
+}
+
+.modal-container:before {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.modal {
+  padding: 3em 2em;
+  background: #0a1525;
+  border-radius: 15px;
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 40%;
+  width: fit-content;
+  margin: 10px;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+
+#modal-profile-image {
+  width: 5.8em !important;
+  margin-right: 0.4em;
+}
+
+.input-field {
+  background-color: #000;
+  border: 1px solid #212121;
+  padding: 0.5em 1em;
+  border-radius: 10px;
+  word-spacing: 1px;
+  line-height: 25px;
+  font-size: 16px;
+  color: #fff;
+  width: fit-content;
+  margin: 0.2em 0;
+}
+
+.horizontal-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 0.4em 0;
+  align-items: center;
+  width: 100%;
+}
+
+.vertical-container {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  font-size: 16px;
+  margin: 0 0.4em;
+}
+
+.modal-btn {
+  margin-left: 0.5em;
+  width: fit-content;
+  padding: 0.5em;
+  color: #fff;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  font-weight: bold;
+  border-color: transparent;
+}
+
+.modal-cancel-btn {
+  background-color: #ff0048;
+}
+
+.modal-reset-btn {
+  background-color: #3fb32d;
+}
+
+.modal-submit-btn {
+  background-color: #0077ff;
+}
+
+.delete-link-btn {
+  text-decoration: none;
+  color: #fff;
 }

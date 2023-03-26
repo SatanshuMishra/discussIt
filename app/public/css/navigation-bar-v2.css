@@ -193,3 +193,7 @@
   padding-bottom: 0.2em;
   width: 2em;
 }
+
+.disabled {
+  cursor: not-allowed;
+}

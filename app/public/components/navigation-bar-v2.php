@@ -42,8 +42,13 @@ integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="ano
                 <span>', $_SESSION["uname"], '</span> &nbsp;<i class="fa-solid fa-angle-down"></i>
               </button>
               <div id="myDropdown" class="dropdown-content">
-                <a href="#"><i class="fa-solid fa-circle-info"></i> &nbsp;Terms & Policies</a>
-                <a href = "settingsDirectory.php">Account Settings</a>
+              <a class="disabled"><i class="fa-solid fa-circle-info"></i> &nbsp;Terms & Policies</a>';
+          if((getUserByID($conn, $_SESSION["uid"])["administratorPermissions"])){
+            echo '
+              <a href="./administrator-portal.php"><i class="fa-solid fa-hammer"></i> &nbsp;Admin Portal</a>
+            '; 
+          }      
+          echo '
                 <a href="../scripts/logout-script.php"><i class="fa-solid fa-circle-info"></i> &nbsp;Log Out</a>
               </div>
             </div>
