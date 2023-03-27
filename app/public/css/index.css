@@ -499,3 +499,55 @@ particle {
   /* margin-right: 4em; */
   width: 70%;
 }
+/* footer {
+  color: #fff;
+  width: 100%;
+  padding: 4em;
+  background-color: #0b0b0b;
+  display: flex;
+  justify-content: space-between;
+  height: fit-content;
+}
+
+.logo-container {
+  width: 50%;
+  height: fit-content;
+  display: flex;
+  width: fit-content;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-container > img {
+  height: 3.8em;
+  margin-right: 1em;
+}
+
+.links-and-info {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.copyright {
+  display: flex;
+  align-items: center;
+  margin: 0 1em;
+}
+
+.back-to-top > a {
+  text-decoration: none;
+  color: #000;
+}
+
+.arrow-container {
+  padding: 0.5em 0.8em;
+  border-radius: 100%;
+  background-color: #fff;
+  color: #000;
+  font-size: 22px;
+}
+
+html {
+  scroll-behavior: smooth;
+} */

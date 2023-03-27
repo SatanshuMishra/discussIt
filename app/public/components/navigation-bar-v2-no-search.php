@@ -1,6 +1,6 @@
 <nav class="nav-bar">
   <div class="section-a">
-    <a href="./index.php"><img class="logo" src="./images/logoDarkBlue.png" alt="img"></a>
+    <a href="./index.php"><img id="nav-logo-ref" class="logo" src="./images/logoDarkBlue.png" alt="img"></a>
     <div style="display: flex; justify-content: start;">
       <a href="./index.php">Feed</a>
       <a class="disabled">Discover</a>

@@ -303,12 +303,8 @@ include_once "scripts/getDiscussions.php";
         </ul>
       </div>
     </div>
-</div>
-<script>
+  </div>
 
-
-</script>
-  
-
+  <?php include_once "./components/footer.php"; ?>
 </body>
 </html>

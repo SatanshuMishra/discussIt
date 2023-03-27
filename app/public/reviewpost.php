@@ -44,7 +44,7 @@ if(count($topicsArray) >1){
     </div>  
   </div>
   <div class="body-container">
-    <form action="../scripts/createPost-script.php" method="post">
+    <form action="./scripts/createPost-script.php" method="post">
         <div class="post-container">
             <label for="topics" class="label">Topics Chosen</label><br>
             <input type="text" name="topics" class="text-field-formatter" value="<?php
@@ -76,5 +76,6 @@ if(count($topicsArray) >1){
 
 
 
+  <?php include_once "./components/footer.php"; ?>
 </body>
 </html>
