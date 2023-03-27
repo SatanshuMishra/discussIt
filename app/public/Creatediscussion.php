@@ -9,56 +9,106 @@
 <head>
     <!-- EXTERNAL CSS -->
     <link rel="stylesheet" href="css/Creatediscussion.css">
+    <!-- LOCAL JS -->
+    <script type="text/javascript" src="./js/discussion.js"></script>
     <!-- HEADER INCLUDE -->
     <?php include_once "./includes/header-information.php"; ?>
     <title>Create a Discussion</title>
 </head>
 <body>
-  <script src ="js/discussion.js"></script>
   <?php include_once 'components/navigation-bar-v2-no-search.php'; ?>
-<div class = "container">
-<div class = "circle">
-    1
-</div>
-<div class = "circle2">
-    2
-</div>
-<div class = "circle2">
-    3
-</div>
-
-</div>
-<h1>Choose Your Topics</h1>
-
-
-<div class = "scroll-bar">
-    <div class = "topic" onclick = "addTopic(this)" style="background-color: blue;">Space</div>
-    <div class = "topic" onclick = "addTopic(this)" style="background-color: red;">Gaming</div>
-    <div class = "topic" onclick = "addTopic(this)" style="background-color: green;">News</div>
-    <div class = "topic" onclick = "addTopic(this)" style="background-color: gray;">Q&A</div>
-    <div class = "topic" onclick = "addTopic(this)" style="background-color: purple;">Sports</div>
-    <div class = "topic" onclick = "addTopic(this)" style="background-color: orange;">Cooking</div>
-    <div class = "topic" onclick = "addTopic(this)" style="background-color: black;">Positivity</div>
-</div>
-<form id = "form1" method = "POST" action = "scripts/passTopics-script.php">
-<div class = "text-box">
-    Selected Topics:
-    <ul id = "selected-topics" name = "selected-topics"></ul>
-    <input type="hidden" id = "topicsArray" name = "topicsArray[]" value = "">
+  <div class="indicator-container">
+    <div class="progress-indicator current-page">
+        <span>1</span>
+    </div>
+    <div class="progress-indicator">
+        <span>2</span>
+    </div>
+    <div class="progress-indicator">
+        <span>3</span>
+    </div>
   </div>
-<div class = "continue-button">
-    <button class = "continue" type = "submit" name = "submit" value = "Submit">Continue</button>
-  </div>
-</form>
-
-<div class = "remove-button">
-<button class = "remove" id = "remove" onclick = "removeTopic()">Remove</button>
-  </div>
-  <div class = "cancel-button">
-  <a href = "index.php"><button class = "cancel">Cancel</button></a>
+  <div class="header-container">
+    <h1>Choose Your Topics</h1>
+    <span>Please choose what topics your discussion will be about.</span> 
+    <div class="information-container">
+      <span><i class="fa-solid fa-circle-question"></i> &nbsp;<b>Note</b>: You may only choose between 1 - 2 topics for each discussion.</span>
+    </div>  
   </div>
 
+  <div class="topics-container">
+    <div class="topic-slider">
+      <div class="slider">
+        <a class="slider-item" onclick="addTopic(this)" >
+          <div class="item-container cooking">
+            <span>COOKING</span>
+          </div>
+        </a>
+        <a class="slider-item" onclick="addTopic(this)">
+          <div class="item-container gaming">
+            <span>GAMING</span>
+          </div>
+        </a>
+        <a class="slider-item" onclick="addTopic(this)">
+          <div class="item-container q&a">
+            <span>Q&A</span>
+          </div>
+        </a>
+        <a class="slider-item" onclick="addTopic(this)">
+          <div class="item-container space">
+            <span>SPACE</span>
+          </div>
+        </a>
+        <a class="slider-item" onclick="addTopic(this)" >
+          <div class="item-container sports">
+            <span>SPORTS</span>
+          </div>
+        </a>
+        <a class="slider-item" onclick="addTopic(this)" >
+          <div class="item-container positivity">
+            <span>POSITIVITY</span>
+          </div>
+        </a>
+        <a class="slider-item" onclick="addTopic(this)" >
+          <div class="item-container news">
+            <span>NEWS</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
 
+  <div class="body-container">
+    <form id="form1" method="POST" action="scripts/passTopics-script.php">
+      <div class="selected-topics-container">
+        <span>Selected Topics:</span>
+        <ul id="selected-topics" name="selected-topics">
+          <!-- <div class="pill space">
+            <span class="name">Space</span>
+          </div> -->
+        </ul>
+        <input type="hidden" id="topicsArray" name="topicsArray[]" value="">
+        <div class="remove-button">
+          <button type="button" class="btn-formatted remove" id="remove" onclick="removeTopic()">Remove Topic</button>
+        </div>
+      </div>
+      <div class="progression-btn-container">
+        <div class="cancel-button">
+          <a href="index.php"><button class="btn-formatted cancel">Cancel</button></a>
+        </div>
+        <div class="continue-button">
+          <button class="btn-formatted continue" type="submit" name="submit" value="Submit">Continue</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    let topicSliderA = document.querySelector(".topic-slider");
+    let topicSlider = $(".topic-slider");
+    var maxScrollLeft = topicSliderA.scrollWidth - topicSliderA.clientWidth;
+    topicSlider.scrollLeft(maxScrollLeft / 2);
+  </script>
 
 </body>
 </html>

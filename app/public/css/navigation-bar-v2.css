@@ -5,6 +5,10 @@
   font-family: "Poppins", sans-serif;
 }
 
+.disabled {
+  cursor: not-allowed;
+}
+
 .nav-bar {
   display: flex;
   flex-wrap: wrap;
@@ -148,7 +152,7 @@
   overflow: auto;
   margin-top: 8px;
   right: 5%;
-  z-index: 1;
+  z-index: 999;
   border-radius: 15px;
 }
 

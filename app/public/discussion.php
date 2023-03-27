@@ -15,6 +15,15 @@
   $post = getPost($conn, $discussionId);
   $topics = getTopics($conn, $discussionId);
   $replies = getReplies($conn, $discussionId);
+  $numberOfReactions = getNumberOfReactions($conn, $discussionId);
+
+  $uid = false;
+  $reacted = false;
+
+  if(isset($_SESSION["uid"])){
+    $uid = $_SESSION["uid"];
+    $reacted = checkIfReacted($conn, $uid, $discussionId);
+  }
 ?>
 
 <!DOCTYPE html>
@@ -22,12 +31,13 @@
 <head>
   <!-- EXTERNAL CSS -->
   <link rel="stylesheet" href="css/discussion.css">
+  <!-- LOCAL JS -->
+  <script src="js/view-discussion.js"></script>
   <!-- HEADER INCLUDE -->
   <?php include_once "./includes/header-information.php"; ?>
   <title><?php echo $post["postTitle"] ?></title>
 </head>
 <body>
-  <script src="js/discussion.js"></script>
   <?php include_once 'components/navigation-bar-v2.php'; ?>
   <div class="organiser">
   <div class="post-reply-cont">
@@ -56,14 +66,25 @@
       </div>
       <div class="footer">
         <div class="reactions">
-          <!-- <div class="comments">
-            <i class="fa-regular fa-comment-dots"></i>
-            <span class="number">90</span>
-          </div> -->
-          <div class="popularity">
-            <i class="fa-regular fa-heart"></i>
-            <span class="number"><?php echo $discussion["rankingIndex"];?></span>
-          </div>
+            <?php 
+              if($uid){
+                echo "
+                    <a href=\"scripts/react-script.php?redirectTo=../discussion.php?id=$discussionId&userid=$uid&discussid=$discussionId&hasReacted=", ($reacted) ? "1" : "0","\">
+                      <div class=\"popularity\">
+                        ",($reacted) ? "<i class=\"fa-solid fa-heart solid-red-color\"></i>" : "<i class=\"fa-regular fa-heart\"></i>","
+                        <span class=\"number\">$numberOfReactions</span>
+                      </div>
+                    </a>";
+              } else {
+                echo "
+                  <div class=\"popularity\">
+                    <i class=\"fa-regular fa-heart\"></i>
+                    <span class=\"number\"><?php echo $numberOfReactions;?></span>
+                  </div>
+                ";
+              }
+            ?>
+
         </div>
         <div class="user-info">
           <?php 

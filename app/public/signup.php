@@ -29,10 +29,12 @@
     <div class="form-container">
       <h1>Sign Up</h1>
       <form id="signupForm" action="scripts/signup-script.php" method="post">
-        <label id="firstNameLabel" for="firstName">First Name</label><br>
-        <input type="text" name="firstName" id="firstName"><br>
-        <label id="lastNameLabel" for="lastName">Last Name</label><br>
-        <input type="text" name="lastName" id="lastName">
+        <label id="firstNameLabel" for="firstName">First Name*</label><br>
+        <input type="text" name="firstName" id="firstName" required oninvalid="this.setCustomValidity('Please enter a first name.')"
+       oninput="setCustomValidity('')"><br>
+        <label id="lastNameLabel" for="lastName">Last Name*</label><br>
+        <input type="text" name="lastName" id="lastName" required oninvalid="this.setCustomValidity('Please enter a last name.')"
+       oninput="setCustomValidity('')">
         <label id="usernameLabel" for="username">Username*</label><br>
         <input type="text" name="username" id="username" required oninvalid="this.setCustomValidity('Please enter a username.')"
        oninput="setCustomValidity('')"><br>
