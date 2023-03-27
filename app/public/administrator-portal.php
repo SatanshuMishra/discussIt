@@ -1,19 +1,32 @@
+<?php session_start(); 
+  if(!isset($_SESSION["uid"])){
+    header("Location: ./index.php?invalidadminaccessnotloggedin");
+    exit();
+  }
+  require_once "./scripts/config.php";
+  require_once "./scripts/functions-scripts.php";
+   
+  if(!(getUserByID($conn, $_SESSION["uid"])["administratorPermissions"])){
+    header("Location: ./index.php?invalidadminaccessnotadmin");
+    exit();
+  }
+  $sessionUser = getUserByID($conn, $_SESSION["uid"]);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="images/logoDarkBlue.png">
   <!-- EXTERNAL CSS -->
   <link rel="stylesheet" href="css/administrator-portal.css">
-  <!-- EXTERNAL SCRIPTS -->
-  <script src="https://kit.fontawesome.com/ec7e0e3eb8.js" crossorigin="anonymous"></script>
-  <script src="https://code.jquery.com/jquery-3.1.1.js"
-integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
-  <title>Home of Discussions</title>
+  <!-- LOCAL JS -->
+  <script src="js/admin-portal.js"></script>
+  <!-- HEADER INCLUDE -->
+  <?php include_once "./includes/header-information.php"; ?>
+  <title>Admin Portal</title>
 </head>
 <body>
+  <?php 
+
+  ?>
   <nav class="nav-sidebar">
     <div class="upper-section">
       <div class="logo-container">
@@ -54,8 +67,8 @@ integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="ano
     </div>
     <div class="lower-section">
       <div class="profile-image-conatainer">
-        <img src="./uploads/profile-1.png" alt="ProflePicture">
-        <span>Satanshu Mishra</span>
+        <img <?php echo 'src="./uploads/profile-'.$_SESSION["uid"].'.png?version=1231231"' ?> alt="ProflePicture">
+        <span><?php echo $sessionUser["firstName"].$sessionUser["lastName"] ?></span>
       </div>
       <div class="exit-container">
         <a href="./index.php">
@@ -92,38 +105,107 @@ integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="ano
           <th class="header-cell">Roles</th>
           <th class="header-cell">Actions</th>
         </tr>
-        <tr class="member-row">
-          <td class="name">
-            <div class="cell name-cell">
-              <img src="./uploads/profile-1.png" />
-              <div class="text-info">
-                <span class="name">Satanshu Mishra</span>
-                <span class="username">@SatanshuMishra</span>
-              </div>
-            </div>
-          </td>
-          <!-- <td>
-            <div class="unknown">Unknown</div>
-          </td> -->
-          <td class="roles">
-            <div class="cell">
-              <div class="member">Member</div>
-              <!-- <div class="admin">Admin</div> -->
-            </div>
-          </td>
-          <td class="options">
-            <div class="cell">
-              <div class="option edit">
-                <i class="fa-solid fa-brush"></i>&#9; 
-                Modify Account
-              </div>
-              <div class="option delete">
-                <i class="fa-solid fa-trash"></i>
-                Remove Account
-              </div>
-            </div>
-          </td>
-        </tr>
+        <?php 
+          $users = getUsers($conn);
+          if($users){
+            foreach($users as $user){
+              echo '
+                <tr class="member-row">
+                  <td class="name">
+                    <div class="cell name-cell">
+                      <img src="./uploads/profile-'.$user["id"].'.png?version=1231231" />
+                      <div class="text-info">
+                        <span class="name">'.$user["firstName"].' '.$user["lastName"].'</span>
+                        <span class="username">@'.$user["username"].'</span>
+                      </div>
+                    </div>
+                  </td>
+                  <!-- <td>
+                    <div class="unknown">Unknown</div>
+                  </td> -->
+                  <td class="roles">
+                    <div class="cell">';
+                    if($user["administratorPermissions"]){
+                      echo '<div class="admin">Admin</div>';
+                    } else {
+                      echo '<div class="member">Member</div>';
+                    }
+                    echo '</div>
+                  </td>
+                  <td class="options">
+                    <div class="cell">
+                      <div id="'.$user["id"].'" class="option edit">
+                        <i class="fa-solid fa-brush"></i>&#9; 
+                        <span>Modify Account</span>
+                      </div>
+                      <a class="delete-link-btn" href="./scripts/remove-account.php?iAFgo3q5J2hfCTv1SShA=true&uid='.$user["id"].'">
+                        <div class="option delete">
+                          <i class="fa-solid fa-trash"></i>
+                          <span>Remove Account</span>
+                        </div>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              ';
+
+              echo '
+                <div class="modal-container modal-'.$user["id"].'">
+                    <div class="modal">
+                      <form class="modal-form" action="./scripts/admin-update-user.php" method="post">
+                        <input type="hidden" name="userid" value="'.$user["id"].'">
+                        <div class="horizontal-container" style="margin: 0 0 1em 0;">
+                          <i class="fa-solid fa-brush" style="font-size: 50px; margin-right: 0.2em"></i>
+                          <div class="vertical-container">
+                            <h1>Modify Account</h1>
+                            <span>Modify '.$user["username"].'\'s account details!</span>
+                          </div>
+                        </div>
+                        <div class="horizontal-container">
+                          <div class="vertical-container">
+                            <label for="username">Username</label>
+                            <input class="input-field" type="text" name="username" id="username" value="'.$user["username"].'">
+                          </div>
+                        </div>
+                        <div class="horizontal-container">
+                          <div class="vertical-container">
+                            <label for="firstname">Firstname</label>
+                            <input class="input-field" type="text" name="firstname" id="firstname" value="'.$user["firstName"].'">
+                          </div>
+                          <div class="vertical-container">
+                            <label for="lastname">Lastname</label>
+                            <input class="input-field" type="text" name="lastname" id="lastname" value="'.$user["lastName"].'">
+                          </div>
+                        </div>
+                        <div class="horizontal-container">
+                          <div class="vertical-container">
+                            <label for="demerit-points">Demerit Points</label>
+                            <input type="number" class="input-field"  min="0" max="3" name="demerit-points" id="demerit-points" value="'.$user["demeritPoints"].'">
+                          </div>
+                          <div class="vertical-container">
+                            <label for="isAdmin">Is Administrator</label>
+                            <input class="input-field" type="number" min="0" max="1" name="isAdmin" id="isAdmin" value="'.$user["administratorPermissions"].'">
+                          </div>
+                        </div>
+                        <div class="horizontal-container">
+                          <!-- <img id="modal-profile-image" src="./uploads/profile-1.png" alt="profile-picture-modal"> -->
+                          <div class="vertical-container">
+                            <label for="reset-profile-picture">Reset Profile Picture</label>
+                            <input class="input-field" type="number" min="0" max="1" name="reset-profile-picture" id="reset-profile-picture" value="0">
+                          </div>
+                        </div>
+                        <div class="horizontal-container">
+                          <button class="modal-btn modal-cancel-btn" type="button">Cancel</button>  
+                          <button class="modal-btn modal-reset-btn" type="reset">Reset Form</button>  
+                          <button type="submit" class="modal-btn modal-submit-btn" name="submit">Submit Changes</button>
+                        </div>
+                      </form>
+                    </div>
+                </div>
+              ';
+            }
+          }
+        ?>
       </table>
     </div>
   </div>

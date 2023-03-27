@@ -96,39 +96,4 @@ window.addEventListener("DOMContentLoaded", (event) => {
       }
     }, 8);
   }
-
-  // FIX OPTIONS BAR TO TOP ON SCROLL
-  $(window).scroll(function () {
-    let $elementHorizontal = $(".options-bar-horizontal");
-    let $elementVertical = $(".options-bar-vertical");
-    let $feed = $(".feed");
-    let isFixed = $elementHorizontal.css("position") == "fixed";
-    if ($(this).scrollTop() > 320 && !isFixed) {
-      $elementHorizontal.css({
-        position: "fixed",
-        top: "0",
-        // left: "1em",
-        width: "fit-content",
-        background: "#0060ce",
-      });
-      // $elementVertical.css({
-      //   position: "fixed",
-      //   top: "0",
-      // });
-      // $feed.css({
-      //   transform: "translateX(50%)",
-      //   // // left: "1em",
-      //   // width: "fit-content",
-      //   // background: "#0060ce",
-      // });
-    }
-    if ($(this).scrollTop() < 280 && isFixed) {
-      $elementHorizontal.css({
-        position: "static",
-        background: "#020202",
-        width: "100%",
-      });
-    }
-    // console.log($(this).scrollTop());
-  });
 });

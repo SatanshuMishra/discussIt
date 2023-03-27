@@ -1,112 +1,154 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
 * {
+  margin: 0;
+  padding: 0;
   font-family: "Roboto", sans-serif;
   color: white;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-body{
-    background-color: black;
+body {
+  background-color: black;
 }
 
-.circles-container{
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 4em;
-}
-.circles-container div {
-    margin-right: 6em;
-}
-.circles-container div:last-child{
-    margin-right: 0em;
+.indicator-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0.5em 3em;
 }
 
-.circle {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: rgb(133, 133, 133);
-    color: white;
-    font-size: 25px;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    
-  }
-  .circle2 {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: rgb(44, 209, 19);
-    color: white;
-    font-size: 25px;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    
-  }
-  .circle3 {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: rgb(133, 133, 133);
-    color: white;
-    font-size: 25px;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-   
-  }
-  #postTitle {
-    height: 20px;
-    width: 100%;
-    font-size: 16px;
-    background-color: rgb(40, 38, 38);
-    margin-left: 2px;
-    margin-top: 1.5em;
-    border: none;
-    border-radius: 10px;
-  }
-  label {
-    font-size: 20px;
-  }
+.progress-indicator {
+  width: 2.2em;
+  height: 2.2em;
+  border-radius: 18px;
+  background-color: rgb(43, 43, 43);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 20px;
+}
 
-  #content {
-    height: 100px;
-    width: 100%;
-    font-size: 16px;
-    background-color: rgb(40, 38, 38);
-    margin-left: 2px;
-    margin-top: 1.5em;
-    border: none;
-    border-radius: 10px;
-    
-   
-  }
-  .content {
-    margin-top: 2em;
-  }
-  .cancel{
-    background-color: red;
-    padding: 5px 10px;
-    border-radius: 10px;
-    border: none;
-  }
-  .previous {
-    background-color: #459afc;
-    border-radius: 10px;
-    border: none;
-    padding: 5px 10px;
-  }
-  .review {
-    background-color: #459afc;
-    border-radius: 10px;
-    border: none;
-    padding: 5px 10px;
-    float: right;
-  }
-  .buttons{
-    display: flex;
-    float: right;
+.disabled {
+  cursor: not-allowed;
+}
+
+.current-page {
+  background-color: #7aef06;
+}
+
+.current-page > span {
+  color: #000;
+  font-weight: 600;
+}
+
+.header-container {
+  padding: 1em 3em;
+}
+
+.header-container > h1 {
+  font-size: 40px;
+  margin: 0;
+}
+
+.header-container > span {
+  font-size: 20px;
+  margin: 0;
+}
+
+.information-container {
+  margin: 0.5em 0;
+  font-size: 17px;
+  background-color: #ef3e36;
+  padding: 0.8em 1em;
+  border-radius: 15px;
+}
+
+.body-container {
+  margin: 0.5em 3em;
+}
+
+.body-container > form {
+  width: 100%;
+}
+
+.post-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  margin: 1em 0;
+}
+
+.post-container > label {
+  font-size: 18px;
+  margin: 0.5em 0;
+}
+
+.textarea-formatter {
+  resize: none;
+  width: 100%;
+  background-color: #000;
+  border: 1px solid #212121;
+  padding: 1em;
+  border-radius: 10px;
+  word-spacing: 1px;
+  line-height: 25px;
+  color: #fff;
+  height: fit-content;
+  font-size: 16px;
+}
+
+.textarea-formatter:focus {
+  outline-style: solid;
+  outline-color: #005eff;
+  border: 1px solid #005eff;
+}
+
+.progression-btn-container {
+  display: flex;
+  justify-content: end;
+  margin: 0 0.4em;
+}
+
+.btn-formatted {
+  margin: 0.5em;
+  padding: 0.5em 1em;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.cancel {
+  background-color: #bf0606;
+  margin: 0 0.2em;
+}
+
+.previous {
+  background-color: #00ab2d;
+  margin: 0 0.2em;
+}
+
+.cancel:hover {
+  background-color: #f23838;
+  margin: 0 0.2em;
+}
+
+.previous:hover {
+  background-color: #2ab64f;
+}
+
+.review {
+  background-color: #0085ff;
+  margin: 0 0.2em;
+}
+
+.review:hover {
+  background-color: #3aa0ff;
 }

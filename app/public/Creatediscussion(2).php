@@ -1,66 +1,63 @@
-<?php session_start();
-?>
+<?php session_start();?>
 <!DOCTYPE html>
 <html lang= "en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="css/Creatediscussion(2).css">
-
-
-  <!-- Script -->
-  <script src="https://kit.fontawesome.com/ec7e0e3eb8.js" crossorigin="anonymous"></script>
-
-  <title>Create a Discussion - 2</title>
+    <!-- EXTERNAL CSS -->
+    <link rel="stylesheet" href="css/Creatediscussion(2).css">
+    <!-- HEADER INCLUDE -->
+    <?php include_once "./includes/header-information.php"; ?>
+    <title>Create a Discussion</title>
 </head>
 <body>
-    <!--<script src = "discussion(2).js"></script>-->
-    <?php include 'components/navigation-bar-no-search.php'; ?>
-<div class = "circles-container">
-    <div class = "circle">
-        1
+    <!-- <script src="discussion(2).js"></script> -->
+  <?php include_once 'components/navigation-bar-v2-no-search.php'; ?>
+  <div class="indicator-container">
+    <div class="progress-indicator">
+        <span>1</span>
     </div>
-    <div class = "circle2">
-        2
+    <div class="progress-indicator current-page">
+        <span>2</span>
     </div>
-    <div class = "circle3">
-        3
+    <div class="progress-indicator">
+        <span>3</span>
     </div>
-</div>
-<h1>Discussion Details</h1>
-
-<form action = "../scripts/passDiscussInfo.php" method = "post">
-    <div class = "title">
-        <label for = "postTitle">Post Title</label>
-        <br>
-        <textarea type = "text" id = "postTitle" name = "postTitle"></textarea>
-    </div>
-    <div class = "content">
-        <label for = "content">Post Content</label>
-        <br>
-        <textarea type = "text" id = "content" name = "content"></textarea>
-
-    </div>
-   <!-- <div class = "review-post">
-    <button class = "review">Review Post</button></a>
-    </div>
--->
-    <div class = "review-post-btn">
-    <button class = "review" type = "submit" name = "submit" value = "Submit">Review Post</button>
   </div>
-</form>
+  <div class="header-container">
+    <h1>What do you want to discuss?</h1>
+    <span>Enter the details of your post.</span> 
+    <div class="information-container">
+      <span><i class="fa-solid fa-circle-question"></i> &nbsp;<b>Note</b>: Ensure that your post is in line with our <a class="disabled" style="text-decoration: underline; color: #fff">Terms & Conditions</a>. Posts that violate them may be subject to review and/or be removed.</span>
+    </div>  
+  </div>
 
-<div class = "buttons">
-    <div class = "cancel-button">
-  <a href = "index.php"><button class = "cancel">Cancel</button></a>
-    </div>
-    <div class = "previous-page">
-    <a href = "discussion.php"><button class = "previous">Previous Page</button></a>
-    </div>
-</div>
+  <div class="body-container">
+    <form action="../scripts/passDiscussInfo.php" method="post">
+        <div class="post-container">
+            <label for="postTitle">Post Title</label>
+            <textarea rows="1" class="textarea-formatter" type="text" id="postTitle" name="postTitle" placeholder="Enter Post Title" required oninvalid="this.setCustomValidity('Please enter a post title.')"
+       oninput="setCustomValidity('')"></textarea>
+        </div>
+        <div class="post-container">
+            <label for="content">Post Content</label>
+            <br>
+            <textarea class="textarea-formatter" rows="5" type="text" id="content" name="content" placeholder="Enter Post Body" required oninvalid="this.setCustomValidity('Please add your post content.')"
+       oninput="setCustomValidity('')"></textarea>
+        </div>
+        <div class="progression-btn-container">
+            <div class="cancel-button">
+                <a href="index.php"><button type="button" class="btn-formatted  cancel">Cancel</button></a>
+            </div>
+            <div class="previous-page">
+                <a href="Creatediscussion.php"><button type="button" class="btn-formatted  previous">Previous Page</button></a>
+            </div>
+            <div class="review-post-btn">
+                <button class="btn-formatted  review" type="submit" name="submit" value="Submit">Review Post</button>
+            </div>
+        </div>
+    </form>
+  </div>
+
+
 
 
 

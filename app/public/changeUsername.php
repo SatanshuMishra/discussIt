@@ -1,4 +1,8 @@
 <?php session_start();
+  if(!isset($_SESSION["uid"])){
+    header("location: index.php?error=usernotloggedin");;
+  }
+
 if(isset($_GET['currentUserIncorrect'])){
     $incorrectCurrentMSG = $_GET['currentUserIncorrect'];
     echo "<script>alert('$incorrectCurrentMSG')</script>";
@@ -13,16 +17,12 @@ if(isset($_GET['NewUserMatchError'])){
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <!-- CSS -->
-       <link rel="stylesheet" href="css/changeUsername.css">
-        <!-- Script -->
-        <script src="https://kit.fontawesome.com/ec7e0e3eb8.js" crossorigin="anonymous"></script>
-        <title>Change Username</title>
-
+<head>
+  <!-- EXTERNAL CSS -->
+  <link rel="stylesheet" href="css/changeUsername.css">
+  <!-- HEADER INCLUDE -->
+  <?php include_once "./includes/header-information.php"; ?>
+  <title>Change Username</title>
 </head>
     <body>
     <?php include 'components/navigation-bar-v2-no-search.php'; ?>

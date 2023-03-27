@@ -6,22 +6,15 @@ include_once "scripts/getDiscussions.php";
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="images/logoDarkBlue.png">
   <!-- EXTERNAL CSS -->
   <link rel="stylesheet" href="css/index.css">
-  <!-- EXTERNAL SCRIPTS -->
-  <script src="https://kit.fontawesome.com/ec7e0e3eb8.js" crossorigin="anonymous"></script>
-  <script src="https://code.jquery.com/jquery-3.1.1.js"
-integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
+  <!-- LOCAL JS -->
+  <script src="js/index.js"></script>
+  <script src="js/postTiming.js"></script>
+  <!-- HEADER INCLUDE -->
+  <?php include_once "./includes/header-information.php"; ?>
+
   <title>Home of Discussions</title>
-<script src="js/index.js"></script>
-<script src="js/postTiming.js"></script>
-
-
-
 </head>
 <body>
 <?php include_once 'components/navigation-bar-v2.php'; ?>
@@ -122,7 +115,13 @@ integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="ano
             $authorId = $discussion["authorId"];
 
             $topics = getTopics($conn, $discussionId);
-            $repliesCount = getRepliesCount($conn, $discussionId)["numReplies"];
+            $repliesCount = getRepliesCount($conn, $discussionId);
+
+            if(!$repliesCount){
+              $repliesCount = 0;
+            } else {
+              $repliesCount = $repliesCount["numReplies"];
+            }
 
             $user = getUserByID($conn, $authorId);
             $username = $user["username"];
@@ -153,7 +152,7 @@ integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="ano
             <div class=\"discussion\">
               <div class=\"header\">
                 <h1>$postTitle</h1>
-                <button class=\"more-options\"><i class=\"fa-solid fa-ellipsis\"></i></button>
+                <!-- <button class=\"more-options\"><i class=\"fa-solid fa-ellipsis\"></i></button> -->
               </div>
               <div class=\"info\">
                 <div class=\"user-info\">
@@ -237,110 +236,30 @@ integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="ano
         <h1>Top Contributors</h1>
         <span>Start or contribute to existing discussions.</span>
         <ul class="list">
-          <li>
-            <i class="fa-regular fa-circle-user"></i>
-            <a href="#"><span class="name">Satanshu Mishra</span></a>
-            &nbsp;
-            <i class="fa-solid fa-star"></i>
-            &nbsp;
-            <span class="score">53</span>
-          </li>
-          <li>
-            <i class="fa-regular fa-circle-user"></i>
-            <a href="#"><span class="name">Corrine Fairchild</span></a>
-            &nbsp;
-            <i class="fa-solid fa-star"></i>
-            &nbsp;
-            <span class="score">53</span>
-          </li>
-          <li>
-            <i class="fa-regular fa-circle-user"></i>
-            <a href="#"><span class="name">Alice Smith</span></a>
-            &nbsp;
-            <i class="fa-solid fa-star"></i>
-            &nbsp;
-            <span class="score">53</span>
-          </li>
-          <li>
-            <i class="fa-regular fa-circle-user"></i>
-            <a href="#"><span class="name">Camron Brigham</span></a>
-            &nbsp;
-            <i class="fa-solid fa-star"></i>
-            &nbsp;
-            <span class="score">53</span>
-          </li>
-          <li>
-            <i class="fa-regular fa-circle-user"></i>
-            <a href="#"><span class="name">Lilly Page</span></a>
-            &nbsp;
-            <i class="fa-solid fa-star"></i>
-            &nbsp;
-            <span class="score">53</span>
-          </li>
-          <li>
-            <i class="fa-regular fa-circle-user"></i>
-            <a href="#"><span class="name">Sam Williams</span></a>
-            &nbsp;
-            <i class="fa-solid fa-star"></i>
-            &nbsp;
-            <span class="score">53</span>
-          </li>
-          <li>
-            <i class="fa-regular fa-circle-user"></i>
-            <a href="#"><span class="name">Satanshu Mishra</span></a>
-            &nbsp;
-            <i class="fa-solid fa-star"></i>
-            &nbsp;
-            <span class="score">53</span>
-          </li>
-          <li>
-            <i class="fa-regular fa-circle-user"></i>
-            <a href="#"><span class="name">Corrine Fairchild</span></a>
-            &nbsp;
-            <i class="fa-solid fa-star"></i>
-            &nbsp;
-            <span class="score">53</span>
-          </li>
-          <li>
-            <i class="fa-regular fa-circle-user"></i>
-            <a href="#"><span class="name">Alice Smith</span></a>
-            &nbsp;
-            <i class="fa-solid fa-star"></i>
-            &nbsp;
-            <span class="score">53</span>
-          </li>
-          <li>
-            <i class="fa-regular fa-circle-user"></i>
-            <a href="#"><span class="name">Camron Brigham</span></a>
-            &nbsp;
-            <i class="fa-solid fa-star"></i>
-            &nbsp;
-            <span class="score">53</span>
-          </li>
-          <li>
-            <i class="fa-regular fa-circle-user"></i>
-            <a href="#"><span class="name">Lilly Page</span></a>
-            &nbsp;
-            <i class="fa-solid fa-star"></i>
-            &nbsp;
-            <span class="score">53</span>
-          </li>
-          <li>
-            <i class="fa-regular fa-circle-user"></i>
-            <a href="#"><span class="name">Sam Williams</span></a>
-            &nbsp;
-            <i class="fa-solid fa-star"></i>
-            &nbsp;
-            <span class="score">53</span>
-          </li>
-          <li>
-            <i class="fa-regular fa-circle-user"></i>
-            <a href="#"><span class="name">Sam Williams</span></a>
-            &nbsp;
-            <i class="fa-solid fa-star"></i>
-            &nbsp;
-            <span class="score">53</span>
-          </li>
+        <?php
+            if(false){
+              foreach($topDiscussions as $discussionElement){
+                // TODO: THIS IS THE CORRECT CODE FOR TOP CONTRIBUTORS - THIS IS THE DEFAULT VERSION
+                echo '
+                  <li>
+                    <i class="fa-regular fa-circle-user"></i>
+                    <a href="#"><span class="name">Satanshu Mishra</span></a>
+                    &nbsp;
+                    <i class="fa-solid fa-star"></i>
+                    &nbsp;
+                    <span class="score">53</span>
+                  </li>
+                ';
+              }
+            } else {
+              echo '
+          <div class="nothing-happening">
+            <span>There\'s nothing happening right now! We will keep keep an eye out!</span>
+            <img class="nothing-conversation-image" src="./images/nothing-conversation-illustration.svg" alt="Nothing Happening">
+          </div>
+              ';
+            }
+          ?>
         </ul>
       </div>
       <div class="top-discussions">
