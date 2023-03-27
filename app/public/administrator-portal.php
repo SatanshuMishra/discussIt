@@ -10,7 +10,7 @@
     header("Location: ./index.php?invalidadminaccessnotadmin");
     exit();
   }
-
+  $sessionUser = getUserByID($conn, $_SESSION["uid"]);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -68,7 +68,7 @@
     <div class="lower-section">
       <div class="profile-image-conatainer">
         <img <?php echo 'src="./uploads/profile-'.$_SESSION["uid"].'.png?version=1231231"' ?> alt="ProflePicture">
-        <span>Satanshu Mishra</span>
+        <span><?php echo $sessionUser["firstName"].$sessionUser["lastName"] ?></span>
       </div>
       <div class="exit-container">
         <a href="./index.php">
