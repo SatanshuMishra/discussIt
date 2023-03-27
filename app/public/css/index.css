@@ -4,6 +4,8 @@
   font-family: "Roboto", sans-serif;
   margin: 0;
   padding: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -78,6 +80,8 @@ body {
   display: flex;
   justify-content: flex-end;
   padding: 0.5em 1em;
+  position: absolute;
+  z-index: 1;
 }
 
 .slider-control-btn {
@@ -157,11 +161,17 @@ body {
   .statistics {
     display: none;
   }
+
+  /* .feed {
+    padding: 1em 1em;
+    width: 100%;
+  } */
 }
 
 .feed {
   padding: 1em 3em;
-  max-width: 70em;
+  width: 100%;
+  /* max-width: 70em; */
   /* border: 1px solid #fff; */
 }
 
@@ -242,6 +252,7 @@ body {
   display: flex;
   justify-content: space-between;
   padding: 1em 0;
+  flex-wrap: wrap;
 }
 
 .discussion > .info > .user-info {
@@ -482,4 +493,9 @@ particle {
 .nothing-happening > .nothing-image {
   margin-right: 4em;
   width: 100%;
+}
+
+.nothing-happening > .nothing-conversation-image {
+  /* margin-right: 4em; */
+  width: 70%;
 }

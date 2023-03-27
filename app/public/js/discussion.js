@@ -1,45 +1,43 @@
+var i = 0;
+function addTopic(element) {
+  const ul = document.querySelector("ul");
+  const numberOfItems = ul.querySelectorAll("li").length;
+  const topicsArray = document.getElementById("topicsArray");
 
+  if (numberOfItems < 2) {
+    var topicText = element.innerText;
+    var listItem = document.createElement("li");
+    listItem.setAttribute("name", "topic" + i);
+    listItem.setAttribute("value", topicText);
+    // listItem.innerText = topicText;
 
-      var i = 0;
-      function addTopic(element){
-         const ul = document.querySelector('ul');
-         const numberOfItems = ul.querySelectorAll('li').length;
-         const topicsArray = document.getElementById("topicsArray");
-         
-         if(numberOfItems < 2){
-           var topicText = element.innerText;
-          var listItem = document.createElement("li");
-          listItem.setAttribute('name','topic'+i);
-          listItem.setAttribute('value', topicText);
-          listItem.innerText = topicText;
-          document.getElementById("selected-topics").appendChild(listItem);
-          
-          topicsArray[i] = listItem.innerText;
-          topicsArray.value = JSON.stringify(topicsArray); 
-          
-          
-          i++;
-  
-         }else{
-         alert('You can have a maximum of two topics and a minimum of 1 topic');
-         }
-      }
-    
-    
-    function removeTopic(){
-        const ul = document.querySelector('ul');
-        const lastItem = ul.lastElementChild;
-        ul.removeChild(lastItem);
-        i--;
-      }
-      
-      
-        
+    var pillContainer = document.createElement("div");
+    pillContainer.setAttribute("class", "pill " + topicText.toLowerCase());
 
-        
-    
+    var pillSpan = document.createElement("span");
+    pillSpan.innerHTML = topicText;
 
-      /*
+    pillContainer.appendChild(pillSpan);
+    listItem.append(pillContainer);
+    document.getElementById("selected-topics").appendChild(listItem);
+
+    topicsArray[i] = listItem.innerText;
+    topicsArray.value = JSON.stringify(topicsArray);
+
+    i++;
+  } else {
+    alert("You can have a maximum of two topics and a minimum of 1 topic");
+  }
+}
+
+function removeTopic() {
+  const ul = document.querySelector("ul");
+  const lastItem = ul.lastElementChild;
+  ul.removeChild(lastItem);
+  i--;
+}
+
+/*
       const topicList = document.querySelectorAll('#selected-topics li');
         let topic1 = null;
         let topic2 = null
@@ -70,5 +68,3 @@
         xh.send(data);
 
       */
-  
-      

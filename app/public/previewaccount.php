@@ -80,7 +80,7 @@
             $linkedin = $user["linkedinAccount"];
             $pgweb = $user["pgwebAddress"];
 
-            if(($twitter || $linkedin || $pgweb)){
+            if(!($twitter || $linkedin || $pgweb)){
                 echo '
                   <div class="no-connections">
                     <div class="social-icon-container">

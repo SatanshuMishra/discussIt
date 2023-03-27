@@ -28,6 +28,7 @@
     $user = getUserByID($conn, $userid);
     if(($enteredUsername != $user["username"] || $enteredFirstName != $user["firstName"] || $enteredLastName != $user["lastName"] || $enteredDemeritPoints != $user["demeritPoints"] || $enteredAdministratorPerms != $user["administratorPermissions"])){
       if(updateUser($conn, $userid,$enteredUsername, $enteredFirstName, $enteredLastName, $enteredDemeritPoints, $enteredAdministratorPerms)){
+        $_SESSION["uname"] = $enteredUsername;
         header("Refresh:0");
         header("Location: ../administrator-portal.php?message=updatesuccessful", true, 307);
         exit();
