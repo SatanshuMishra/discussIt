@@ -79,7 +79,7 @@
   </div>
 
   <div class="body-container">
-    <form id="form1" method="POST" action="scripts/passTopics-script.php">
+    <form id="form1" method="POST" action="scripts/passTopics-script.php" onsubmit="checkCondition(event)">
       <div class="selected-topics-container">
         <span>Selected Topics:</span>
         <ul id="selected-topics" name="selected-topics">
@@ -91,13 +91,14 @@
         <div class="remove-button">
           <button type="button" class="btn-formatted remove" id="remove" onclick="removeTopic()">Remove Topic</button>
         </div>
+        
       </div>
       <div class="progression-btn-container">
         <div class="cancel-button">
           <a href="index.php"><button class="btn-formatted cancel">Cancel</button></a>
         </div>
         <div class="continue-button">
-          <button class="btn-formatted continue" type="submit" name="submit" value="Submit">Continue</button>
+          <button class="btn-formatted continue" id="continue-btn" type="submit" name="submit" value="Submit">Continue</button>
         </div>
       </div>
     </form>
@@ -108,7 +109,24 @@
     let topicSlider = $(".topic-slider");
     var maxScrollLeft = topicSliderA.scrollWidth - topicSliderA.clientWidth;
     topicSlider.scrollLeft(maxScrollLeft / 2);
+
+    function checkCondition(e) {
+      const ul = document.querySelector("ul");
+      const numberOfItems = ul.querySelectorAll("li").length;
+      if (numberOfItems <= 0) {
+        e.preventDefault();
+        alert("You must choose at least one topic.");
+        return false;
+      }
+    }
+    // function removeTopic() {
+    //   const ul = document.querySelector("ul");
+    //   const lastItem = ul.lastElementChild;
+    //   ul.removeChild(lastItem);
+    //   i--;
+    // }
   </script>
 
+  <?php include_once "./components/footer.php"; ?>
 </body>
 </html>

@@ -8,4 +8,15 @@
   <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
 
   <!-- NAVIGATION HEADER -->
-  <?php include_once "navigation-header.php"; ?>
+  <?php include_once "./includes/navigation-header.php"; ?>
+
+  <!-- FOOTER STYLE-->
+  <link rel="stylesheet" href="css/footer.css">
+
+  <style>
+    * {
+        -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+    }
+  </style>

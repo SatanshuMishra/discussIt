@@ -37,6 +37,20 @@ function removeTopic() {
   i--;
 }
 
+window.addEventListener("DOMContentLoaded", (event) => {
+  // var formEle = document.querySelector("#form1");
+  var continueBtn = document.querySelector("#continue-btn");
+  console.log(continueBtn);
+  // continueBtn.addEventListener("click", (evn) => {
+  //   const ul = document.querySelector("ul");
+  //   const numberOfItems = ul.querySelectorAll("li").length;
+  //   if (numberOfItems <= 0) {
+  //     alert("You can have a maximum of two topics and a minimum of 1 topic");
+  //     return false;
+  //   }
+  // });
+});
+
 /*
       const topicList = document.querySelectorAll('#selected-topics li');
         let topic1 = null;

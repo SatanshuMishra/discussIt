@@ -207,6 +207,10 @@ body {
   border-radius: 15px;
 }
 
+.selected-topics-container > ul {
+  margin: 1em 0;
+}
+
 .selected-topics-container > span {
   font-size: 17px;
   font-weight: 600;
@@ -215,7 +219,7 @@ body {
 #selected-topics {
   list-style: none;
   display: flex;
-  min-height: 2.5em;
+  min-height: 3em;
 }
 
 .selected-topics > li {
