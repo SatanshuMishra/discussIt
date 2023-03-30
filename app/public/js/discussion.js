@@ -1,4 +1,5 @@
 var i = 0;
+
 function addTopic(element) {
   const ul = document.querySelector("ul");
   const numberOfItems = ul.querySelectorAll("li").length;
@@ -34,6 +35,14 @@ function removeTopic() {
   const ul = document.querySelector("ul");
   const lastItem = ul.lastElementChild;
   ul.removeChild(lastItem);
+  let topicsArray = document.getElementById("topicsArray").value;
+  let topics = Object.keys(JSON.parse(topicsArray)).map(key => JSON.parse(topicsArray)[key]);
+  topics.pop();
+  console.log(topics);
+  
+
+  topicsArray= JSON.stringify(topics);
+  document.getElementById("topicsArray").value = topicsArray;
   i--;
 }
 

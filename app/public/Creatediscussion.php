@@ -87,7 +87,7 @@
             <span class="name">Space</span>
           </div> -->
         </ul>
-        <input type="hidden" id="topicsArray" name="topicsArray[]" value="">
+        <input type="hidden" id="topicsArray" name="topicsArray[]" value="[]">
         <div class="remove-button">
           <button type="button" class="btn-formatted remove" id="remove" onclick="removeTopic()">Remove Topic</button>
         </div>
