@@ -9,6 +9,7 @@
     $discussid = $_GET["discussid"];
     $reacted = ($_GET['hasReacted'] == "1") ? true : false;
 
+
     if($reacted){
       removeReaction($conn, $uid, $discussid);
     }
@@ -16,8 +17,14 @@
       addReaction($conn, $uid, $discussid);
     }
 
-    header("location: ../index.php");
-    exit();
+    if(isset($_GET['redirectTo'])){
+      $address = $_GET['redirectTo'];
+      header("location: $address");
+      exit();
+    }else {
+      header("location: ../index.php");
+      exit();
+    }
   }
   else {
     header("location: ../index.php?error=incorrectaccess");

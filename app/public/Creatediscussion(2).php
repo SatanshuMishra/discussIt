@@ -31,7 +31,7 @@
   </div>
 
   <div class="body-container">
-    <form action="../scripts/passDiscussInfo.php" method="post">
+    <form action="./scripts/passDiscussInfo.php" method="post">
         <div class="post-container">
             <label for="postTitle">Post Title</label>
             <textarea rows="1" class="textarea-formatter" type="text" id="postTitle" name="postTitle" placeholder="Enter Post Title" required oninvalid="this.setCustomValidity('Please enter a post title.')"
@@ -61,5 +61,6 @@
 
 
 
+  <?php include_once "./components/footer.php"; ?>
 </body>
 </html>

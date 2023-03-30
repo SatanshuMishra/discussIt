@@ -53,5 +53,6 @@ if(isset($_GET['NewUserMatchError'])){
         </div>
     </div>
 
-    </body>
+      <?php include_once "./components/footer.php"; ?>
+</body>
 </html>

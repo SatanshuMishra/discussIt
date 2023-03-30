@@ -44,7 +44,6 @@ if(isset($_GET['Passwordsuccess'])){
 </div>
 
 
-
+ <?php include_once "./components/footer.php"; ?>
 </body>
-
-<html>
+</html>

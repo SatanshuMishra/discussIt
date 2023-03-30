@@ -125,6 +125,7 @@ function createUser($conn, $firstName, $lastName, $uname, $pwd){
   header("location: $redirect");
   exit();
 }
+
 function createDiscussion($conn, $topic1, $topic2) {
   //Create New Discussion
   
@@ -147,8 +148,32 @@ function createDiscussion($conn, $topic1, $topic2) {
   //ADD TOPIC IDS TO TOPICMANAGER TABLE 
   addTopic($conn, $discussionID,$id);
   addTopic($conn,$discussionID,$id2);
+    return $discussionID;
+}
 
 
+function createDiscussionOne($conn, $topic1) {
+  //Create New Discussion
+  
+  $sql = "INSERT INTO discussion (isVisible) VALUES (TRUE)";
+  $stmt = mysqli_stmt_init($conn);
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    header("location: ../index.php?error=stmtfailedcreatediscussion");
+    exit();
+  }
+  //EXECUTE
+  mysqli_stmt_execute($stmt);
+  $discussionID = mysqli_stmt_insert_id($stmt);
+
+  //CLOSE
+  mysqli_stmt_close($stmt);
+  //FETCH TOPIC IDS
+  $id = getTopicID($conn,$topic1);
+  
+  //ADD TOPIC IDS TO TOPICMANAGER TABLE 
+  addTopic($conn, $discussionID,$id);
+    return $discussionID;
+}
 
 
 /**
@@ -168,22 +193,37 @@ function createDiscussion($conn, $topic1, $topic2) {
  * @return void
  */ 
 
-  return $discussionID;
-}
+
 function createPost($conn, $postContent,$postTitle,$topic1,$topic2, $postCreator){
-    $discussionId = createDiscussion($conn,$topic1,$topic2);
-    //Getting UserID
-    $unameExists = usernameExists($conn,$postCreator);
-    $uid = $unameExists["id"];
-    $sql = "INSERT into post(discussionID,authorID,postTitle,postContent,createdAt) VALUES(?,?,?,?,?)";
-    $stmt = mysqli_stmt_init($conn);
-    if(!mysqli_stmt_prepare($stmt,$sql)){
-      header("location: ../index.php?error=stmtfailedcreatePost");
-      exit();
+    if($topic2 == null){
+      $discussionId = createDiscussionOne($conn, $topic1);
+      //Getting UserID
+      $unameExists = usernameExists($conn,$postCreator);
+      $uid = $unameExists["id"];
+      $sql = "INSERT into post(discussionID,authorID,postTitle,postContent,createdAt) VALUES(?,?,?,?,?)";
+      $stmt = mysqli_stmt_init($conn);
+      if(!mysqli_stmt_prepare($stmt,$sql)){
+        header("location: ../index.php?error=stmtfailedcreatePost");
+        exit();
+      }
+      $createdAt = gmdate('y-m-d h:i:s');
+      //SET DATA
+      mysqli_stmt_bind_param($stmt,"sssss",$discussionId,$uid,$postTitle,$postContent,$createdAt);
+    } else {
+      $discussionId = createDiscussion($conn,$topic1,$topic2);
+      //Getting UserID
+      $unameExists = usernameExists($conn,$postCreator);
+      $uid = $unameExists["id"];
+      $sql = "INSERT into post(discussionID,authorID,postTitle,postContent,createdAt) VALUES(?,?,?,?,?)";
+      $stmt = mysqli_stmt_init($conn);
+      if(!mysqli_stmt_prepare($stmt,$sql)){
+        header("location: ../index.php?error=stmtfailedcreatePost");
+        exit();
+      }
+      $createdAt = gmdate('y-m-d h:i:s');
+      //SET DATA
+      mysqli_stmt_bind_param($stmt,"sssss",$discussionId,$uid,$postTitle,$postContent,$createdAt);
     }
-    $createdAt = gmdate('y-m-d h:i:s');
-    //SET DATA
-    mysqli_stmt_bind_param($stmt,"sssss",$discussionId,$uid,$postTitle,$postContent,$createdAt);
 
     //EXECUTE
     mysqli_stmt_execute($stmt);

@@ -25,5 +25,6 @@
         <h2>Dark Scheme</div>
     </div>
     
+  <?php include_once "./components/footer.php"; ?>
 </body>
-<html
+</html>
