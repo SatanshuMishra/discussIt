@@ -36,6 +36,7 @@
   <!-- HEADER INCLUDE -->
   <?php include_once "./includes/header-information.php"; ?>
   <title><?php echo $post["postTitle"] ?></title>
+  <script src="js/postTiming.js"></script>
 </head>
 <body>
   <?php include_once 'components/navigation-bar-v2.php'; ?>
@@ -89,12 +90,19 @@
         <div class="user-info">
           <?php 
             $postUserId = $post["id"];
+            $createdAt = strtotime($post["createdAt"]);
+             echo "<script type=\"text/javascript\">  
+              dynamicTiming('timeSincePost-$discussionId','$createdAt');
+                        setInterval(function(){
+                        dynamicTiming('timeSincePost-$discussionId','$createdAt')
+                      }, 60000);
+                </script>"; 
             echo "<img id=\"profile-picture-post\" src=\"uploads/profile-$postUserId.png\"/>";
           ?>
           <!-- <span style="font-size: 40px; padding-top: 8px;"><i class="fa-regular fa-circle-user"></i></span> -->
           <div class="details">
             <p class="name"><?php echo $post["username"]; ?></p>
-            <p class="date"><?php echo date('Y-m-d', strtotime($post["createdAt"])); ?></p>
+            <p class="date"><?php echo "<span id =\"timeSincePost-$discussionId\"</span></p>"; ?>
           </div>
         </div>
       </div>

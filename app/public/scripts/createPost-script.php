@@ -7,12 +7,7 @@ if(isset($_POST['submit'])){
     $topicsArray = $_SESSION['topics'];
     $postCreator = $_SESSION['uname'];
     $numberOfTopics = sizeof($topicsArray);
-    // if(count($topicsArray) > 0){
-    //     $topic1 = $topicsArray[0];
-    // }
-    // if(count($topicsArray) >1){
-    //     $topic2 = $topicsArray[1];
-    // }
+   
 
     if($numberOfTopics > 1){
         $topic1 = $topicsArray[0];
