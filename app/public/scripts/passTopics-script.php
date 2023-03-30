@@ -4,6 +4,7 @@ if(isset($_POST['submit'])){
     if(isset($_POST['topicsArray'])){
         $selectedTopics = $_POST['topicsArray'];
         $_SESSION['selectedTopics'] = $selectedTopics;
+       
         
         
     }
