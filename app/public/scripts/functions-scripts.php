@@ -318,7 +318,12 @@ function loginUser($conn, $uname, $pwd){
     session_start();
     $_SESSION["uid"] = $unameExists["id"];
     $_SESSION["uname"] = $unameExists["username"];
-    header("location: ../index.php ");
+    if(isset($_SESSION["redirect_url"])){
+      $url = $_SESSION["redirect_url"];
+      header("location: ../$url");
+    } else {
+      header("location: ../index.php ");
+    }
   }
 }
 

@@ -1,6 +1,7 @@
 <?php session_start();
   if(!isset($_SESSION["uid"])){
-    header("Location: ./index.php?error=cannotcreatediscussionnotloggedin");
+    $_SESSION["redirect_url"] = "Creatediscussion.php";
+    header("Location: ./login.php?message=You must be logged in to create a new discussion.");
     exit();
   }
 ?>
