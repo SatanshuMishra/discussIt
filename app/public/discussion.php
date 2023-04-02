@@ -15,6 +15,7 @@
   $post = getPost($conn, $discussionId);
   $topics = getTopics($conn, $discussionId);
   $replies = getReplies($conn, $discussionId);
+  $numofReplies = getRepliesCount($conn,$discussionId);
   $numberOfReactions = getNumberOfReactions($conn, $discussionId);
 
   $uid = false;
@@ -37,6 +38,7 @@
   <?php include_once "./includes/header-information.php"; ?>
   <title><?php echo $post["postTitle"] ?></title>
   <script src="js/postTiming.js"></script>
+  <script src = "js/updateReplies.js"></script>
 </head>
 <body>
   <?php include_once 'components/navigation-bar-v2.php'; ?>
@@ -113,10 +115,16 @@
         <sup>
           <div class="reply-count">
             <?php 
-            if($replies)
+            if($numofReplies != 0){
+            echo $numofReplies["numReplies"];
+            }else{
+              echo 0;
+            }
+            /*if($replies)
               echo count($replies); 
             else
-              echo 0;  
+              echo 0; 
+              */ 
             ?>
           </div>
         </sup>
@@ -141,108 +149,58 @@
             ';
            }
         ?>
+
       </div>
-      <div class="user-replies">
-        <?php 
-        // if($replies){
-        //   foreach($replies as $reply){
-        //       $replyUserId = $reply["id"];
-        //       $username = $reply["username"];
-        //       $replyContent = $reply["content"];
-        //       $time = date('Y-m-d', strtotime($reply["createdAt"]));;
-        //       echo "
-        //       <div class=\"reply\">
-        //         <div class=\"header\">
-        //           <img id=\"profile-picture-reply\" src=\"uploads/profile-$replyUserId.png\"/>
-        //           <div class=\"user-info\">
-        //             <span class=\"username\">$username</span>
-        //           </div>
-        //         </div>
-        //         <div class=\"body\">
-        //           $replyContent
-        //         </div>
-        //         <div class=\"footer\">
-        //           <span class=\"time\">$time</span>
-        //         </div>
-        //       </div>
-        //       ";
-        //   }
-        // }
-        ?>
-        <div class="reply">
+      <div class="user-replies" id = "user-replies">
+           <?php
+            echo "<script type=\"text/javascript\">  
+            updateReplies('$discussionId');
+                      setInterval(function(){
+                      updateReplies('$discussionId')
+                    }, 30000);
+              </script>";
+           
+           ?>
+        
+        
+        <!-- <div class="reply">
           <div class="header">
-            <img id="profile-picture-reply" src="uploads/profile-1.png"/>
+            <span style="font-size: 40px;">
+              <i class="fa-regular fa-circle-user"></i>
+            </span>
             <div class="user-info">
-              <span class="username">SatanshuMishra</span>
+              <span class="username">Satanshu Mishra</span>
             </div>
           </div>
           <div class="body">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Velit dignissim sodales ut eu sem integer. Tempus urna et pharetra pharetra massa massa ultricies mi quis. Varius vel pharetra vel turpis nunc.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer et tellus et purus accumsan fringilla nec ac nunc. Vivamus ac nibh nec erat sagittis bibendum eget vitae ipsum. Proin rhoncus pharetra orci, a luctus nisi pulvinar a. Nam ut risus eget mi egestas aliquet.
           </div>
           <div class="footer">
-            <div class="like">
-              <a class="disabled remove-decotation">
-                <i class="fa-regular fa-thumbs-up regular"></i>
-                <i class="fa-solid fa-thumbs-up hover"></i>
-              </a>
-            </div>
-            <div class="vertical-line-break"></div>
-            <div class="reply-footer-text reply-reply">
-              <a class="disabled remove-decotation">
-                <span>Reply</span>
-              </a>
-            </div>
-            <div class="vertical-line-break"></div>
-            <div class="reply-footer-text reply-time">
-              <span>15hr ago</span>
-            </div>
-            <div class="vertical-line-break"></div>
-            <div class="reply-footer-text report-reply">
-              <a class="disabled remove-decotation">
-                <i class="fa-regular fa-flag regular"></i>
-                <i class="fa-solid fa-flag hover"></i>
-                <span>Report</span>
-              </a>
-            </div>
+            <span class="time">15hr</span>
           </div>
-        </div>
-        <div class="reply">
-          <div class="header">
-            <img id="profile-picture-reply" src="uploads/profile-1.png"/>
-            <div class="user-info">
-              <span class="username">SatanshuMishra</span>
-            </div>
-          </div>
-          <div class="body">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Velit dignissim sodales ut eu sem integer. Tempus urna et pharetra pharetra massa massa ultricies mi quis. Varius vel pharetra vel turpis nunc.
-          </div>
-          <div class="footer">
-            <div class="like">
-              <a class="disabled remove-decotation">
-                <i class="fa-regular fa-thumbs-up regular"></i>
-                <i class="fa-solid fa-thumbs-up hover"></i>
-              </a>
-            </div>
-            <div class="vertical-line-break"></div>
-            <div class="reply-footer-text reply-reply">
-              <a class="disabled remove-decotation">
-                <span>Reply</span>
-              </a>
-            </div>
-            <div class="vertical-line-break"></div>
-            <div class="reply-footer-text reply-time">
-              <span>15hr ago</span>
-            </div>
-            <div class="vertical-line-break"></div>
-            <div class="reply-footer-text report-reply">
-              <a class="disabled remove-decotation">
-                <i class="fa-regular fa-flag regular"></i>
-                <i class="fa-solid fa-flag hover"></i>
-                <span>Report</span>
-              </a>
-            </div>
-          </div>
-        </div>
+        </div> -->
+        <!-- if($replies){
+          foreach($replies as $reply){
+              $replyUserId = $reply["id"];
+              $username = $reply["username"];
+              $replyContent = $reply["content"];
+              $time = date('Y-m-d', strtotime($reply["createdAt"]));;
+              echo "
+              <div class=\"reply\">
+                <div class=\"header\">
+                  <img id=\"profile-picture-reply\" src=\"uploads/profile-$replyUserId.png\"/>
+                  <div class=\"user-info\">
+                    <span class=\"username\">$username</span>
+                  </div>
+                </div>
+                <div class=\"body\">
+                  $replyContent
+                </div>
+                <div class=\"footer\">
+                  <span class=\"time\">$time</span>
+                </div>
+              </div>
+              "; -->
       </div>
     </div>
   </div>
