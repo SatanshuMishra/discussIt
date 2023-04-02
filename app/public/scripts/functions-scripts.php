@@ -320,6 +320,7 @@ function loginUser($conn, $uname, $pwd){
     $_SESSION["uname"] = $unameExists["username"];
     if(isset($_SESSION["redirect_url"])){
       $url = $_SESSION["redirect_url"];
+      unset($_SESSION["redirect_url"]);
       header("location: ../$url");
     } else {
       header("location: ../index.php ");
@@ -609,10 +610,130 @@ function getDiscussions($conn){
   }
 
 
-// CLOSE STATEMENT
-mysqli_stmt_close($stmt);
-  
- 
+  // CLOSE STATEMENT
+  mysqli_stmt_close($stmt);
+}
+
+/**
+ * Gets all the discussions.
+ * @param mysqli|false $conn MySQLi Connection Object
+ * @param int $topicId Integer representing the required topic ID
+ * @return array|false Returns array with query results for all the discussions.
+ */ 
+function getDiscussionsByTopic($conn, $topicId){
+  $sql = "SELECT discussTable.id, isVisible, authorId, postTitle, postContent, createdAt FROM topicManager JOIN (SELECT discussion.id AS id, isVisible, authorId, postTitle, postContent, createdAt FROM discussion JOIN post ON discussion.id = post.discussionId ORDER BY createdAt DESC) AS discussTable ON topicManager.discussionId = discussTable.id WHERE topicManager.topicId = ?;";
+  $stmt = mysqli_stmt_init($conn);
+
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    header("location: ../index.php?error=stmtfailedgetdiscussions");
+    exit();
+  }
+
+  mysqli_stmt_bind_param($stmt, "i", $topicId);
+
+  // EXECUTE $STMT PREPARED STATEMENT
+  mysqli_stmt_execute($stmt);
+
+  // GET RESULT FROM $STMT PREPARED STATEMENT
+  $results = mysqli_stmt_get_result($stmt);
+  if($rows = $results->fetch_all(MYSQLI_ASSOC)){
+    // RETURN DATA FROM PREPARED STATEMENT
+    return $rows;
+  }
+  else {
+    $results = false;
+    return $results;
+  }
+
+
+  // CLOSE STATEMENT
+  mysqli_stmt_close($stmt);
+}
+
+function generateSQL($authorCount, $titleCount, $topicCount){
+
+  $topicWhereClause = "(";
+  $titleWhereClause = "(";
+  $authorWhereClause = "(";
+
+  for($i=0; $i < $topicCount; $i++){
+    if($i == $topicCount - 1){
+      $topicWhereClause = $topicWhereClause." topicType.topic = ?)";
+    } else {
+      $topicWhereClause = $topicWhereClause." topicType.topic = ? OR";
+    }
+  }
+
+  for($i=0; $i < $titleCount; $i++){
+    if($i == $titleCount - 1){
+      $titleWhereClause = $titleWhereClause." discussPostTable.postTitle LIKE CONCAT('%', ? ,'%'))";
+    } else {
+      $titleWhereClause = $titleWhereClause." discussPostTable.postTitle LIKE CONCAT('%', ? ,'%') OR";
+    }
+  }
+
+  for($i=0; $i < $authorCount; $i++){
+    if($i == $authorCount - 1){
+      $authorWhereClause = $authorWhereClause." user.username = ?)";
+    } else {
+      $authorWhereClause = $authorWhereClause." user.username = ? OR";
+    }
+  }
+
+
+
+  return  "SELECT DISTINCT discussId, isVisible, authorId, postTitle, postContent, createdAt FROM topicType JOIN (SELECT discussId, isVisible, authorId, postTitle, postContent, createdAt, topicId FROM topicManager JOIN (SELECT * FROM user JOIN (SELECT discussion.id AS discussId, isVisible, authorId, postTitle, postContent, createdAt FROM discussion JOIN post ON discussion.id = post.discussionId) AS discussPostTable ON user.id = discussPostTable.authorId".(($authorCount > 0  || $titleCount > 0) ? " WHERE ".
+
+    (
+      (
+        ($authorCount > 0) ? $authorWhereClause.(($titleCount > 0) ? " AND ": "") : "").(($titleCount > 0) ? $titleWhereClause : "")
+      ) 
+      : "")
+      
+      .") AS tableB ON topicManager.discussionId = tableB.discussId) AS tableC ON topicType.id = tableC.topicId".
+      
+      (($topicCount > 0) ? " WHERE ".$topicWhereClause : "").";";
+}
+
+
+function getSearchResults($conn, $authorArray, $titleArray, $topicArray){
+  $authorCount = count($authorArray);
+  $titleCount = count($titleArray);
+  $topicCount = count($topicArray);
+
+  $sqlSt = generateSQL($authorCount, $titleCount, $topicCount);
+  $stmt = mysqli_stmt_init($conn);
+
+  if(!mysqli_stmt_prepare($stmt, $sqlSt)){
+    header("location: ../index.php?error=stmtfailedgetdiscussions");
+    exit();
+  }
+  // print_r($sqlSt);
+  $structure = str_repeat("s", ($authorCount + $titleCount + $topicCount));
+  $arr = [];
+  array_push($arr, ...$authorArray, ...$titleArray, ...$topicArray);
+  mysqli_stmt_bind_param($stmt, $structure, ...$arr);
+  // print_r($arr);
+
+  // EXECUTE $STMT PREPARED STATEMENT
+  mysqli_stmt_execute($stmt);
+
+  // GET RESULT FROM $STMT PREPARED STATEMENT
+  $results = mysqli_stmt_get_result($stmt);
+  $row_cnt = $results->num_rows;
+  // print_r($row_cnt);
+  if($rows = $results->fetch_all(MYSQLI_ASSOC)){
+    // RETURN DATA FROM PREPARED STATEMENT
+    return $rows;
+  }
+  else {
+    $results = false;
+    return $results;
+  }
+
+
+  // CLOSE STATEMENT
+  mysqli_stmt_close($stmt);
 }
 
 /**
