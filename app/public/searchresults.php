@@ -8,6 +8,7 @@
   }
 
   require_once "./includes/functions.php";
+  require_once "./includes/commonwords.php";
   
   $searchArray = explode(" ", $_SESSION["search-string"]);
   // unset($_SESSION["search-string"]);
@@ -16,12 +17,21 @@
   $titleArray = [];
   $topicArray = [];
   foreach($searchArray as $slice){
+    $slice = rtrim($slice, ',".?/<>-_+=][}{|;:\\`~!@#$%^&*()');
     if(substr($slice, 0, 1) == "@"){
       array_push($authorArray, substr($slice, 1));
     } elseif(substr($slice, 0, 1) == "#") {
       array_push($topicArray, strtoupper(substr($slice, 1)));
     } else {
-      array_push($titleArray, $slice);
+      $addWord = true;
+      for($i = 0; $i < count($commonWords); $i++){
+        if($commonWords[$i] == $slice){
+          $addWord = false;
+        }
+      }
+      if($addWord){
+        array_push($titleArray, $slice);
+      }
     }
   }
 
