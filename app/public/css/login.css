@@ -2,10 +2,9 @@
   font-family: "Roboto", sans-serif;
   margin: 0;
   padding: 0;
-  /* box-sizing: border-box; */
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 
 html,
@@ -16,11 +15,109 @@ body {
 body {
   background-color: #000;
   font-size: 0.875em;
+  overflow-x: hidden;
+}
+
+.toast {
+  position: absolute;
+  top: 7em;
+  right: 30px;
+  border-radius: 12px;
+  background-color: #fff;
+  padding: 20px 35px 20px 25px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  border-left: 6px solid #fa404f;
+  overflow: hidden;
+  transform: translateX(calc(100% + 30px));
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.toast.active {
+  transform: translateX(0%);
+}
+
+.toast .toast-content {
+  display: flex;
+  align-items: center;
+}
+
+.toast-content .message {
+  display: flex;
+  flex-direction: column;
+  margin: 0 20px;
+}
+
+.toast-content .check-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 35px;
+  width: 35px;
+  color: #fa404f;
+  font-size: 30px;
+  border-radius: 50%;
+}
+
+.message .text {
+  font-size: 16px;
+  font-weight: 400;
+  color: #666666;
+}
+
+.message .text.text-1 {
+  font-weight: 600;
+  color: #333;
+}
+
+.toast .close-icon {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  padding: 5px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.toast .close-icon:hover {
+  opacity: 1;
+}
+
+.toast .close:hover {
+  opacity: 1;
+}
+
+.toast .progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background: #333;
+}
+
+.toast .progress::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #fa404f;
+}
+
+.progress.active::before {
+  animation: progress 5s linear forwards;
+}
+
+@keyframes progress {
+  100% {
+    right: 100%;
+  }
 }
 
 .container {
   width: inherit;
-  /* height: 100%; */
+  height: 85%;
   margin: 1em;
   border-radius: 10px;
   display: flex;
@@ -53,7 +150,8 @@ body {
   }
 
   .container > .form-container {
-    border-radius: 20px;
+    border-radius: 15px;
+    width: 70%;
   }
 }
 
@@ -61,140 +159,74 @@ body {
   padding: 1em 0.5em;
 }
 
-#loginForm {
-  width: 100%;
-}
-
-#usernameLabel {
-  font-size: 16px;
+.login-form {
   padding: 1em;
-}
-
-#username {
-  width: 90%;
-  font-size: 16px;
-  margin: 1em;
-  padding: 0.5em;
-  background-color: #181818;
-  border-color: transparent;
-  border-radius: 10px;
-  color: #fff;
-}
-
-#pass-label-cont {
-  display: flex;
-  justify-content: space-between;
-}
-
-#pass-label-cont > #passLabel {
-  font-size: 16px;
-  padding: 1em 1em 0 1em;
-}
-
-#pass-label-cont > a {
-  text-decoration: none;
-  font-size: 15px;
-  padding: 1em 1em 0 1em;
-}
-
-#pass-label-cont > a > #forgot-pass-link {
-  color: #fff;
-}
-
-#password {
-  width: 90%;
-  font-size: 16px;
-  margin: 1em;
-  padding: 0.5em;
-  background-color: #181818;
-  border-color: transparent;
-  border-radius: 10px;
-  color: #fff;
-}
-
-#loginForm > .buttons-container {
-  padding: 2em 1em;
-  display: flex;
-  justify-content: space-between;
-}
-
-#loginForm > .buttons-container > button,
-#loginForm > .buttons-container > .sign-up-btn-div > a > button {
-  width: fit-content;
-  padding: 0.8em;
-  background-color: #0077ff;
-  color: #fff;
-  border-radius: 25px;
-  font-size: 15px;
-  cursor: pointer;
-  font-weight: bold;
-  border-color: transparent;
-}
-
-#loginForm > .buttons-container > button:hover,
-#loginForm > .buttons-container > .sign-up-btn-div > a > button:hover {
-  background-color: #0060ce;
-}
-
-#loginForm > .buttons-container {
-  padding: 2em 1em;
-  display: flex;
-  justify-content: space-between;
-}
-
-#loginForm > .buttons-container > .sign-up-btn-div {
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
-}
-
-#loginForm > .buttons-container > .sign-up-btn-div > a {
-  display: flex;
-  justify-content: start;
-  text-decoration: none;
-}
-
-#loginForm > .buttons-container > .sign-up-btn-div > a > button,
-#loginForm > .buttons-container > button {
-  margin-top: 2.2em;
-  width: fit-content;
-  padding: 0.8em;
-  background-color: #0077ff;
-  color: #fff;
-  border-radius: 25px;
-  font-size: 15px;
-  cursor: pointer;
-  font-weight: bold;
-  border-color: transparent;
-}
-
-#loginForm > .buttons-container > .sign-up-btn-div > a > button {
-  margin-top: 1em;
-}
-
-#loginForm > .buttons-container > .sign-up-btn-div > a > button:hover,
-#loginForm > .buttons-container > button:hover {
-  background-color: #0060ce;
 }
 
 #login-illustration {
   width: 80%;
 }
 
-.passwordCont {
-  display: flex;
-  justify-content: start;
-  /* padding: 0.5em;
-  margin: 0.5em 0.8em; */
+.label-element {
+  font-size: 16px !important;
 }
 
-.passwordCont > i {
-  vertical-align: middle;
+.input-field {
+  width: 100%;
+  font-size: 16px;
   margin: 1em 0;
-  padding: 1em;
-  margin-left: -60px;
+  padding: 0.5em;
+  background-color: #181818;
+  border-color: transparent;
+  border-radius: 10px;
+  color: #fff;
 }
 
-.passwordCont > i:hover {
+.password-container > .label-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.password-container > .label-container > .link {
+  text-decoration: none;
+  color: #fff;
+  font-size: 16px;
+}
+
+.password-input-container {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.show-password-icon {
+  position: fixed;
+  margin-right: 1em;
   cursor: pointer;
+}
+
+.lower-container {
+  padding: 1.5em 0;
+}
+
+.options-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5em 0;
+}
+
+.btn {
+  width: fit-content;
+  padding: 0.6em;
+  background-color: #0077ff;
+  color: #fff;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 500;
+  border-color: transparent;
+}
+
+.btn:hover {
+  background-color: #0060ce;
 }

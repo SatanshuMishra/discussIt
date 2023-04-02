@@ -18,6 +18,21 @@
 </head>
 <body>
   <?php include_once 'components/navigation-bar-v2-no-search.php'; ?>
+
+  <div class="toast">
+    <div class="toast-content">
+      <i class="fa-solid fa-circle-info check-icon"></i>
+      <div class="message">
+        <span class="text text-1">No Topics Selected</span>
+        <span class="text text-2">You must select between 1 - 2 topic.</span>
+      </div>
+    </div>
+    <i class="fa-solid fa-xmark close-icon"></i>
+    <div class="progress">
+
+    </div>
+  </div>
+
   <div class="indicator-container">
     <div class="progress-indicator current-page">
         <span>1</span>
@@ -116,7 +131,24 @@
       const numberOfItems = ul.querySelectorAll("li").length;
       if (numberOfItems <= 0) {
         e.preventDefault();
-        alert("You must choose at least one topic.");
+        // alert("You must choose at least one topic.");
+        toast = document.querySelector(".toast");
+        close = document.querySelector(".close-icon");
+        progress = document.querySelector(".progress");
+
+        setTimeout(() => {
+          toast.classList.add("active");
+          progress.classList.add("active");
+
+          setTimeout(() => {
+            toast.classList.remove("active");
+          }, 5000);
+        }, 50);
+
+        close.addEventListener("click", () => {
+          toast.classList.remove("active");
+          progress.classList.remove("active");
+        });
         return false;
       }
     }

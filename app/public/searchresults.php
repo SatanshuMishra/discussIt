@@ -2,8 +2,7 @@
   session_start();
 
   if(!isset($_SESSION["search-string"])){
-    $url = $_SERVER["HTTP_REFERER"];
-    header("Location: $url?Nope");
+    header("Location: ./index.php?Nope");
     exit();
   }
 
@@ -41,18 +40,16 @@
   
 
   $discussions = getSearchResults($conn, $authorArray, $titleArray, $topicArray);
-  // $discussions = getDiscussions($conn);
-  // print_r(count($discussions));
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <!-- EXTERNAL CSS -->
-  <link rel="stylesheet" href="css/discover.css">
+  <link rel="stylesheet" href="css/search-results.css">
   <!-- LOCAL JS -->
-  <!-- <script src="js/discover.js"></script>
-  <script src="js/postTiming.js"></script> -->
+  <!-- <script src="js/discover.js"></script>  -->
+  <script src="js/postTiming.js"></script>
   <!-- HEADER INCLUDE -->
   <?php include_once "./includes/header-information.php"; ?>
 
@@ -63,11 +60,11 @@
   
   <div class="page-body">
     <div class="feed">
-      <div class="feed-header">
+      <!-- <div class="feed-header">
         <h1>
           <span class="showing-pill sports ">FILTERED BY:</span> <span id="showing-topic">ALL</span>
         </h1>
-      </div>
+      </div> -->
       <div class="feed-body" id="feed-body">
       <?php
       if($discussions){

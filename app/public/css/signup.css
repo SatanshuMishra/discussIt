@@ -15,7 +15,7 @@ body {
 
 body {
   background-color: #000;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .container {
@@ -40,7 +40,7 @@ body {
 
 .container > .form-container {
   width: 50%;
-  background-color: #020202;
+  background-color: #0f0f0f;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -56,6 +56,7 @@ body {
 
   .container > .form-container {
     border-radius: 20px;
+    width: 90%;
   }
 }
 
@@ -208,7 +209,7 @@ body {
   padding: 0.8em;
   background-color: #0077ff;
   color: #fff;
-  border-radius: 25px;
+  border-radius: 20px;
   font-size: 15px;
   cursor: pointer;
   font-weight: bold;
@@ -226,4 +227,8 @@ body {
 
 #login-illustration {
   width: 80%;
+}
+
+#loginLabel {
+  font-size: 16px;
 }
