@@ -1,8 +1,9 @@
 window.addEventListener("DOMContentLoaded", (event) => {
-  $("#showPasswordIcon").click(() => {
+  $("#show-password").click(() => {
     showPassword();
   });
   function showPassword() {
+    console.log("Show password");
     var x = document.getElementById("password");
     if (x.type === "password") {
       x.type = "text";

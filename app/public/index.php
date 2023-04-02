@@ -1,6 +1,6 @@
 <?php 
   session_start();
-include_once "scripts/getDiscussions.php";
+  include_once "scripts/getDiscussions.php";
 ?>
 
 <!DOCTYPE html>
@@ -9,7 +9,7 @@ include_once "scripts/getDiscussions.php";
   <!-- EXTERNAL CSS -->
   <link rel="stylesheet" href="css/index.css">
   <!-- LOCAL JS -->
-  <script src="js/index.js"></script>
+  <!-- <script src="js/index.js"></script> -->
   <script src="js/postTiming.js"></script>
   <!-- HEADER INCLUDE -->
   <?php include_once "./includes/header-information.php"; ?>
@@ -17,83 +17,7 @@ include_once "scripts/getDiscussions.php";
   <title>Home of Discussions</title>
 </head>
 <body>
-<?php include_once 'components/navigation-bar-v2.php'; ?>
-  
-  <div class="topics-container">
-    <div class="topic-slider">
-      <div class="slider">
-        <a class="slider-item" href="#">
-          <div class="item-container space">
-            <span>SPACE</span>
-          </div>
-        </a>
-        <a class="slider-item" href="#">
-          <div class="item-container q&a">
-            <span>Q&A</span>
-          </div>
-        </a>
-        <a class="slider-item">
-          <div class="item-container gaming">
-            <span>GAMING</span>
-          </div>
-        </a>
-        <a class="slider-item" href="#">
-          <div class="item-container cooking">
-            <span>COOKING</span>
-          </div>
-        </a>
-        <a class="slider-item" href="#">
-          <div class="item-container sports">
-            <span>SPORTS</span>
-          </div>
-        </a>
-        <a class="slider-item" href="#">
-          <div class="item-container positivity">
-            <span>POSITIVITY</span>
-          </div>
-        </a>
-        <a class="slider-item" href="#">
-          <div class="item-container news">
-            <span>NEWS</span>
-          </div>
-        </a>
-        <a class="slider-item" href="#">
-          <div class="item-container space">
-            <span>SPACE</span>
-          </div>
-        </a>
-        <a class="slider-item" href="#">
-          <div class="item-container q&a">
-            <span>Q&A</span>
-          </div>
-        </a>
-        <a class="slider-item">
-          <div class="item-container gaming">
-            <span>GAMING</span>
-          </div>
-        </a>
-        <a class="slider-item" href="#">
-          <div class="item-container cooking">
-            <span>COOKING</span>
-          </div>
-        </a>
-        <a class="slider-item" href="#">
-          <div class="item-container sports">
-            <span>SPORTS</span>
-          </div>
-        </a>
-        <a class="slider-item" href="#">
-          <div class="item-container news">
-            <span>NEWS</span>
-          </div>
-        </a>
-      </div>
-    </div>
-    <div class="slider-controls">
-        <button class="slider-control-btn" id="moveSliderLeftBtn"><i class="fa-solid fa-left-long"></i></button>
-        <button class="slider-control-btn" id="moveSliderRightBtn"><i class="fa-solid fa-right-long"></i></button>
-    </div>
-  </div>
+  <?php include_once 'components/navigation-bar-v2.php'; ?>
   <div class="page-body">
     <!-- OPTIONS -->
     <div class="feed">

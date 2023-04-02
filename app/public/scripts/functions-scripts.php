@@ -708,20 +708,16 @@ function getSearchResults($conn, $authorArray, $titleArray, $topicArray){
     header("location: ../index.php?error=stmtfailedgetdiscussions");
     exit();
   }
-  // print_r($sqlSt);
   $structure = str_repeat("s", ($authorCount + $titleCount + $topicCount));
   $arr = [];
   array_push($arr, ...$authorArray, ...$titleArray, ...$topicArray);
   mysqli_stmt_bind_param($stmt, $structure, ...$arr);
-  // print_r($arr);
 
   // EXECUTE $STMT PREPARED STATEMENT
   mysqli_stmt_execute($stmt);
 
   // GET RESULT FROM $STMT PREPARED STATEMENT
   $results = mysqli_stmt_get_result($stmt);
-  $row_cnt = $results->num_rows;
-  // print_r($row_cnt);
   if($rows = $results->fetch_all(MYSQLI_ASSOC)){
     // RETURN DATA FROM PREPARED STATEMENT
     return $rows;
@@ -730,7 +726,6 @@ function getSearchResults($conn, $authorArray, $titleArray, $topicArray){
     $results = false;
     return $results;
   }
-
 
   // CLOSE STATEMENT
   mysqli_stmt_close($stmt);
