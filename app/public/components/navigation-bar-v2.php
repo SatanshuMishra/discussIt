@@ -3,11 +3,11 @@
     <a href="./index.php"><img id="nav-logo-ref" class="logo" src="./images/logoDarkBlue.png" alt="img"></a>
     <div style="display: flex; justify-content: start;">
       <a href="./index.php">Feed</a>
-      <a class="disabled">Discover</a>
+      <a href="./discover.php">Discover</a>
     </div>
   </div>
-  <form>
-    <input type="text" class="nav-search" placeholder="Search">
+  <form action="./scripts/search-script.php" method="POST">
+    <input type="text" name="search-string" class="nav-search" placeholder="Search">
   </form>
 
   <div class="section-b">
@@ -15,13 +15,13 @@
       if(isset($_SESSION["uid"])){
         // LOGGED IN
         echo '
-      <!--
-        <div class="notifications">
-          <button class="notification-dropdown">
-            <i class="fa-solid fa-bell"></i>
-          </button>
+        <div class="create-post">
+          <a href="./Creatediscussion.php">
+            <button class="start-discussion-btn-navigation">
+              <i class="fa-solid fa-feather"></i>
+            </button>
+          </a>
         </div>
-          -->
           
           <div class="dropdown">
             <button class="logged-in">
@@ -60,7 +60,7 @@
               <i class="fa-regular fa-user"></i> &nbsp;<i class="fa-solid fa-angle-down"></i>
             </button>
             <div id="myDropdown" class="dropdown-content">
-              <a href="#"><i class="fa-solid fa-circle-info"></i> &nbsp;Terms & Policies</a>
+              <a class="disabled"><i class="fa-solid fa-circle-info"></i> &nbsp;Terms & Policies</a>
             </div>
           </div>
         ';
