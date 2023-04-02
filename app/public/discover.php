@@ -1,37 +1,111 @@
 <?php 
   session_start();
-  include_once "scripts/getDiscussions.php";
+  require_once "./includes/functions.php";
+  $discussions = getDiscussions($conn);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <!-- EXTERNAL CSS -->
-  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/discover.css">
   <!-- LOCAL JS -->
-  <!-- <script src="js/index.js"></script> -->
+  <script src="js/discover.js"></script>
   <script src="js/postTiming.js"></script>
   <!-- HEADER INCLUDE -->
   <?php include_once "./includes/header-information.php"; ?>
 
-  <title>Home of Discussions</title>
+  <title>Discover</title>
 </head>
 <body>
   <?php include_once 'components/navigation-bar-v2.php'; ?>
-  <div class="page-body">
-    <!-- OPTIONS -->
-    <div class="feed">
-      <div class="feed-header">
-        <h1>Discussions & Articles</h1>
-        <a id="start-discussion-btn-link" href= "Creatediscussion.php">
-          <button class="start-discussion-btn">Start Discussion</button>
+
+  <div class="topics-container">
+    <div class="topic-slider">
+      <div class="slider">
+        <a class="slider-item" onclick="updateDiscussions(2)">
+          <div class="item-container space">
+            <span>SPACE</span>
+          </div>
+        </a>
+        <a class="slider-item" onclick="updateDiscussions(4)">
+          <div class="item-container q&a">
+            <span>Q&A</span>
+          </div>
+        </a>
+        <a class="slider-item" onclick="updateDiscussions(5)">
+          <div class="item-container gaming">
+            <span>GAMING</span>
+          </div>
+        </a>
+        <a class="slider-item" onclick="updateDiscussions(6)">
+          <div class="item-container cooking">
+            <span>COOKING</span>
+          </div>
+        </a>
+        <a class="slider-item" onclick="updateDiscussions(3)">
+          <div class="item-container sports">
+            <span>SPORTS</span>
+          </div>
+        </a>
+        <a class="slider-item" onclick="updateDiscussions(7)">
+          <div class="item-container positivity">
+            <span>POSITIVITY</span>
+          </div>
+        </a>
+        <a class="slider-item" onclick="updateDiscussions(1)">
+          <div class="item-container news">
+            <span>NEWS</span>
+          </div>
+        </a>
+        <a class="slider-item" onclick="updateDiscussions(2)">
+          <div class="item-container space">
+            <span>SPACE</span>
+          </div>
+        </a>
+        <a class="slider-item" onclick="updateDiscussions(4)">
+          <div class="item-container q&a">
+            <span>Q&A</span>
+          </div>
+        </a>
+        <a class="slider-item" onclick="updateDiscussions(5)">
+          <div class="item-container gaming">
+            <span>GAMING</span>
+          </div>
+        </a>
+        <a class="slider-item" onclick="updateDiscussions(6)">
+          <div class="item-container cooking">
+            <span>COOKING</span>
+          </div>
+        </a>
+        <a class="slider-item" onclick="updateDiscussions(3)">
+          <div class="item-container sports">
+            <span>SPORTS</span>
+          </div>
+        </a>
+        <a class="slider-item" onclick="updateDiscussions(1)">
+          <div class="item-container news">
+            <span>NEWS</span>
+          </div>
         </a>
       </div>
-      <div class="feed-body">
+    </div>
+    <div class="slider-controls">
+        <button class="slider-control-btn" id="moveSliderLeftBtn"><i class="fa-solid fa-left-long"></i></button>
+        <button class="slider-control-btn" id="moveSliderRightBtn"><i class="fa-solid fa-right-long"></i></button>
+    </div>
+  </div>
+  <div class="page-body">
+    <div class="feed">
+      <div class="feed-header">
+        <h1>
+          <span class="showing-pill sports ">FILTERED BY:</span> <span id="showing-topic">ALL</span>
+        </h1>
+      </div>
+      <div class="feed-body" id="feed-body">
       <?php
       if($discussions){
         foreach($discussions as $discussion){
-          require_once "scripts/functions-scripts.php";
           
           $isVisible = $discussion["isVisible"] == 1;
           if($isVisible){
@@ -155,80 +229,26 @@
       ?>
       </div>
     </div>
-    <div class="statistics">
-      <div class="top-contributors">
-        <h1>Top Contributors</h1>
-        <span>Start or contribute to existing discussions.</span>
-        <ul class="list">
-        <?php
-            if(false){
-              foreach($topDiscussions as $discussionElement){
-                // TODO: THIS IS THE CORRECT CODE FOR TOP CONTRIBUTORS - THIS IS THE DEFAULT VERSION
-                echo '
-                  <li>
-                    <i class="fa-regular fa-circle-user"></i>
-                    <a href="#"><span class="name">Satanshu Mishra</span></a>
-                    &nbsp;
-                    <i class="fa-solid fa-star"></i>
-                    &nbsp;
-                    <span class="score">53</span>
-                  </li>
-                ';
-              }
-            } else {
-              echo '
-          <div class="nothing-happening">
-            <span>There\'s nothing happening right now! We will keep keep an eye out!</span>
-            <img class="nothing-conversation-image" src="./images/nothing-conversation-illustration.svg" alt="Nothing Happening">
-          </div>
-              ';
-            }
-          ?>
-        </ul>
-      </div>
-      <div class="top-discussions">
-        <h1>Top Discussions</h1>
-        <span>Most active discussions this week.</span>
-        <ul class="list">
-        <?php
-            $topDiscussions = getTopDiscussions($conn);
-            if($topDiscussions){
-              foreach($topDiscussions as $discussionElement){
-                echo '
-                  <li>
-                    <a href="discussion.php?id='.$discussionElement["id"].'"><span class="title">'.substr($discussionElement["title"], 0, 20).'...</span></a>
-                    &nbsp;
-                    <i class="fa-solid fa-fire"></i>
-                    &nbsp;
-                    <span class="score">N/A</span>
-                  </li>
-                ';
-              }
-            } else {
-              echo '
-          <div class="nothing-happening">
-            <span>There\'s nothing happening right now! We will keep keep an eye out!</span>
-            <img class="nothing-image" src="./images/nothing-illustration.svg" alt="Nothing Happening">
-          </div>
-              ';
-            }
-          ?>
-
-          <?php 
-            //TODO: ADD TOOL-TIP TO SHOW FULL TITLE FOR EACH LINK 
-          ?>
-          <!-- <li>
-            <a href="#"><span class="title">Something Interes...</span></a>
-            &nbsp;
-            <i class="fa-solid fa-fire"></i>
-            &nbsp;
-            <span class="score">N/A</span>
-          </li> -->
-        </ul>
-      </div>
-    </div>
   </div>
 
-  <?php include_once "./components/footer.php"; ?>
+  <script type="text/javascript">
+    $topics = [
+      "NEWS",
+      "SPACE",
+      "SPORTS",
+      "Q&A",
+      "GAMING",
+      "COOKING",
+      "POSITIVITY"
+    ];
+    function updateDiscussions(topicId){
+      // $(".item-container").removeClass("active");
+      // $(".space").addClass("active");
+      $("#showing-topic").text($topics[topicId - 1]);
+      $("#feed-body").load("./scripts/topicFilter.php", {
+        id: topicId
+      });
+    }
+  </script>
 </body>
 </html>

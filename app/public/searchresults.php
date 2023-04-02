@@ -1,41 +1,78 @@
 <?php 
   session_start();
-  include_once "scripts/getDiscussions.php";
+
+  if(!isset($_SESSION["search-string"])){
+    header("Location: ./index.php?Nope");
+    exit();
+  }
+
+  require_once "./includes/functions.php";
+  require_once "./includes/commonwords.php";
+  
+  $searchArray = explode(" ", $_SESSION["search-string"]);
+  // unset($_SESSION["search-string"]);
+  // print_r($searchArray);
+  $authorArray = [];
+  $titleArray = [];
+  $topicArray = [];
+  foreach($searchArray as $slice){
+    $slice = rtrim($slice, ',".?/<>-_+=][}{|;:\\`~!@#$%^&*()');
+    if(substr($slice, 0, 1) == "@"){
+      array_push($authorArray, substr($slice, 1));
+    } elseif(substr($slice, 0, 1) == "#") {
+      array_push($topicArray, strtoupper(substr($slice, 1)));
+    } else {
+      $addWord = true;
+      for($i = 0; $i < count($commonWords); $i++){
+        if($commonWords[$i] == $slice){
+          $addWord = false;
+        }
+      }
+      if($addWord){
+        array_push($titleArray, $slice);
+      }
+    }
+  }
+
+  // print_r($authorArray);
+  // print_r($titleArray);
+  // print_r($topicArray);
+  
+
+  $discussions = getSearchResults($conn, $authorArray, $titleArray, $topicArray);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <!-- EXTERNAL CSS -->
-  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/search-results.css">
   <!-- LOCAL JS -->
-  <!-- <script src="js/index.js"></script> -->
+  <!-- <script src="js/discover.js"></script>  -->
   <script src="js/postTiming.js"></script>
   <!-- HEADER INCLUDE -->
   <?php include_once "./includes/header-information.php"; ?>
 
-  <title>Home of Discussions</title>
+  <title>Discover</title>
 </head>
 <body>
   <?php include_once 'components/navigation-bar-v2.php'; ?>
+  
   <div class="page-body">
-    <!-- OPTIONS -->
     <div class="feed">
-      <div class="feed-header">
-        <h1>Discussions & Articles</h1>
-        <a id="start-discussion-btn-link" href= "Creatediscussion.php">
-          <button class="start-discussion-btn">Start Discussion</button>
-        </a>
-      </div>
-      <div class="feed-body">
+      <!-- <div class="feed-header">
+        <h1>
+          <span class="showing-pill sports ">FILTERED BY:</span> <span id="showing-topic">ALL</span>
+        </h1>
+      </div> -->
+      <div class="feed-body" id="feed-body">
       <?php
       if($discussions){
         foreach($discussions as $discussion){
-          require_once "scripts/functions-scripts.php";
           
           $isVisible = $discussion["isVisible"] == 1;
           if($isVisible){
-            $discussionId = $discussion["id"];
+            $discussionId = $discussion["discussId"];
             $authorId = $discussion["authorId"];
 
             $topics = getTopics($conn, $discussionId);
@@ -155,80 +192,6 @@
       ?>
       </div>
     </div>
-    <div class="statistics">
-      <div class="top-contributors">
-        <h1>Top Contributors</h1>
-        <span>Start or contribute to existing discussions.</span>
-        <ul class="list">
-        <?php
-            if(false){
-              foreach($topDiscussions as $discussionElement){
-                // TODO: THIS IS THE CORRECT CODE FOR TOP CONTRIBUTORS - THIS IS THE DEFAULT VERSION
-                echo '
-                  <li>
-                    <i class="fa-regular fa-circle-user"></i>
-                    <a href="#"><span class="name">Satanshu Mishra</span></a>
-                    &nbsp;
-                    <i class="fa-solid fa-star"></i>
-                    &nbsp;
-                    <span class="score">53</span>
-                  </li>
-                ';
-              }
-            } else {
-              echo '
-          <div class="nothing-happening">
-            <span>There\'s nothing happening right now! We will keep keep an eye out!</span>
-            <img class="nothing-conversation-image" src="./images/nothing-conversation-illustration.svg" alt="Nothing Happening">
-          </div>
-              ';
-            }
-          ?>
-        </ul>
-      </div>
-      <div class="top-discussions">
-        <h1>Top Discussions</h1>
-        <span>Most active discussions this week.</span>
-        <ul class="list">
-        <?php
-            $topDiscussions = getTopDiscussions($conn);
-            if($topDiscussions){
-              foreach($topDiscussions as $discussionElement){
-                echo '
-                  <li>
-                    <a href="discussion.php?id='.$discussionElement["id"].'"><span class="title">'.substr($discussionElement["title"], 0, 20).'...</span></a>
-                    &nbsp;
-                    <i class="fa-solid fa-fire"></i>
-                    &nbsp;
-                    <span class="score">N/A</span>
-                  </li>
-                ';
-              }
-            } else {
-              echo '
-          <div class="nothing-happening">
-            <span>There\'s nothing happening right now! We will keep keep an eye out!</span>
-            <img class="nothing-image" src="./images/nothing-illustration.svg" alt="Nothing Happening">
-          </div>
-              ';
-            }
-          ?>
-
-          <?php 
-            //TODO: ADD TOOL-TIP TO SHOW FULL TITLE FOR EACH LINK 
-          ?>
-          <!-- <li>
-            <a href="#"><span class="title">Something Interes...</span></a>
-            &nbsp;
-            <i class="fa-solid fa-fire"></i>
-            &nbsp;
-            <span class="score">N/A</span>
-          </li> -->
-        </ul>
-      </div>
-    </div>
   </div>
-
-  <?php include_once "./components/footer.php"; ?>
 </body>
 </html>

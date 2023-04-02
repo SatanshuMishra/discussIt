@@ -27,6 +27,23 @@ function addTopic(element) {
 
     i++;
   } else {
+    toast = document.querySelector(".toast");
+    close = document.querySelector(".close-icon");
+    progress = document.querySelector(".progress");
+
+    setTimeout(() => {
+      toast.classList.add("active");
+      progress.classList.add("active");
+
+      setTimeout(() => {
+        toast.classList.remove("active");
+      }, 5000);
+    }, 50);
+
+    close.addEventListener("click", () => {
+      toast.classList.remove("active");
+      progress.classList.remove("active");
+    });
     alert("You can have a maximum of two topics and a minimum of 1 topic");
   }
 }
@@ -36,12 +53,13 @@ function removeTopic() {
   const lastItem = ul.lastElementChild;
   ul.removeChild(lastItem);
   let topicsArray = document.getElementById("topicsArray").value;
-  let topics = Object.keys(JSON.parse(topicsArray)).map(key => JSON.parse(topicsArray)[key]);
+  let topics = Object.keys(JSON.parse(topicsArray)).map(
+    (key) => JSON.parse(topicsArray)[key]
+  );
   topics.pop();
   console.log(topics);
-  
 
-  topicsArray= JSON.stringify(topics);
+  topicsArray = JSON.stringify(topics);
   document.getElementById("topicsArray").value = topicsArray;
   i--;
 }
