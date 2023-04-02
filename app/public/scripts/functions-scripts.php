@@ -529,9 +529,11 @@ function getReplies($conn, $discussid){
 
   // GET RESULT FROM $STMT PREPARED STATEMENT
   $results = mysqli_stmt_get_result($stmt);
+  $replies = array();
   if($row = $results->fetch_all(MYSQLI_ASSOC)){
     // RETURN DATA FROM PREPARED STATEMENT
-    return $row;
+    $replies[] = $row;
+    return json_encode($replies);
   }
   else {
     $results = false;
