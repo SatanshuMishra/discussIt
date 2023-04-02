@@ -3,6 +3,9 @@
 * {
   /* font-family: "Roboto", sans-serif; */
   font-family: "Poppins", sans-serif;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .disabled {
@@ -90,17 +93,31 @@
   text-decoration: none;
 }
 
-.notification-dropdown {
+.start-discussion-btn-navigation {
   display: block;
   height: 100%;
-  border-radius: 20px;
+  border-radius: 10px;
   margin: 0 0 0 0.2em;
   padding: 0 0.5em;
-  background-color: transparent;
-  color: #ffb800;
+  background-color: #181818;
+  color: #ffffff;
   cursor: pointer;
   border: none;
   font-size: 18px;
+  overflow: hidden;
+}
+
+.start-discussion-btn-navigation > span {
+  display: none;
+}
+
+.start-discussion-btn-navigation:hover span,
+.start-discussion-btn-navigation:hover .start-discussion-btn-navigation {
+  display: inline-block;
+}
+
+.start-discussion-btn-navigation:hov span {
+  display: inline-block;
 }
 
 .log-in {

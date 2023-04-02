@@ -3,7 +3,7 @@
     <a href="./index.php"><img id="nav-logo-ref" class="logo" src="./images/logoDarkBlue.png" alt="img"></a>
     <div style="display: flex; justify-content: start;">
       <a href="./index.php">Feed</a>
-      <a class="disabled">Discover</a>
+      <a href="./discover.php">Discover</a>
     </div>
   </div>
 
@@ -58,7 +58,7 @@
             <i class="fa-regular fa-user"></i> &nbsp;<i class="fa-solid fa-angle-down"></i>
           </button>
           <div id="myDropdown" class="dropdown-content">
-            <a href="#"><i class="fa-solid fa-circle-info"></i> &nbsp;Terms & Policies</a>
+            <a class="disabled"><i class="fa-solid fa-circle-info"></i> &nbsp;Terms & Policies</a>
           </div>
         </div>
       ';

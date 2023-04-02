@@ -367,8 +367,8 @@ body {
 
 .reply {
   margin: 1em 0;
-  background-color: #07070e;
-  padding: 2em 2.5em;
+  background-color: #161616;
+  padding: 1.5em 2em;
   border-radius: 15px;
 
   /* border-radius: 0px 15px 15px 0px; */
@@ -381,21 +381,11 @@ body {
 }
 
 .reply > .header > .user-info {
-  font-size: 18px;
-  padding-left: 1em;
+  font-size: 17px;
+  margin-left: 0.5em;
   display: flex;
   flex-direction: column;
-}
-
-.reply > .footer {
-  display: flex;
-  justify-content: end;
-  padding: 0.5em 0 0 0;
-}
-
-.reply > .footer > .time {
-  font-size: 13px;
-  color: gray;
+  font-weight: 400;
 }
 
 .reply > .body {
@@ -403,6 +393,41 @@ body {
   font-size: 17px;
   word-spacing: 1px;
   line-height: 25px;
+  font-weight: 300;
+}
+
+.reply > .footer {
+  display: flex;
+  justify-content: start;
+  margin-top: 0.5em;
+  font-weight: 400;
+  align-items: center;
+}
+
+.reply > .footer > .time {
+  font-size: 13px;
+  color: gray;
+}
+
+.regular {
+  color: #fff;
+  font-size: 17px;
+  margin-top: 3px;
+}
+
+.like > a .hover {
+  display: none;
+  color: #fff;
+  font-size: 17px;
+  margin-top: 3px;
+}
+
+.like > a:hover .regular {
+  display: none;
+}
+
+.like > a:hover .hover {
+  display: inline-block;
 }
 
 #profile-picture-post {
@@ -418,10 +443,42 @@ body {
   margin-right: 0.01em;
   vertical-align: middle;
   padding-bottom: 0.2em;
-  width: 3.2em;
+  width: 2.8em;
   /* padding-top: 8px; */
 }
 
 .solid-red-color {
   color: #fa187f;
+}
+
+.vertical-line-break {
+  border-left: 2px solid gray;
+  border-radius: 50px;
+  height: 1.5em;
+  margin: 0 1em;
+}
+
+.reply-footer-text {
+  font-size: 17px;
+}
+
+.report-reply > a:hover {
+  color: #f64242;
+}
+
+.remove-decotation {
+  text-decoration: none;
+  color: #fff;
+}
+
+.report-reply > a > .hover {
+  display: none;
+  color: #f64242;
+}
+
+.report-reply > a:hover .regular {
+  display: none;
+}
+.report-reply > a:hover .hover {
+  display: inline-block;
 }
