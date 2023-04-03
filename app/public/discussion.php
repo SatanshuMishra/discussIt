@@ -103,7 +103,7 @@
           ?>
           <!-- <span style="font-size: 40px; padding-top: 8px;"><i class="fa-regular fa-circle-user"></i></span> -->
           <div class="details">
-            <p class="name"><?php echo $post["username"]; ?></p>
+            <p class="name"><a class="remove-decoration" href="./previewaccount.php?userid=<?php echo $post["id"];?>"><?php echo $post["username"]; ?></a></p>
             <p class="date"><?php echo "<span id =\"timeSincePost-$discussionId\"</span></p>"; ?>
           </div>
         </div>
@@ -152,55 +152,108 @@
 
       </div>
       <div class="user-replies" id = "user-replies">
-           <?php
-            echo "<script type=\"text/javascript\">  
-            updateReplies('$discussionId');
-                      setInterval(function(){
-                      updateReplies('$discussionId')
-                    }, 30000);
-              </script>";
-           
-           ?>
+        <?php
+        // echo "<script type=\"text/javascript\">  
+        // updateReplies('$discussionId');
+        //           setInterval(function(){
+        //           updateReplies('$discussionId')
+        //         }, 30000);
+        //   </script>";
         
+        ?>
+
+        <!-- ⭐⭐ UPDATED REPLY MODELS ⭐⭐ -->
         
-        <!-- <div class="reply">
+        <div class="reply">
           <div class="header">
-            <span style="font-size: 40px;">
-              <i class="fa-regular fa-circle-user"></i>
-            </span>
+            <img id="profile-picture-reply" src="uploads/profile-1.png"/>
             <div class="user-info">
-              <span class="username">Satanshu Mishra</span>
+              <span class="username">SatanshuMishra</span>
             </div>
           </div>
           <div class="body">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer et tellus et purus accumsan fringilla nec ac nunc. Vivamus ac nibh nec erat sagittis bibendum eget vitae ipsum. Proin rhoncus pharetra orci, a luctus nisi pulvinar a. Nam ut risus eget mi egestas aliquet.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Velit dignissim sodales ut eu sem integer. Tempus urna et pharetra pharetra massa massa ultricies mi quis. Varius vel pharetra vel turpis nunc.
           </div>
           <div class="footer">
-            <span class="time">15hr</span>
+            <div class="like">
+              <a class="disabled remove-decoration">
+                <i class="fa-regular fa-thumbs-up regular"></i>
+                <i class="fa-solid fa-thumbs-up hover"></i>
+              </a>
+            </div>
+            <div class="vertical-line-break"></div>
+            <div class="reply-footer-text reply-reply">
+              <a class="disabled remove-decoration">
+                <span>Reply</span>
+              </a>
+            </div>
+            <div class="vertical-line-break"></div>
+            <div class="reply-footer-text reply-time">
+              <span>15hr ago</span>
+            </div>
+            <div class="vertical-line-break"></div>
+            <div class="reply-footer-text report-reply">
+              <a class="disabled remove-decoration">
+                <i class="fa-regular fa-flag regular"></i>
+                <i class="fa-solid fa-flag hover"></i>
+                <span>Report</span>
+              </a>
+            </div>
           </div>
-        </div> -->
-        <!-- if($replies){
-          foreach($replies as $reply){
-              $replyUserId = $reply["id"];
-              $username = $reply["username"];
-              $replyContent = $reply["content"];
-              $time = date('Y-m-d', strtotime($reply["createdAt"]));;
-              echo "
-              <div class=\"reply\">
-                <div class=\"header\">
-                  <img id=\"profile-picture-reply\" src=\"uploads/profile-$replyUserId.png\"/>
-                  <div class=\"user-info\">
-                    <span class=\"username\">$username</span>
-                  </div>
-                </div>
-                <div class=\"body\">
-                  $replyContent
-                </div>
-                <div class=\"footer\">
-                  <span class=\"time\">$time</span>
-                </div>
+        </div>
+
+        <div class="reply">
+          <a class="disabled remove-decoration">
+            <div class="reply-to">
+              <div class="reply-icon">
+                <i class="fa-solid fa-reply regular"></i>
               </div>
-              "; -->
+              <div class="vertical-line-break white-vertical-line-break"></div>
+              <div class="reply-footer-text reply-to-user">
+                <span>SatanshuMishra</span>
+              </div>
+              <div class="vertical-line-break white-vertical-line-break"></div>
+              <div class="reply-footer-text reply-to-text">
+                <span>Lorem ipsum dolor sit amet, conse...</span>
+              </div>
+            </div>
+          </a>
+          <div class="header">
+            <img id="profile-picture-reply" src="uploads/profile-1.png"/>
+            <div class="user-info">
+              <span class="username">SatanshuMishra</span>
+            </div>
+          </div>
+          <div class="body">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Velit dignissim sodales ut eu sem integer. Tempus urna et pharetra pharetra massa massa ultricies mi quis. Varius vel pharetra vel turpis nunc.
+          </div>
+          <div class="footer">
+            <div class="like">
+              <a class="disabled remove-decoration">
+                <i class="fa-regular fa-thumbs-up regular"></i>
+                <i class="fa-solid fa-thumbs-up hover"></i>
+              </a>
+            </div>
+            <div class="vertical-line-break"></div>
+            <div class="reply-footer-text reply-reply">
+              <a class="disabled remove-decoration">
+                <span>Reply</span>
+              </a>
+            </div>
+            <div class="vertical-line-break"></div>
+            <div class="reply-footer-text reply-time">
+              <span>15hr ago</span>
+            </div>
+            <div class="vertical-line-break"></div>
+            <div class="reply-footer-text report-reply">
+              <a class="disabled remove-decoration">
+                <i class="fa-regular fa-flag regular"></i>
+                <i class="fa-solid fa-flag hover"></i>
+                <span>Report</span>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

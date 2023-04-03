@@ -3,7 +3,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
     showPassword();
   });
   function showPassword() {
-    console.log("Show password");
     var x = document.getElementById("password");
     if (x.type === "password") {
       x.type = "text";
