@@ -520,7 +520,7 @@ function getTopics($conn, $discussid) {
  * @return array|false Returns array with query results for all the replies for the given discussion.
  */ 
 function getReplies($conn, $discussid){
-  $sql = "SELECT id, username, content, createdAt FROM reply JOIN user on reply.authorId = user.id WHERE discussionId = ?;";
+  $sql = "SELECT user.id, username, content, createdAt FROM reply JOIN user on reply.authorId = user.id WHERE discussionId = ?;";
   $stmt = mysqli_stmt_init($conn);
   if(!mysqli_stmt_prepare($stmt, $sql)){
     header("location: ../index.php?error=stmtfailedgetreplies");
@@ -740,7 +740,7 @@ function getSearchResults($conn, $authorArray, $titleArray, $topicArray){
  * @return array|false Returns array with query results for all the discussions.
  */ 
 function getContributionsByAuthor($conn, $authorid){
-  $sql = "SELECT DISTINCT * FROM (SELECT discussion.id AS id, isVisible, authorId, postTitle FROM discussion JOIN post ON discussion.id = post.discussionId WHERE authorId = ? ORDER BY createdAt DESC) AS tableA UNION (SELECT id, isVisible, post.authorId, postTitle from post JOIN (SELECT discussion.id AS id, isVisible, authorId FROM discussion JOIN reply on discussion.id = reply.discussionId WHERE authorId = ?) AS discussTable ON post.discussionId = discussTable.id); ";
+  $sql = "SELECT DISTINCT * FROM (SELECT discussion.id AS id, isVisible, authorId, postTitle FROM discussion JOIN post ON discussion.id = post.discussionId WHERE authorId = ? ORDER BY createdAt DESC) AS tableA UNION (SELECT discussTable.id, isVisible, post.authorId, postTitle from post JOIN (SELECT discussion.id AS id, isVisible, authorId FROM discussion JOIN reply on discussion.id = reply.discussionId WHERE authorId = ?) AS discussTable ON post.discussionId = discussTable.id);";
   $stmt = mysqli_stmt_init($conn);
 
   if(!mysqli_stmt_prepare($stmt, $sql)){

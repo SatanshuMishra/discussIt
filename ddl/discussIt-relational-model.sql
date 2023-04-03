@@ -19,16 +19,8 @@ CREATE TABLE discussion (
   isVisible boolean NOT NULL
 );
 
-CREATE TABLE likesManager (
-  id integer NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  userid integer NOT NULL,
-  discussionid integer NOT NULL,
-  FOREIGN KEY (userid) REFERENCES user (id),
-  FOREIGN KEY (discussionid) REFERENCES discussion (id),
-  CONSTRAINT uniqueness UNIQUE(userid, discussionid)
-);
-
 CREATE TABLE post (
+  id integer NOT NULL PRIMARY KEY AUTO_INCREMENT,
   discussionId integer NOT NULL,
   authorId integer NOT NULL,
   postTitle varchar(255) NOT NULL,
@@ -39,12 +31,26 @@ CREATE TABLE post (
 );
 
 CREATE TABLE reply (
+  id integer NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  replyTo integer,
   discussionId integer NOT NULL,
   authorId integer NOT NULL,
   content varchar(255) NOT NULL,
   createdAt datetime NOT NULL,
   FOREIGN KEY (discussionId) REFERENCES discussion (id),
-  FOREIGN KEY (authorId) REFERENCES user (id)
+  FOREIGN KEY (authorId) REFERENCES user (id),
+  FOREIGN KEY (replyTo) REFERENCES reply (id)
+);
+
+CREATE TABLE likesManager (
+  id integer NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  userid integer NOT NULL,
+  discussionid integer NOT NULL,
+  replyid integer,
+  FOREIGN KEY (userid) REFERENCES user (id),
+  FOREIGN KEY (discussionid) REFERENCES discussion (id),
+  FOREIGN KEY (replyid) REFERENCES reply (id),
+  CONSTRAINT uniqueness UNIQUE(userid, discussionid)
 );
 
 CREATE TABLE report (

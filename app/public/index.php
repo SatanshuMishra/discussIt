@@ -18,6 +18,21 @@
 </head>
 <body>
   <?php include_once 'components/navigation-bar-v2.php'; ?>
+
+    <div class="toast">
+    <div class="toast-content">
+      <i class="fa-solid fa-circle-info check-icon"></i>
+      <div class="message">
+        <span class="text text-1"></span>
+        <span class="text text-2"></span>
+      </div>
+    </div>
+    <i class="fa-solid fa-xmark close-icon"></i>
+    <div class="progress">
+
+    </div>
+  </div>
+
   <div class="page-body">
     <!-- OPTIONS -->
     <div class="feed">
@@ -188,7 +203,7 @@
       </div>
       <div class="top-discussions">
         <h1>Top Discussions</h1>
-        <span>Most active discussions this week.</span>
+        <span>Most active discussions today.</span>
         <ul class="list">
         <?php
             $topDiscussions = getTopDiscussions($conn);
@@ -228,7 +243,39 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript">
+    window.addEventListener("DOMContentLoaded", (event) => {
+      let toast = document.querySelector(".toast");
+      let close = document.querySelector(".close-icon");
+      let progress = document.querySelector(".progress");
 
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      if(urlParams.has('error')){
+        let title = document.querySelector(".text-1");
+        let description = document.querySelector(".text-2");
+        if(urlParams.get('error') == "usernotfound"){
+          title.innerHTML= "User not found";
+          description.innerHTML= "The user you are trying to view doesn't exsit.";
+        } else if(urlParams.get('error') == "discussionnotfound"){
+          title.innerHTML = "Discussion not found";
+          description.innerHTML = "The discussion you are trying to view doesn't exsit.";
+        }
+        setTimeout(() => {
+          toast.classList.add("active");
+          progress.classList.add("active");
+          
+          setTimeout(() => {
+            toast.classList.remove("active");
+          }, 5000);
+        }, 50);
+      }
+
+      close.addEventListener("click", () => {
+        toast.classList.remove("active");
+      })
+    });
+  </script>
   <?php include_once "./components/footer.php"; ?>
 </body>
 </html>

@@ -1,12 +1,17 @@
 <?php session_start();
   if(!isset($_GET["userid"])){
-    header("location: index.php?error=usernotfound");;
+    header("location: index.php?error=usernotfound");
+    exit();
   }
   require_once 'scripts/config.php';
   require_once 'scripts/functions-scripts.php';
 
   $uid = $_GET["userid"];
   $user = getUserByID($conn, $uid);
+  if(!$user){
+    header("location: index.php?error=usernotfound");
+    exit();
+  }
   $contributions = getContributionsByAuthor($conn, $uid);
   $countDiscussions = ($discussionsCreated = getDiscussionByAuthorId($conn, $uid)) ? count($discussionsCreated) : 0;
   $countReplies = ($repliesCreated = getRepliesByAuthorId($conn, $uid)) ? count($repliesCreated) : 0;

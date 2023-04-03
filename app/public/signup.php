@@ -15,6 +15,7 @@
   <script src="js/showPassword.js"></script>
   <!-- HEADER INCLUDE -->
   <?php include_once "./includes/header-information.php"; ?>
+  <script src="js/showPassword.js"></script>
   <title>Sign Up</title>
 </head>
 <body>
@@ -40,9 +41,9 @@
        oninput="setCustomValidity('')"><br>
         <label id="passLabel" for="password">Password*</label><br>
         <div class="passwordCont">
-          <input type="password" name="password" id="password" required oninvalid="this.setCustomValidity('Please enter a password.')"
+          <input id="password" type="password" name="password" required oninvalid="this.setCustomValidity('Please enter a password.')"
         oninput="setCustomValidity('')"><br>
-          <i id="showPasswordIcon" class="fa-regular fa-eye"></i>
+          <i id="show-password" class="fa-regular fa-eye" onclick="showPassword()"></i>
         </div>
 
         <div class="terms-checkbox">
@@ -67,6 +68,16 @@
       </form>
     </div>
   </div>
+  <script>
+    function showPassword() {
+      var x = document.getElementById("password");
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+  </script>
   <?php include_once "./components/footer.php"; ?>
 </body>
 </html>
