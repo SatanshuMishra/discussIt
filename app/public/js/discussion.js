@@ -12,6 +12,31 @@ function addTopic(element) {
     listItem.setAttribute("value", topicText);
     // listItem.innerText = topicText;
 
+    //Checking if item has already been selected
+    var exists = document.querySelector(`li[value = "${topicText}"]`);
+    if(exists){
+      /*toast = document.querySelector(".toast");
+      close = document.querySelector(".close-icon");
+      progress = document.querySelector(".progress");
+      
+      setTimeout(() => {
+        toast.classList.add("active");
+        progress.classList.add("active");
+  
+        setTimeout(() => {
+          toast.classList.remove("active");
+        }, 5000);
+      }, 50);
+  
+      close.addEventListener("click", () => {
+        toast.classList.remove("active");
+        progress.classList.remove("active");
+      });*/
+      alert("This topic has already been selected");
+      return;
+
+    }
+
     var pillContainer = document.createElement("div");
     pillContainer.setAttribute("class", "pill " + topicText.toLowerCase());
 
@@ -44,7 +69,7 @@ function addTopic(element) {
       toast.classList.remove("active");
       progress.classList.remove("active");
     });
-    alert("You can have a maximum of two topics and a minimum of 1 topic");
+    alert("You can have a maximum of two topics and a minimum of one topic");
   }
 }
 
