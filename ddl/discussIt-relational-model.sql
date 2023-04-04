@@ -8,15 +8,15 @@ CREATE TABLE user (
   twitterAccount varchar(255),
   linkedinAccount varchar(255),
   pgwebAddress varchar(255),
-  demeritPoints integer,
+  demeritPoints integer DEFAULT 0 NOT NULL,
   userKey varchar(255) NOT NULL,
-  administratorPermissions boolean NOT NULL
+  isSuspended boolean DEFAULT FALSE NOT NULL,
+  administratorPermissions boolean DEFAULT FALSE NOT NULL
   );
 
 CREATE TABLE discussion (
   id integer NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  /* rankingIndex integer NOT NULL, */
-  isVisible boolean NOT NULL
+  isVisible boolean DEFAULT TRUE
 );
 
 CREATE TABLE post (
@@ -25,7 +25,7 @@ CREATE TABLE post (
   authorId integer NOT NULL,
   postTitle varchar(255) NOT NULL,
   postContent text NOT NULL,
-  createdAt datetime NOT NULL,
+  createdAt datetime DEFAULT NOW() NOT NULL,
   FOREIGN KEY (authorId) REFERENCES user (id),
   FOREIGN KEY (discussionId) REFERENCES discussion (id)
 );
@@ -36,17 +36,26 @@ CREATE TABLE reply (
   discussionId integer NOT NULL,
   authorId integer NOT NULL,
   content varchar(255) NOT NULL,
-  createdAt datetime NOT NULL,
+  createdAt datetime DEFAULT NOW() NOT NULL,
   FOREIGN KEY (discussionId) REFERENCES discussion (id),
   FOREIGN KEY (authorId) REFERENCES user (id),
   FOREIGN KEY (replyTo) REFERENCES reply (id)
 );
 
-CREATE TABLE likesManager (
+CREATE TABLE discussionReactionManager (
   id integer NOT NULL PRIMARY KEY AUTO_INCREMENT,
   userid integer NOT NULL,
   discussionid integer NOT NULL,
-  replyid integer,
+  FOREIGN KEY (userid) REFERENCES user (id),
+  FOREIGN KEY (discussionid) REFERENCES discussion (id),
+  CONSTRAINT uniqueness UNIQUE(userid, discussionid)
+);
+
+CREATE TABLE replyReactionManager (
+  id integer NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  userid integer NOT NULL,
+  discussionid integer NOT NULL,
+  replyid integer NOT NULL,
   FOREIGN KEY (userid) REFERENCES user (id),
   FOREIGN KEY (discussionid) REFERENCES discussion (id),
   FOREIGN KEY (replyid) REFERENCES reply (id),
@@ -58,8 +67,8 @@ CREATE TABLE report (
   discussionId integer NOT NULL,
   authorId integer NOT NULL,
   content integer NOT NULL,
-  reportedAt datetime NOT NULL,
-  reviewed boolean,
+  reportedAt datetime DEFAULT NOW() NOT NULL,
+  reviewed boolean DEFAULT FALSE NOT NULL,
   FOREIGN KEY (discussionId) REFERENCES discussion (id),
   FOREIGN KEY (authorId) REFERENCES user (id)
 );

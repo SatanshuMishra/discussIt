@@ -20,32 +20,34 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 20%;
+  align-items: center;
+  width: 82px;
   height: 100%;
   position: fixed;
-  background-color: #0a1525;
-  border-radius: 0 15px 15px 0;
-  padding: 2em 2.5em;
+  background-color: #091427;
+  /* border-radius: 0 15px 15px 0; */
+  padding: 2em 1em;
 }
 
 .logo-container {
   display: flex;
-  justify-content: start;
+  justify-content: center;
   align-items: center;
   height: fit-content;
   width: 100%;
   color: #fff;
-  margin: 0 0 2em 0;
+  margin-bottom: 3em;
 }
 
 .logo-container > .logo {
-  width: 40%;
+  width: 70%;
+  /* padding-left: 5px; */
 }
 
 .logo-container > .logo-text {
   margin-left: 0.3em;
   font-size: 24px;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .nav-list {
@@ -64,7 +66,7 @@ body {
 
 .nav-list > a > .nav-option {
   display: flex;
-  justify-content: start;
+  justify-content: center;
   color: #a5b2cb;
   padding: 1em 1.2em;
   border-radius: 15px;
@@ -75,7 +77,7 @@ body {
 }
 
 .nav-list > a > .nav-option > i {
-  margin-right: 0.8em;
+  /* margin-right: 0.8em; */
   font-size: 18px;
 }
 
@@ -115,7 +117,7 @@ hr.solid {
 }
 
 .profile-image-conatainer > img {
-  width: 50%;
+  width: 70%;
 }
 
 .profile-image-conatainer > span {
@@ -128,8 +130,8 @@ hr.solid {
   /* position: relative; */
   width: fit-content;
   height: 50px;
-  margin-top: 0.5em;
-  font-size: 22px;
+  margin-top: 1em;
+  font-size: 18px;
 }
 
 .exit-container > a {
@@ -138,8 +140,8 @@ hr.solid {
 }
 
 .content {
-  margin-left: 20%;
-  width: 80%;
+  margin-left: 82px;
+  width: 94%;
   color: #fff;
   padding: 2em;
 }
@@ -216,15 +218,15 @@ hr.solid {
 }
 
 .name {
-  width: 40%;
+  width: 35%;
 }
 
 .roles {
-  width: 20%;
+  width: 27.5%;
 }
 
 .options {
-  width: 40%;
+  width: 10%;
 }
 
 .cell {
@@ -271,21 +273,75 @@ hr.solid {
   border-radius: 10px;
 }
 
+.suspended {
+  background-color: #ff006f7d;
+  padding: 0.2em 0.8em;
+  border-radius: 10px;
+}
+
+.active-member {
+  background-color: #1aff005a;
+  padding: 0.2em 0.8em;
+  border-radius: 10px;
+}
+
 .admin {
   margin: 0 0.5em;
-  background-color: #ff006a3b;
+  background-color: #00ffa6ae;
   padding: 0.2em 0.8em;
   border-radius: 10px;
 }
 
 .option {
   margin: 0 0.5em;
-  padding: 0.2em;
+  padding: 0.8em;
+  border-radius: 15px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  min-width: 2.438em;
 }
 
-.option > i {
-  margin-right: 0.2em;
+.edit:hover {
+  background-color: #369c69;
+}
+
+.suspend:hover {
+  background-color: #004cff;
+}
+
+.ban:hover {
+  background-color: #ff4080;
+}
+
+.option > .tooltip > i {
+  /* margin-right: 0.2em; */
+}
+
+.tooltip {
+  position: relative;
+  z-index: 1;
+}
+
+.tooltip:before {
+  content: attr(data-text);
+  position: absolute;
+  top: 200%;
+  transform: translateX(-70%);
+  margin-top: 15px;
+  width: 150px;
+  padding: 10px;
+  border-radius: 10px;
+  background: #000;
+  color: #fff;
+  text-align: center;
+  display: none;
+}
+
+.tooltip:hover:before {
+  display: block;
+  background-color: #0c1322;
+  z-index: 999;
 }
 
 .modal-container {
@@ -297,6 +353,7 @@ hr.solid {
   background: #0000009a;
   text-align: center;
   display: none;
+  z-index: 999;
 }
 
 .modal-container:before {
@@ -308,14 +365,19 @@ hr.solid {
 }
 
 .modal {
-  padding: 3em 2em;
-  background: #0a1525;
+  padding: 3em 5em;
+  background: #0a0e18;
   border-radius: 15px;
   display: inline-block;
   vertical-align: middle;
-  max-width: 40%;
-  width: fit-content;
+  width: 62em;
   margin: 10px;
+}
+
+@media (max-width: 1360px) {
+  .modal {
+    width: 35em;
+  }
 }
 
 .modal-form {
@@ -331,7 +393,7 @@ hr.solid {
 
 .input-field {
   background-color: #000;
-  border: 1px solid #212121;
+  border: 1px solid #000000;
   padding: 0.5em 1em;
   border-radius: 10px;
   word-spacing: 1px;
@@ -342,9 +404,13 @@ hr.solid {
   margin: 0.2em 0;
 }
 
+.input-field:focus {
+  outline: 1px solid #004cff;
+}
+
 .horizontal-container {
   display: flex;
-  justify-content: center;
+  justify-content: start;
   flex-wrap: wrap;
   margin: 0.4em 0;
   align-items: center;

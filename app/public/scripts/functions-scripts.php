@@ -886,7 +886,7 @@ function getRepliesCount($conn, $discussid){
  * @return integer Returns the number of reactions.
  */ 
 function getNumberOfReactions($conn, $discussid){
-  $sql = "SELECT userid FROM likesManager WHERE discussionid = ?;";
+  $sql = "SELECT userid FROM discussionReactionManager WHERE discussionid = ?;";
   $stmt = mysqli_stmt_init($conn);
 
   if(!mysqli_stmt_prepare($stmt, $sql)){
@@ -925,7 +925,7 @@ function getNumberOfReactions($conn, $discussid){
  * @return true|false Returns boolen value representing whether the user has reacted to the given discussion.
  */ 
 function checkIfReacted($conn, $userid, $discussid){
-  $sql = "SELECT userid FROM likesManager WHERE userid = ? AND discussionid = ?;";
+  $sql = "SELECT userid FROM discussionReactionManager WHERE userid = ? AND discussionid = ?;";
   $stmt = mysqli_stmt_init($conn);
 
   if(!mysqli_stmt_prepare($stmt, $sql)){
@@ -955,14 +955,14 @@ function checkIfReacted($conn, $userid, $discussid){
 
 
 /**
- * Adds a reaction to likesManager.
+ * Adds a reaction to discussionReactionManager.
  * @param mysqli|false $conn MySQLi Connection Object
  * @param integer $userid User's ID
  * @param integer $discussid Discussion ID
  * @return void
  */ 
 function addReaction($conn, $userid, $discussid){
-  $sql = "INSERT INTO likesManager (userid, discussionid) VALUES (?, ?);";
+  $sql = "INSERT INTO discussionReactionManager (userid, discussionid) VALUES (?, ?);";
   $stmt = mysqli_stmt_init($conn);
 
   if(!mysqli_stmt_prepare($stmt, $sql)){
@@ -988,14 +988,14 @@ function addReaction($conn, $userid, $discussid){
 
 
 /**
- * Removes a reaction from the likesManager table.
+ * Removes a reaction from the discussionReactionManager table.
  * @param mysqli|false $conn MySQLi Connection Object
  * @param integer $userid User ID value
  * @param integer $discussid Discussion ID value
  * @return void
  */ 
 function removeReaction($conn, $userid, $discussid){
-  $sql = "DELETE FROM likesManager WHERE userid = ? AND discussionid = ?;";
+  $sql = "DELETE FROM discussionReactionManager WHERE userid = ? AND discussionid = ?;";
   $stmt = mysqli_stmt_init($conn);
   
   if(!mysqli_stmt_prepare($stmt, $sql)){
