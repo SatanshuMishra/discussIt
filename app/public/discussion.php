@@ -41,7 +41,30 @@
   <script src = "js/updateReplies.js"></script>
 </head>
 <body>
+  <element id="reference-element"></element>
   <?php include_once 'components/navigation-bar-v2.php'; ?>
+  <div class="modal-container">
+    <div class="modal">
+      <div class="reply" style="margin: 0;">
+        <div class="header">
+          <img id="profile-picture-reply" src="uploads/profile-1.png"/>
+          <div class="user-info">
+            <span class="username">SatanshuMishra</span>
+          </div>
+        </div>
+        <div class="body">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Velit dignissim sodales ut eu sem integer. Tempus urna et pharetra pharetra massa massa ultricies mi quis. Varius vel pharetra vel turpis nunc.
+        </div>
+      </div>
+      <form action="scripts/post-reply.php?id=<?php echo $discussionId ?>" method="post">
+        <textarea id="post-reply" name="post-reply-content" rows="1" placeholder="Post a Reply"></textarea>
+        <div class="post-btn-cont">
+          <button id="modal-cancel-btn" type="button" name="cancel">Cancel</button>
+          <button id="post-reply-btn" type="submit" name="submit">Send</button>
+        </div>
+      </form>
+    </div>
+  </div>
   <div class="organiser">
   <div class="post-reply-cont">
     <div class="post">
@@ -120,11 +143,6 @@
             }else{
               echo 0;
             }
-            /*if($replies)
-              echo count($replies); 
-            else
-              echo 0; 
-              */ 
             ?>
           </div>
         </sup>
@@ -160,15 +178,23 @@
                 }, 30000);
          </script>";
         
-        ?>
-
-        <!-- ⭐⭐ UPDATED REPLY MODELS ⭐⭐ -->
-        
-       
+        ?>       
       </div>
     </div>
   </div>
   </div>
   <?php include_once "./components/footer.php"; ?>
+  <script id="reply-reply-script"></script>
+  <script>
+    $(document).ready(function(){
+      $('#modal-cancel-btn').click(() => {
+        $('.modal-container').css('display', 'none');
+      });
+      function testFunction(){
+        console.log("REPLY BTN WAS CLICKED!");
+      }
+
+    });
+  </script>
 </body>
 </html>
