@@ -243,7 +243,13 @@ body {
 }
 
 .news {
-  background-color: #2bd073;
+  /* background-color: #2bd073; */
+  aspect-ratio: 960/300;
+  /* width: 100%; */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url("../images/news.svg");
 }
 
 .gaming {

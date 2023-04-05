@@ -6,8 +6,18 @@
       <a href="./discover.php">Discover</a>
     </div>
   </div>
-  <form action="./scripts/search-script.php" method="POST">
+  <form class="nav-v2-form" action="./scripts/search-script.php" method="POST">
     <input type="text" name="search-string" class="nav-search" placeholder="Search">
+    <div class="nav-search-info">
+      <i class="fa-solid fa-circle-info"></i>
+      <div class="nav-tooltip-container">
+        <h3 style="padding: 0.2em 0;">Search Tips:</h3>
+        <p style="padding: 0.2em 0;"><span style="padding: 0.2em 0.4em; background-color:#0059ff; border-radius: 10px; color: #fff">@Username</span> Can be used to search for discussions by a specific user. (E.g. @SatanshuMishra)</p>
+        <p style="padding: 0.2em 0;"><span style="padding: 0.2em 0.4em; background-color:#0059ff; border-radius: 10px; color: #fff">#Topic</span> Can be used to search for discussions under a specific topic. (E.g. #Space)</p>
+        <p style="padding: 0.2em 0;">Any other text not begining with the prefixes mentioned above will be looked for in the title of the discussion.</p>
+        <p style="padding: 0.2em 0;"><b>Note:</b> You may chain the search parameters above for more specific results. You may only have <b style="color: #ff3d3d">one username</b> per search.</p>
+      </div>
+    </div>
   </form>
 
   <div class="section-b">
@@ -15,13 +25,13 @@
       if(isset($_SESSION["uid"])){
         // LOGGED IN
         echo '
-        <div class="create-post">
+<!--        <div class="create-post">
           <a href="./Creatediscussion.php">
             <button class="start-discussion-btn-navigation">
               <i class="fa-solid fa-feather"></i>
             </button>
           </a>
-        </div>
+        </div> -->
           
           <div class="dropdown">
             <button class="logged-in">

@@ -4,6 +4,8 @@
   font-family: "Roboto", sans-serif;
   margin: 0;
   padding: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -497,4 +499,108 @@ body {
 }
 .report-reply > a:hover .hover {
   display: inline-block;
+}
+
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #0000009a;
+  text-align: center;
+  display: none;
+  z-index: 999;
+}
+
+.modal-container:before {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.modal {
+  /* padding: 1em 2em; */
+  background: #161616;
+  border-radius: 15px;
+  display: inline-block;
+  vertical-align: middle;
+  height: 28em;
+  width: 50em;
+  margin: 10px;
+  color: #fff;
+  text-align: left;
+}
+
+@media (max-width: 1360px) {
+  .modal {
+    width: 35em;
+  }
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+
+#modal-profile-image {
+  width: 5.8em !important;
+  margin-right: 0.4em;
+}
+
+.modal > form {
+  padding: 0 1em;
+}
+
+.modal > form > textarea {
+  resize: none;
+  width: 100%;
+  background-color: #000;
+  border: 1px solid #212121;
+  padding: 1em;
+  border-radius: 10px;
+  word-spacing: 1px;
+  line-height: 25px;
+  color: #fff;
+  height: 10em;
+}
+
+.modal > form > textarea:focus {
+  outline-style: solid;
+  outline-color: #005eff;
+  border: 1px solid #005eff;
+}
+
+.modal > form > .post-btn-cont {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  margin-top: -3.5em;
+}
+
+.modal > form > .post-btn-cont > #post-reply-btn {
+  display: block !important;
+  background-color: #005eff;
+  padding: 0.5em;
+  border: none;
+  border-radius: 10px;
+  margin: 0 0.6em 0 0;
+  font-size: 15px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.modal > form > .post-btn-cont > #modal-cancel-btn {
+  display: block !important;
+  background-color: #ff4c67;
+  padding: 0.5em;
+  border: none;
+  border-radius: 10px;
+  margin: 0 0.6em 0 0;
+  font-size: 15px;
+  cursor: pointer;
+  color: #fff;
 }
