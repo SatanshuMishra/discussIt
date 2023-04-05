@@ -3,7 +3,7 @@ session_start();
 $createdAt =  $_GET["timestamp"];
 $createdAt = strtotime($createdAt);
 $currentTime = time();
-$timeSincePost = $currentTime - $createdAt -43200;
+$timeSincePost = $currentTime - $createdAt;
 
 if ($timeSincePost < 60) {
     $timeReturned = 'Posted just now';
