@@ -1110,7 +1110,8 @@ function setProfilePicture($userid){
   $randomValue = rand(1, 10);
   $from = "../images/user-profile-pictures/user-profile-collection-$randomValue.png";
   $to  = "../uploads/profile-$userid.png";
-  copy($from, $to);
+  $success = copy($from, $to);
+  return $success;
 }
 /**
  * Updates user profile with additional details.
@@ -1226,6 +1227,43 @@ function removeUserByID($conn, $userid) {
   mysqli_stmt_close($stmt);
 
   return $wasSuccessful;
+}
+
+function suspendUserByID($conn, $userid) {
+  $user = getUserByID($conn, $userid);
+  $sql = "UPDATE user SET isSuspended = ? WHERE id = ?;";
+  $stmt = mysqli_stmt_init($conn);
+  
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    header("location: ../index.php?error=stmtfailedremoveuser");
+    exit();
+  }
+
+  if($user['isSuspended']){
+    $suspend = 0;
+    // SET DATA INTO PREPARED STATEMENT
+    mysqli_stmt_bind_param($stmt, "ii", $suspend, $userid);
+  } else {
+    $suspend = 1;
+    // SET DATA INTO PREPARED STATEMENT
+    mysqli_stmt_bind_param($stmt, "ii", $suspend, $userid);
+  }
+
+  // EXECUTE $STMT PREPARED STATEMENT
+  $success = mysqli_stmt_execute($stmt);
+
+  // CLOSE STATEMENT
+  mysqli_stmt_close($stmt);
+
+  if($success){  
+    if($suspend){
+      return "usersuccessfullysuspended";
+    } else {
+      return "usersuccessfullyunsuspended";
+    }
+  } else {
+    return false;
+  }
 }
 
 ?>

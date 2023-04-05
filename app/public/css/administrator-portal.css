@@ -6,14 +6,114 @@
   font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
 body {
   height: fit-content;
   background-color: #000;
-  /* 0f0f0f */
+  overflow-x: hidden;
   font-size: 14px;
+}
+
+.toast {
+  position: absolute;
+  top: 2em;
+  right: 30px;
+  border-radius: 12px;
+  background-color: #fff;
+  padding: 20px 35px 20px 25px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  border-left: 6px solid #ffae00;
+  overflow: hidden;
+  transform: translateX(calc(100% + 30px));
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.toast.active-toast {
+  transform: translateX(0%);
+}
+
+.toast .toast-content {
+  display: flex;
+  align-items: center;
+}
+
+.toast-content .message {
+  display: flex;
+  flex-direction: column;
+  margin: 0 20px;
+}
+
+.toast-content .check-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 35px;
+  width: 35px;
+  color: #ffae00;
+  font-size: 30px;
+  border-radius: 50%;
+}
+
+.message .text-toast {
+  font-size: 16px;
+  font-weight: 400;
+  color: #666666;
+}
+
+.message .text-toast.text-1 {
+  font-weight: 600;
+  color: #333;
+}
+
+.toast .close-icon {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  padding: 5px;
+  cursor: pointer;
+  opacity: 0.7;
+  color: #000;
+}
+
+.toast .close-icon:hover {
+  opacity: 1;
+}
+
+.toast .close:hover {
+  opacity: 1;
+}
+
+.toast .progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background: #333;
+}
+
+.toast .progress::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #ffae00;
+}
+
+.progress.active-toast::before {
+  animation: progress 5s linear forwards;
+}
+
+@keyframes progress {
+  100% {
+    right: 100%;
+  }
 }
 
 .nav-sidebar {
@@ -24,7 +124,7 @@ body {
   width: 82px;
   height: 100%;
   position: fixed;
-  background-color: #091427;
+  background-color: #050912;
   /* border-radius: 0 15px 15px 0; */
   padding: 2em 1em;
 }
@@ -320,13 +420,16 @@ hr.solid {
 
 .tooltip {
   position: relative;
+}
+
+.tooltip > option > i {
   z-index: 1;
 }
 
 .tooltip:before {
   content: attr(data-text);
   position: absolute;
-  top: 200%;
+  top: 80%;
   transform: translateX(-70%);
   margin-top: 15px;
   width: 150px;
@@ -336,6 +439,7 @@ hr.solid {
   color: #fff;
   text-align: center;
   display: none;
+  z-index: 999;
 }
 
 .tooltip:hover:before {
