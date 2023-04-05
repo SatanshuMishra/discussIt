@@ -26,6 +26,7 @@
   <title><?php echo $user["username"]; ?></title>
 </head>
 <body>
+  <element id="reference-element"></element>
   <?php include_once 'components/navigation-bar-v2-no-search.php'; ?>
   <div class="info-stats">
     <div class="profile-information">
@@ -153,7 +154,7 @@
     </div>
     <div class="contributions-container">
       <div class="label-container">
-        <h1>Recent Contributors</h1>
+        <h1>Recent Contributions</h1>
         <span>Recent contributions (i.e. Discussion Posts & Replies)</span>
       </div>
       <div class="discussions-list">

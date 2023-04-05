@@ -17,6 +17,7 @@
   <title>Home of Discussions</title>
 </head>
 <body>
+  <element id="reference-element"></element>
   <?php include_once 'components/navigation-bar-v2.php'; ?>
 
     <div class="toast">
@@ -243,8 +244,105 @@
       </div>
     </div>
   </div>
+  <!-- <div class="space"></div> -->
+  <!-- <div class="footer-container space">
+    <div class="footer-content">
+      <div class="top">
+        <div class="left-container">
+          <h1>discussIt</h1>
+          <span class="description footer-text">
+            An unique take on a Discussion Board Website. Created by <a href="./previewaccount.php?userid=1">@SatanshuMishra</a> & <a class="disabled" >@BlackeAblitt</a>.
+          </span>
+        </div>
+        <div class="right-container">
+          <ul class="footer-list">
+            <a href="./index.php">
+              <li>Feed</li>
+            </a>
+            <a href="./discover.php">
+              <li>Discover</li>
+            </a>
+            <a href="./Creatediscussion.php">
+              <li>Create a Discussion</li>
+            </a>
+            <?php 
+              // if(!isset($_SESSION["uid"])) {
+              //   echo '
+              //     <a href="./login.php">
+              //       <li>Log in/Sign up</li>
+              //     </a>
+              //   ';
+              // } else {
+              //   echo '
+              //     <a href="./scripts/logout-script.php">
+              //       <li>Sign out</li>
+              //     </a>
+              //   '; 
+              // }
+            ?>
+            <a class="disabled">
+              <li>Terms & Conditions</li>
+            </a>
+          </ul>
+          <?php 
+            // if(isset($_SESSION["uid"])) {
+            //   echo '
+            //   <ul class="footer-list">
+            //     <a href="./SettingsDirectory.php">
+            //       <li>Settings</li>
+            //     </a>
+            //     <a href="./previewaccount.php?userid='.$_SESSION["uid"].'">
+            //       <li>Your Profile</li>
+            //     </a>
+            //     <a>
+            //       <li></li>
+            //     </a>
+            //     <a>
+            //       <li></li>
+            //     </a>
+            //     <a>
+            //       <li></li>
+            //     </a>
+            //     <a>
+            //       <li></li>
+            //     </a>
+            //     <a>
+            //       <li></li>
+            //     </a>
+            //     <a>
+            //       <li></li>
+            //     </a>
+            //   </ul>
+            //   ';
+            // }
+          ?>
+        </div>
+      </div>
+      <div class="bottom">
+        <span class="copyrights footer-text">
+          Copyrights Reserved: discussIt @2023
+        </span>
+        <a href="#reference-element">
+          <div class="arrow-container">
+            <i style="color:#000;" class="fa-solid fa-chevron-up"></i>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div> -->
+
+  <?php require_once "./components/footer.php" ?>
+
   <script type="text/javascript">
     window.addEventListener("DOMContentLoaded", (event) => {
+      // let backToTop = document.querySelector(".arrow-container");
+      // backToTop.addEventListener("mouseover", () => {
+      //   backToTop.classList.add("fa-bounce");
+      // });
+      // backToTop.addEventListener("mouseout", () => {
+      //   backToTop.classList.remove("fa-bounce");
+      // });
+
       let toast = document.querySelector(".toast");
       let close = document.querySelector(".close-icon");
       let progress = document.querySelector(".progress");
@@ -260,6 +358,9 @@
         } else if(urlParams.get('error') == "discussionnotfound"){
           title.innerHTML = "Discussion not found";
           description.innerHTML = "The discussion you are trying to view doesn't exsit.";
+        } else if(urlParams.get('error') == "invalidadminaccessnotloggedin"){
+          title.innerHTML = "Invalid Access";
+          description.innerHTML = "You must be logged in to access this page.";
         }
         setTimeout(() => {
           toast.classList.add("active");
@@ -276,6 +377,5 @@
       })
     });
   </script>
-  <?php include_once "./components/footer.php"; ?>
 </body>
 </html>

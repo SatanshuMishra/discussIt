@@ -56,6 +56,7 @@
   <title>Discover</title>
 </head>
 <body>
+  <element id="reference-element"></element>
   <?php include_once 'components/navigation-bar-v2.php'; ?>
   
   <div class="page-body">
@@ -193,5 +194,6 @@
       </div>
     </div>
   </div>
+  <?php require_once "./components/footer.php" ?>
 </body>
 </html>

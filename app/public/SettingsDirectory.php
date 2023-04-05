@@ -19,7 +19,8 @@ if(isset($_GET['Passwordsuccess'])){
   <title>Account Settings</title>
 </head>
 <body>
-<?php include 'components/navigation-bar-v2-no-search.php'; ?>
+    <element id="reference-element"></element>
+    <?php include 'components/navigation-bar-v2-no-search.php'; ?>
 
 <div class = container>
     

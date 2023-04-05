@@ -18,6 +18,7 @@
   <title>Discover</title>
 </head>
 <body>
+  <element id="reference-element"></element>
   <?php include_once 'components/navigation-bar-v2.php'; ?>
 
   <div class="topics-container">
@@ -230,7 +231,7 @@
       </div>
     </div>
   </div>
-
+  <?php require_once "./components/footer.php" ?>
   <script type="text/javascript">
     $topics = [
       "NEWS",

@@ -17,6 +17,7 @@
     <title>Create a Discussion</title>
 </head>
 <body>
+  <element id="reference-element"></element>
   <?php include_once 'components/navigation-bar-v2-no-search.php'; ?>
 
   <div class="toast">
@@ -160,6 +161,6 @@
     // }
   </script>
 
-  <?php include_once "./components/footer.php"; ?>
+  <?php require_once "./components/footer.php" ?>
 </body>
 </html>
