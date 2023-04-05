@@ -3,14 +3,6 @@
       require_once 'config.php';
       require_once 'functions-scripts.php';
       $users = getUsers($conn);
-      // echo '
-      //   <tr>
-      //     <th class="header-cell">Name</th>
-      //     <th class="header-cell">Status</th>
-      //     <th class="header-cell">Roles</th>
-      //     <th class="header-cell">Actions</th>
-      //   </tr>
-      // ';
       if($users){
         foreach($users as $user){
           echo '
@@ -36,14 +28,14 @@
               </td>
               <td class="options">
                 <div class="cell">
-                  <a>
-                  <span class="tooltip" data-text="Modify Account">
-                    <div id="'.$user["id"].'" class="option edit">
-                      <i class="fa-solid fa-brush"></i>
-                    </div>
-                  </span>
+                  <a class="delete-link-btn" href="./administrator-modify.php?userId='.$user["id"].'">
+                    <span class="tooltip" data-text="Modify Account">
+                      <div id="edit-'.$user["id"].'" class="option edit">
+                        <i class="fa-solid fa-brush"></i>
+                      </div>
+                    </span>
                   </a>
-                  <a class="delete-link-btn" href="./scripts/remove-account.php?iAFgo3q5J2hfCTv1SShA=true&uid=1">
+                  <a class="delete-link-btn" href="./scripts/suspend-account.php?iAFgo3q5J2hfCTv1SShA=true&uid='.$user["id"].'">
                     <span class="tooltip" data-text="Suspend Account">
                       <div class="option suspend">
                         <i class="fa-solid fa-icicles"></i>
