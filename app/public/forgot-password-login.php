@@ -18,7 +18,7 @@
   <title>Forgot Password</title>
 </head>
 <body>
-
+  <element id="reference-element"></element>
   <?php include_once 'components/navigation-bar-v2-no-search.php'; ?>
 
   <div class="container">

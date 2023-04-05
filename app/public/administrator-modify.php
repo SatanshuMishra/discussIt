@@ -57,12 +57,12 @@
       </ul>
       <!-- <hr class="solid"> -->
       <ul class="nav-list">
-        <a href="#">
+        <a href="./administrator-portal.php">
           <li class="nav-option active">
             <i class="fa-regular fa-user"></i>
           </li>
         </a>
-        <a href="#">
+        <a href="./administrator-discussions.php">
           <li class="nav-option">
             <i class="fa-regular fa-message"></i>
           </li>

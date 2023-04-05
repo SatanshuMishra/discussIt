@@ -24,7 +24,8 @@ if(count($topicsArray) >1){
   <title>Review Post</title>
 </head>
 <body>
-      <?php include_once 'components/navigation-bar-v2-no-search.php'; ?>
+    <element id="reference-element"></element>
+    <?php include_once 'components/navigation-bar-v2-no-search.php'; ?>
   <div class="indicator-container">
     <div class="progress-indicator">
         <span>1</span>
@@ -69,13 +70,6 @@ if(count($topicsArray) >1){
         </div>
     </form>
   </div>
-
-
-
-
-
-
-
-  <?php include_once "./components/footer.php"; ?>
+    <?php require_once "./components/footer.php" ?>
 </body>
 </html>

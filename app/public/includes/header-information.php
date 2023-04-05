@@ -11,12 +11,12 @@
   <?php include_once "./includes/navigation-header.php"; ?>
 
   <!-- FOOTER STYLE-->
-  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="./css/footer.css">
 
   <style>
     * {
         -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
     }
   </style>

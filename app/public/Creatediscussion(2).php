@@ -9,7 +9,7 @@
     <title>Create a Discussion</title>
 </head>
 <body>
-    <!-- <script src="discussion(2).js"></script> -->
+  <element id="reference-element"></element>
   <?php include_once 'components/navigation-bar-v2-no-search.php'; ?>
   <div class="indicator-container">
     <div class="progress-indicator">
@@ -57,10 +57,6 @@
     </form>
   </div>
 
-
-
-
-
-  <?php include_once "./components/footer.php"; ?>
+  <?php require_once "./components/footer.php" ?>
 </body>
 </html>
