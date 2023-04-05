@@ -32,6 +32,7 @@ function updateReplies(discussionId){
 
                 var replyFooter = document.createElement("div");
                 replyFooter.classList.add("footer");
+                
                 dynamicTimingReplies(reply.createdAt, replyFooter);
                
                 replydiv.appendChild(replyFooter);
@@ -54,8 +55,31 @@ function dynamicTimingReplies(createdAt,replyFooter){
         if(xh.readyState === XMLHttpRequest.DONE && xh.status === 200){
             var timeSincePost = xh.responseText;
             console.log("TimeSince: ", timeSincePost);
-            replyFooter.innerHTML = `<span class="time" id ="time">${timeSincePost}</span>`;
-    
+            replyFooter.innerHTML = 
+            `<div class="like">
+              <a class="disabled remove-decoration">
+                <i class="fa-regular fa-thumbs-up regular"></i>
+                <i class="fa-solid fa-thumbs-up hover"></i>
+              </a>
+            </div>
+            <div class="vertical-line-break"></div>
+            <div class="reply-footer-text reply-reply">
+              <a class="disabled remove-decoration">
+                <span>Reply</span>
+              </a>
+            </div>
+            <div class="vertical-line-break"></div>
+            <div class="reply-footer-text reply-time">
+            <span class="time" id ="time">${timeSincePost}</span>
+            </div>
+            <div class="vertical-line-break"></div>
+            <div class="reply-footer-text report-reply">
+              <a class="disabled remove-decoration">
+                <i class="fa-regular fa-flag regular"></i>
+                <i class="fa-solid fa-flag hover"></i>
+                <span>Report</span>
+              </a>
+            </div>`;
          }
          
  };
