@@ -561,8 +561,8 @@ function getReplies($conn, $discussid){
  * @param string $replyContent Reply content
  * @return true|false Returns boolean representing whether the reply was successfully inserted.
  */ 
-function postReply($conn, $authorid, $discussionid, $replyContent){
-  $sql = "INSERT INTO reply (discussionId, authorId, content, createdAt) VALUES (?, ?, ?, ?);";
+function postReply($conn, $replyTo, $authorid, $discussionid, $replyContent){
+  $sql = "INSERT INTO reply (replyTo, discussionId, authorId, content, createdAt) VALUES (?, ?, ?, ?, ?);";
   $stmt = mysqli_stmt_init($conn);
   if(!mysqli_stmt_prepare($stmt, $sql)){
     header("location: ../index.php?error=stmtfailedpostreply");
@@ -570,7 +570,7 @@ function postReply($conn, $authorid, $discussionid, $replyContent){
   }
   $time = gmdate('Y-m-d h:i:s');
   // SET DATA INTO PREPARED STATEMENT
-  mysqli_stmt_bind_param($stmt, "ssss", $discussionid, $authorid, $replyContent, $time);
+  mysqli_stmt_bind_param($stmt, "sssss", $replyTo, $discussionid, $authorid, $replyContent, $time);
 
   // EXECUTE $STMT PREPARED STATEMENT
   $isSuccessful = mysqli_stmt_execute($stmt);
@@ -840,6 +840,41 @@ function getUserByID($conn, $userid){
   mysqli_stmt_close($stmt);
 }
 
+
+/**
+ * Gets the reply associated with a given ID.
+ * @param mysqli|false $conn MySQLi Connection Object
+ * @param integer $userid Discussion ID
+ * @return array|false Returns array with query results for user matching given ID.
+ */ 
+function getReplyByID($conn, $userid){
+  $sql = "SELECT * FROM reply WHERE id = ?;";
+  $stmt = mysqli_stmt_init($conn);
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    header("location: ../signup.php?error=stmtfailedgetuserbyid");
+    exit();
+  }
+
+  // SET DATA INTO PREPARED STATEMENT
+  mysqli_stmt_bind_param($stmt, "i", $userid);
+
+  // EXECUTE $STMT PREPARED STATEMENT
+  mysqli_stmt_execute($stmt);
+
+  // GET RESULT FROM $STMT PREPARED STATEMENT
+  $results = mysqli_stmt_get_result($stmt);
+  if($row = mysqli_fetch_assoc($results)){
+    // RETURN DATA FROM PREPARED STATEMENT
+    return $row;
+  }
+  else {
+    $results = false;
+    return $results;
+  }
+
+  // CLOSE STATEMENT
+  mysqli_stmt_close($stmt);
+}
 
 
 /**
