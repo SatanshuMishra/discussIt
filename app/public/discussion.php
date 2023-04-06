@@ -25,6 +25,7 @@
     $uid = $_SESSION["uid"];
     $reacted = checkIfReacted($conn, $uid, $discussionId);
   }
+
 ?>
 
 <!DOCTYPE html>
@@ -44,19 +45,24 @@
   <element id="reference-element"></element>
   <?php include_once 'components/navigation-bar-v2.php'; ?>
   <div class="modal-container">
+    <?php 
+      if(isset($_GET['replyId']) && isset($_GET['content']) && isset($_GET['author'])){
+        $modalReplyAuthor = getUserByID($conn, $_GET['author']);
+        echo '
     <div class="modal">
       <div class="reply" style="margin: 0;">
         <div class="header">
-          <img id="profile-picture-reply" src="uploads/profile-1.png"/>
+          <img id="profile-picture-reply" src="uploads/profile-'.$modalReplyAuthor['id'].'.png"/>
           <div class="user-info">
-            <span class="username">SatanshuMishra</span>
+            <span class="username">'.$modalReplyAuthor['firstName']." ".$modalReplyAuthor['lastName'].'</span>
           </div>
         </div>
         <div class="body">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Velit dignissim sodales ut eu sem integer. Tempus urna et pharetra pharetra massa massa ultricies mi quis. Varius vel pharetra vel turpis nunc.
+          '.$_GET['content'].'
         </div>
       </div>
-      <form action="scripts/post-reply.php?id=<?php echo $discussionId ?>" method="post">
+      <form action="scripts/post-reply.php?id='.$discussionId.'" method="post">
+        <input type="hidden" name="replyToId" value="'.$_GET['replyId'].'">
         <textarea id="post-reply" name="post-reply-content" rows="1" placeholder="Post a Reply"></textarea>
         <div class="post-btn-cont">
           <button id="modal-cancel-btn" type="button" name="cancel">Cancel</button>
@@ -64,6 +70,11 @@
         </div>
       </form>
     </div>
+
+    <script>$(\'.modal-container\').css(\'display\', \'block\');</script>
+        ';
+      }
+    ?>
   </div>
   <div class="organiser">
   <div class="post-reply-cont">

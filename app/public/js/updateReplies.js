@@ -43,7 +43,12 @@ function updateReplies(discussionId) {
 
         var replyFooter = document.createElement("div");
         replyFooter.classList.add("footer");
-        dynamicTimingReplies(reply.createdAt, replyFooter, reply.id);
+        dynamicTimingReplies(
+          reply.createdAt,
+          replyFooter,
+          reply.id,
+          discussionId
+        );
 
         replydiv.appendChild(replyFooter);
 
@@ -75,7 +80,7 @@ function updateReplies(discussionId) {
   xh.send();
 }
 
-function dynamicTimingReplies(createdAt, replyFooter, replyId) {
+function dynamicTimingReplies(createdAt, replyFooter, replyId, discussionId) {
   console.log("dynamicTimingReplies called");
   console.log(createdAt);
   var xh = new XMLHttpRequest();
@@ -90,8 +95,8 @@ function dynamicTimingReplies(createdAt, replyFooter, replyId) {
               </a>
             </div>
             <div class="vertical-line-break"></div>
-            <div class="reply-footer-text reply-reply" id="comment-${replyId}" data-id="${replyId}" onclick="testFunction()">
-              <a class="disabled remove-decoration">
+            <div class="reply-footer-text reply-reply">
+              <a href="./scripts/loadDiscussionModal.php?replyid=${replyId}&discussionid=${discussionId}" class="remove-decoration">
                 <span>Reply</span>
               </a>
             </div>
