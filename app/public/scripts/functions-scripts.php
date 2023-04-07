@@ -70,6 +70,14 @@ function addTopic($conn, $discussionID,$topicID){
 
 }
 
+
+/**
+ * Checks is password is correct and returns a boolean value representing the result.
+ * @param mysqli|false $conn MySQLi Connection Object
+ * @param string $currentPassword User's Current Password
+ * @param string $username User's username
+ * @return false|true If the password is correct
+ */ 
 function CurrentPasswordMatch($conn, $currentPassword, $username){
   // PULL CURRENT USERNAME 
   $unameExists = usernameExists($conn, $username);
@@ -81,6 +89,7 @@ function CurrentPasswordMatch($conn, $currentPassword, $username){
   }else{
     //CREATE SESSION VARIABLE OF USERNAME FOR INSERT IF THERE IS A MATCH
     $_SESSION['User'] = $unameExists["username"];
+    return true;
   }
 }
 
@@ -175,25 +184,6 @@ function createDiscussionOne($conn, $topic1) {
     return $discussionID;
 }
 
-
-/**
- * Randomly set's the default profile picture for a given user.
- * @param mysqli|false $conn MySQLi Connection Object
- * @param integer $userid User's ID
- * @return void
- */  
-
-
-
-/**
- * Log's in a user with the given username and password. Redirects the user to index.php upon successful login.
- * @param mysqli|false $conn MySQLi Connection Object
- * @param string $uname User's username
- * @param string $pwd User's password
- * @return void
- */ 
-
-
 function createPost($conn, $postContent,$postTitle,$topic1,$topic2, $postCreator){
     if($topic2 == null){
       $discussionId = createDiscussionOne($conn, $topic1);
@@ -230,11 +220,9 @@ function createPost($conn, $postContent,$postTitle,$topic1,$topic2, $postCreator
 
     //CLOSE STATEMENT
     mysqli_stmt_close($stmt);
+    return $discussionId;
     
 }
-
-
-
 
 function getTopicID($conn, $topic){
   $sql = "SELECT id FROM topicType WHERE topic = ?";
@@ -253,13 +241,8 @@ function getTopicID($conn, $topic){
   $row = mysqli_fetch_assoc($result);
   $id = $row['id'];
   
-  
-
   return $id;
-
-
 }
-
 
 /**
  * Log's in a user with the given username and password. Does NOT redirect the user to index.php upon successful login.
@@ -520,7 +503,7 @@ function getTopics($conn, $discussid) {
  * @return array|false Returns array with query results for all the replies for the given discussion.
  */ 
 function getReplies($conn, $discussid){
-  $sql = "SELECT user.id, username, content, createdAt FROM reply JOIN user on reply.authorId = user.id WHERE discussionId = ?;";
+  $sql = "SELECT reply.id, authorId, replyTo, username, content, createdAt FROM reply JOIN user on reply.authorId = user.id WHERE discussionId = ? ORDER BY createdAt DESC;";
   $stmt = mysqli_stmt_init($conn);
   if(!mysqli_stmt_prepare($stmt, $sql)){
     header("location: ../index.php?error=stmtfailedgetreplies");
@@ -1221,8 +1204,6 @@ function hasAdministratorPermissions($conn, $userid){
   return $user["administratorPermissions"] == true;
 }
 
-
-
 function updateUser($conn, $userid, $enteredUsername, $enteredFirstName, $enteredLastName, $enteredDemeritPoints, $enteredAdministratorPerms) {
   $sql = "UPDATE user SET username = ?, firstName = ?, lastName = ?, demeritPoints = ?, administratorPermissions = ? WHERE id = ? ;";
   $stmt = mysqli_stmt_init($conn);
@@ -1233,6 +1214,26 @@ function updateUser($conn, $userid, $enteredUsername, $enteredFirstName, $entere
 
   // SET DATA IN PREPARED STATEMENT
   mysqli_stmt_bind_param($stmt, "sssiii", $enteredUsername, $enteredFirstName, $enteredLastName, $enteredDemeritPoints, $enteredAdministratorPerms, $userid);
+
+  // EXECUTE STATEMENT
+  $wasSuccessful = mysqli_stmt_execute($stmt);
+
+  // CLOSE STATEMENT
+  mysqli_stmt_close($stmt);
+
+  return $wasSuccessful;
+}
+
+function updateUserName($conn, $userid, $enteredFirstName, $enteredLastName) {
+  $sql = "UPDATE user SET firstName = ?, lastName = ? WHERE id = ? ;";
+  $stmt = mysqli_stmt_init($conn);
+
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    return false;
+  }
+
+  // SET DATA IN PREPARED STATEMENT
+  mysqli_stmt_bind_param($stmt, "ssi", $enteredFirstName, $enteredLastName, $userid);
 
   // EXECUTE STATEMENT
   $wasSuccessful = mysqli_stmt_execute($stmt);

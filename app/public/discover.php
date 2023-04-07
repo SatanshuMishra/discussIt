@@ -9,6 +9,7 @@
 <head>
   <!-- EXTERNAL CSS -->
   <link rel="stylesheet" href="css/discover.css">
+  <link rel="stylesheet" href="css/topic-colors.css">
   <!-- LOCAL JS -->
   <script src="js/discover.js"></script>
   <script src="js/postTiming.js"></script>
@@ -123,6 +124,7 @@
             }
 
             $user = getUserByID($conn, $authorId);
+            $userDisId = $user["id"];
             $username = $user["username"];
 
             $postTitle = $discussion["postTitle"];
@@ -159,7 +161,7 @@
                   <!-- <span style=\"font-size: 50px;\"><i class=\"fa-regular fa-circle-user\"></i></span> -->
                   <img id=\"profile-picture-post\" src=\"uploads/profile-$authorId.png\"/>
                   <div class=\"details\">
-                    <p class=\"name\">$username</p>
+                    <p class=\"name\"><a style=\"text-decoration: none; color: #fff;\" href=\"./previewaccount.php?userid=$userDisId\">$username</a></p>
                     <p class=\"date\"><span id = \"timeSincePost-$discussionId\"></span></p>
                   </div>
                 </div>

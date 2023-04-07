@@ -8,6 +8,7 @@
 <head>
   <!-- EXTERNAL CSS -->
   <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/topic-colors.css">
   <!-- LOCAL JS -->
   <!-- <script src="js/index.js"></script> -->
   <script src="js/postTiming.js"></script>
@@ -20,7 +21,7 @@
   <element id="reference-element"></element>
   <?php include_once 'components/navigation-bar-v2.php'; ?>
 
-    <div class="toast">
+  <div class="toast">
     <div class="toast-content">
       <i class="fa-solid fa-circle-info check-icon"></i>
       <div class="message">
@@ -30,7 +31,6 @@
     </div>
     <i class="fa-solid fa-xmark close-icon"></i>
     <div class="progress">
-
     </div>
   </div>
 
@@ -64,6 +64,7 @@
             }
 
             $user = getUserByID($conn, $authorId);
+            $userDisId = $user["id"];
             $username = $user["username"];
 
             $postTitle = $discussion["postTitle"];
@@ -100,7 +101,7 @@
                   <!-- <span style=\"font-size: 50px;\"><i class=\"fa-regular fa-circle-user\"></i></span> -->
                   <img id=\"profile-picture-post\" src=\"uploads/profile-$authorId.png\"/>
                   <div class=\"details\">
-                    <p class=\"name\">$username</p>
+                    <p class=\"name\"><a style=\"text-decoration: none; color: #fff;\" href=\"./previewaccount.php?userid=$userDisId\">$username</a></p>
                     <p class=\"date\"><span id = \"timeSincePost-$discussionId\"></span></p>
                   </div>
                 </div>
@@ -247,14 +248,6 @@
   <?php require_once "./components/footer.php" ?>
   <script type="text/javascript">
     window.addEventListener("DOMContentLoaded", (event) => {
-      // let backToTop = document.querySelector(".arrow-container");
-      // backToTop.addEventListener("mouseover", () => {
-      //   backToTop.classList.add("fa-bounce");
-      // });
-      // backToTop.addEventListener("mouseout", () => {
-      //   backToTop.classList.remove("fa-bounce");
-      // });
-
       let toast = document.querySelector(".toast");
       let close = document.querySelector(".close-icon");
       let progress = document.querySelector(".progress");
@@ -271,6 +264,9 @@
           title.innerHTML = "Discussion not found";
           description.innerHTML = "The discussion you are trying to view doesn't exsit.";
         } else if(urlParams.get('error') == "invalidadminaccessnotloggedin"){
+          title.innerHTML = "Invalid Access";
+          description.innerHTML = "You must be logged in to access this page.";
+        } else if(urlParams.get('error') == "notloggedin"){
           title.innerHTML = "Invalid Access";
           description.innerHTML = "You must be logged in to access this page.";
         }

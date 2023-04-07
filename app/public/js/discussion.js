@@ -14,7 +14,7 @@ function addTopic(element) {
 
     //Checking if item has already been selected
     var exists = document.querySelector(`li[value = "${topicText}"]`);
-    if(exists){
+    if (exists) {
       /*toast = document.querySelector(".toast");
       close = document.querySelector(".close-icon");
       progress = document.querySelector(".progress");
@@ -32,9 +32,32 @@ function addTopic(element) {
         toast.classList.remove("active");
         progress.classList.remove("active");
       });*/
-      alert("This topic has already been selected");
-      return;
+      toast = document.querySelector(".toast");
+      close = document.querySelector(".close-icon");
+      progress = document.querySelector(".progress");
 
+      title = document.querySelector(".text-1");
+      description = document.querySelector(".text-2");
+
+      title.innerHTML = "Topic Already Selected";
+      description.innerHTML = "This topic has already been selected.";
+
+      setTimeout(() => {
+        toast.classList.add("active");
+        progress.classList.add("active");
+
+        setTimeout(() => {
+          toast.classList.remove("active");
+          progress.classList.remove("active");
+        }, 5000);
+      }, 50);
+
+      close.addEventListener("click", () => {
+        toast.classList.remove("active");
+        progress.classList.remove("active");
+      });
+      // alert("This topic has already been selected");
+      return;
     }
 
     var pillContainer = document.createElement("div");
@@ -56,12 +79,19 @@ function addTopic(element) {
     close = document.querySelector(".close-icon");
     progress = document.querySelector(".progress");
 
+    title = document.querySelector(".text-1");
+    description = document.querySelector(".text-2");
+
+    title.innerHTML = "Maximum number of topics selected";
+    description.innerHTML = "You may only select between 1 - 2 topic.";
+
     setTimeout(() => {
       toast.classList.add("active");
       progress.classList.add("active");
 
       setTimeout(() => {
         toast.classList.remove("active");
+        progress.classList.remove("active");
       }, 5000);
     }, 50);
 
@@ -69,7 +99,7 @@ function addTopic(element) {
       toast.classList.remove("active");
       progress.classList.remove("active");
     });
-    alert("You can have a maximum of two topics and a minimum of one topic");
+    // alert("You can have a maximum of two topics and a minimum of one topic");
   }
 }
 

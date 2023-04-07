@@ -22,6 +22,21 @@
   <element id="reference-element"></element>
   <?php include_once 'components/navigation-bar-v2-no-search.php'; ?>
 
+  <div class="toast">
+    <div class="toast-content">
+      <i id="toast-icon-ref" class="fa-solid fa-circle-exclamation check-icon"></i>
+      <!-- <i class="fa-solid fa-circle-check check-icon"></i> -->
+      <div class="message">
+        <span class="text text-1">Sign Up Failed</span>
+        <span class="text text-2">Incorrect username or password.</span>
+      </div>
+    </div>
+    <i class="fa-solid fa-xmark close-icon"></i>
+    <div class="progress">
+
+    </div>
+  </div>
+
   <div class="container">
     <div class="image-container">
       <h1>Welcome to the <br> Home of Discussions</h1>
@@ -49,7 +64,7 @@
         <div class="terms-checkbox">
           <input type="checkbox" name="agreeToTerms" id="agreeToTerms" required oninvalid="this.setCustomValidity('You must agree to our terms & conditions to proceed.')"
        oninput="setCustomValidity('')">
-          <label id="termsLabel" for="username"><a href="#">Agree to Terms and Conditons</a>&nbsp;<sup><i class="fa-solid fa-arrow-up-right-from-square"></i> </sup></label>
+          <label id="termsLabel" for="username"><a class="disabled">Agree to Terms and Conditons</a>&nbsp;<sup><i class="fa-solid fa-arrow-up-right-from-square"></i> </sup></label>
         </div>
         
         <div class="buttons-container">
@@ -77,6 +92,42 @@
         x.type = "password";
       }
     }
+
+    window.addEventListener("DOMContentLoaded", (event) => {
+      toast = document.querySelector(".toast");
+      close = document.querySelector(".close-icon");
+      progress = document.querySelector(".progress");
+
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      if(urlParams.has('error')){
+        let title = document.querySelector(".text-1");
+        let description = document.querySelector(".text-2");
+        let icon = $("#toast-icon-ref");
+        if(urlParams.get('error') == "usernametaken"){
+          icon.removeClass();
+          icon.addClass("fa-solid fa-circle-exclamation check-icon");
+          title.innerHTML= "Sign Up Failed";
+          description.innerHTML= "The username entered has already been taken.";
+        } else {
+          title.innerHTML = "Title";
+          description.innerHTML = "This is a generic message!";
+        }
+
+        setTimeout(() => {
+          toast.classList.add("active");
+          progress.classList.add("active");
+          
+          setTimeout(() => {
+            toast.classList.remove("active");
+          }, 5000);
+        }, 50);
+      }
+
+      close.addEventListener("click", () => {
+        toast.classList.remove("active");
+      })
+    });
   </script>
   <?php include_once "./components/footer.php"; ?>
 </body>

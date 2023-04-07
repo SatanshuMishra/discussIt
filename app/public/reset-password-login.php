@@ -31,12 +31,12 @@
       <form id="resetForm" action="scripts/reset-password-script.php" method="post">
         <input type="hidden" name="username" <?php $username = $_GET["username"]; echo "value=\"$username\""; ?>>
         <label id="new-password-label" for="new-password">New Password</label><br>
-        <input type="text" name="new-password" id="new-password" required oninvalid="this.setCustomValidity('Please enter your new password.')"
+        <input type="password" name="new-password" id="new-password" required oninvalid="this.setCustomValidity('Please enter your new password.')"
        oninput="setCustomValidity('')"><br>
         <div id="recovery-label-container">
           <label id="confirm-password-label" for="confirm-password">Confirm Password</label><br>
         </div>
-        <input type="text" name="confirm-password" id="confirm-password" required oninvalid="this.setCustomValidity('Please confirm your new password.')"
+        <input type="password" name="confirm-password" id="confirm-password" required oninvalid="this.setCustomValidity('Please confirm your new password.')"
         oninput="setCustomValidity('')">
         <div class="buttons-container">
           <div class="cancel-btn-div">

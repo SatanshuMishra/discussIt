@@ -17,21 +17,36 @@ function updateReplies(discussionId) {
         //Inner Div for each reply
         var replydiv = document.createElement("div");
         replydiv.classList.add("reply");
+        replydiv.id = "reply-reference-id-" + reply.id;
         //Adding Reply Content
 
-        // var replyhead = document.createElement("div");
-        // replyhead.classList.add("header");
-        // replyhead.innerHTML = `<img id="profile-picture-reply" src="../uploads/profile-${reply.id}.png"/> <div class="user-info"> <span class="username">${reply.username}</span></div>`;
+        replyToHeader = "";
+        if (reply.replyTo) {
+          let xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function () {
+            if (xhr.status != 200) {
+              // analyze HTTP status of the response
+              console.log(`Error ${xhr.status}: ${xhr.statusText}`); // e.g. 404: Not Found
+            } else {
+              // show the result
+              console.log("DEBUG: " + xhr.response);
+              replyToHeader = xhr.response; // response is the server response
+            }
+          };
 
-        // replydiv.appendChild(replyhead);
+          xhr.open(
+            "GET",
+            "./scripts/get-reply-to-script.php?replyId=" +
+              encodeURIComponent(reply.replyTo),
+            false
+          );
+          xhr.send();
+        }
 
-        // var replyBody = document.createElement("div");
-        // replyBody.classList.add("body");
-        // replyBody.textContent = reply.content;
-        // replydiv.appendChild(replyBody);
         replydiv.innerHTML = `
+          ${replyToHeader}
             <div class="header">
-              <img id="profile-picture-reply" src="uploads/profile-${reply.id}.png"/>
+              <img id="profile-picture-reply" src="uploads/profile-${reply.authorId}.png"/>
               <div class="user-info">
                 <span class="username">${reply.username}</span>
               </div>
@@ -51,22 +66,6 @@ function updateReplies(discussionId) {
         );
 
         replydiv.appendChild(replyFooter);
-
-        //         var script = document.createElement("script");
-        //         script.innerHTML = `
-        //             $(document).ready(() => {
-        //                console.log('---SCRIPT START----');
-        //               console.log(document.getElementById('comment-${reply.id}'));
-        //                 $('.footer').click(() => {
-        //                   console.log("CLICK!!!");
-        //                 });
-        //               console.log('---SCRIPT END----');
-        //             });
-        // `;
-        // replyScript.appendChild(script);
-
-        // replydiv.appendChild(replyFooter);
-        //Add inner reply contents to outside div
         container.appendChild(replydiv);
       }
     }
@@ -123,26 +122,3 @@ function dynamicTimingReplies(createdAt, replyFooter, replyId, discussionId) {
   );
   xh.send();
 }
-
-/* if($replies){
-    foreach($replies as $reply){
-        $replyUserId = $reply["id"];
-        $username = $reply["username"];
-        $replyContent = $reply["content"];
-        $time = date('Y-m-d', strtotime($reply["createdAt"]));;
-        echo "
-        <div class=\"reply\">
-          <div class=\"header\">
-            <img id=\"profile-picture-reply\" src=\"uploads/profile-$replyUserId.png\"/>
-            <div class=\"user-info\">
-              <span class=\"username\">$username</span>
-            </div>
-          </div>
-          <div class=\"body\">
-            $replyContent
-          </div>
-          <div class=\"footer\">
-            <span class=\"time\">$time</span>
-          </div>
-        </div>
-        "; */

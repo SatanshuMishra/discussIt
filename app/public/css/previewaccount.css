@@ -180,6 +180,7 @@ body {
 .discussions-list {
   max-height: 30em;
   overflow: scroll;
+  overflow-x: hidden;
 }
 
 .discussions-list > a {
@@ -190,7 +191,7 @@ body {
   color: #fff;
   margin: 1em 0;
   padding: 1.5em 2em;
-  background-color: #0f141e;
+  background-color: #101010;
   border-radius: 15px;
 }
 

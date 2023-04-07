@@ -200,9 +200,10 @@ body {
 }
 
 .show-password-icon {
-  position: fixed;
+  position: absolute;
   margin-right: 1em;
   cursor: pointer;
+  color: #0044ff;
 }
 
 .lower-container {

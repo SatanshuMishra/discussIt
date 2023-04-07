@@ -23,7 +23,7 @@
 
   <div class="toast">
     <div class="toast-content">
-      <i class="fa-solid fa-circle-exclamation check-icon"></i>
+      <i id="toast-icon-ref" class="fa-solid fa-circle-exclamation check-icon"></i>
       <!-- <i class="fa-solid fa-circle-check check-icon"></i> -->
       <div class="message">
         <span class="text text-1">Login Failed</span>
@@ -88,6 +88,24 @@
       const queryString = window.location.search;
       const urlParams = new URLSearchParams(queryString);
       if(urlParams.has('error')){
+        let title = document.querySelector(".text-1");
+        let description = document.querySelector(".text-2");
+        let icon = $("#toast-icon-ref");
+        if(urlParams.get('error') == "invalidusernameorpassword"){
+          icon.removeClass();
+          icon.addClass("fa-solid fa-circle-exclamation check-icon");
+          title.innerHTML= "Login Failed";
+          description.innerHTML= "Incorrect username or password.";
+        } else if(urlParams.get('error') == "passwordresetsuccessful"){
+          icon.removeClass();
+          icon.addClass("fa-solid fa-solid fa-circle-check check-icon");
+          title.innerHTML = "Success";
+          description.innerHTML = "Your password was changed successfully!";
+        } else {
+          title.innerHTML = "Title";
+          description.innerHTML = "This is a generic message!";
+        }
+
         setTimeout(() => {
           toast.classList.add("active");
           progress.classList.add("active");

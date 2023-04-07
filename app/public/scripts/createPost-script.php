@@ -8,7 +8,6 @@ if(isset($_POST['submit'])){
     $postCreator = $_SESSION['uname'];
     $numberOfTopics = sizeof($topicsArray);
    
-
     if($numberOfTopics > 1){
         $topic1 = $topicsArray[0];
         $topic2 = $topicsArray[1];
@@ -17,9 +16,14 @@ if(isset($_POST['submit'])){
         $topic2 = null;
     }
 
-    createPost($conn, $postContent,$postTitle,$topic1,$topic2,$postCreator);
-    header("location: ../index.php?message=postsuccess");
-    exit();
+    if($discussionId = createPost($conn, $postContent,$postTitle,$topic1,$topic2,$postCreator)){
+        header("location: ../discussion.php?id=$discussionId&message=postSuccessfullyCreated");
+        exit();
+    } else {
+        header("location: ../index.php?error=errorOccured");
+        exit();
+    }
+    
 
 }
 
