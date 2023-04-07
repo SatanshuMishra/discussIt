@@ -4,6 +4,11 @@
     header("Location: ./login.php?message=You must be logged in to create a new discussion.");
     exit();
   }
+  require_once "./scripts/checkSuspendedStatus.php";
+  if($isSuspended){
+    header("Location: ./index.php?error=accountSuspended");
+    exit();
+  }
 ?>
 <!DOCTYPE html>
 <html lang= "en">
@@ -113,7 +118,7 @@
       </div>
       <div class="progression-btn-container">
         <div class="cancel-button">
-          <a href="index.php"><button class="btn-formatted cancel">Cancel</button></a>
+          <a href="index.php"><button class="btn-formatted cancel" type="button">Cancel</button></a>
         </div>
         <div class="continue-button">
           <button class="btn-formatted continue" id="continue-btn" type="submit" name="submit" value="Submit">Continue</button>

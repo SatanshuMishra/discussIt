@@ -1,4 +1,10 @@
-<?php session_start();?>
+<?php session_start();
+  require_once "./scripts/checkSuspendedStatus.php";
+  if($isSuspended){
+    header("Location: ./index.php?error=accountSuspended");
+    exit();
+  }
+?>
 <!DOCTYPE html>
 <html lang= "en">
 <head>

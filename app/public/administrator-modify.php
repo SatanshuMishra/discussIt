@@ -40,7 +40,9 @@
   <nav class="nav-sidebar">
     <div class="upper-section">
       <div class="logo-container">
-        <img class="logo" src="./images/logoDarkBlue.png" alt="">
+        <a href="./index.php">
+          <img class="logo" src="./images/logoDarkBlue.png" alt="">
+        </a>
       </div>
       <!-- <hr class="solid"> -->
       <ul class="nav-list">

@@ -1,6 +1,7 @@
 <?php session_start();
   if(!isset($_GET["id"])){
-    header("location: index.php?error=discussionnotfound");;
+    header("location: index.php?error=discussionnotfound");
+    exit();
   }
   require_once 'scripts/config.php';
   require_once 'scripts/functions-scripts.php';
@@ -9,9 +10,15 @@
   $discussion = getDiscussion($conn, $discussionId);
 
   if(!$discussion){
-    header("location: index.php?error=discussionnotfound");;
+    header("location: index.php?error=discussionnotfound");
+    exit();
   }
   
+  if(!$discussion["isVisible"] && !(isset($_SESSION["uid"]) && getUserByID($conn, $_SESSION["uid"])["administratorPermissions"])){
+    header("location: index.php?error=discussionnotvisible");
+    exit();
+  }
+
   $post = getPost($conn, $discussionId);
   $topics = getTopics($conn, $discussionId);
   $replies = getReplies($conn, $discussionId);
@@ -174,15 +181,23 @@
       </div>
       <div class="post-reply">
         <?php
-           if(isset($_SESSION["uid"])){
-            echo '
-            <form action="scripts/post-reply.php?id=' , $discussionId , '" method="post">
-              <textarea id="post-reply" name="post-reply-content" rows="1" placeholder="Post a Reply"></textarea>
-              <div class="post-btn-cont">
-                <button id="post-reply-btn" type="submit" name="submit">Send</button>
+          if(isset($_SESSION["uid"])){
+            if(getUserByID($conn, $_SESSION["uid"])["isSuspended"]) {
+              echo '
+              <div class="not-logged-in">
+                <h1>Your account as been suspended. You cannot post a comment!</h1>
               </div>
-            </form>
-            ';
+              ';
+            } else {
+              echo '
+              <form action="scripts/post-reply.php?id=' , $discussionId , '" method="post">
+                <textarea id="post-reply" name="post-reply-content" rows="1" placeholder="Post a Reply"></textarea>
+                <div class="post-btn-cont">
+                  <button id="post-reply-btn" type="submit" name="submit">Send</button>
+                </div>
+              </form>
+              ';
+            }
            } else{
             echo '
             <div class="not-logged-in">
@@ -190,7 +205,7 @@
               <a href="../login.php"><button class="login-post-btn">Log In</button></a>
             </div>
             ';
-           }
+          }
         ?>
 
       </div>

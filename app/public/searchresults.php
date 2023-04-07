@@ -67,7 +67,7 @@
           <span class="showing-pill sports ">FILTERED BY:</span> <span id="showing-topic">ALL</span>
         </h1>
       </div> -->
-      <div class="feed-body" id="feed-body">
+      <div class="feed-body" id="feed-body" <?php echo (!$discussions) ? 'style="justify-content: center;"' : '' ?>>
       <?php
       if($discussions){
         foreach($discussions as $discussion){

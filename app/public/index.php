@@ -269,6 +269,15 @@
         } else if(urlParams.get('error') == "notloggedin"){
           title.innerHTML = "Invalid Access";
           description.innerHTML = "You must be logged in to access this page.";
+        } else if(urlParams.get('error') == "discussionnotvisible"){
+          title.innerHTML = "Invalid Access";
+          description.innerHTML = "The discussion you are trying to view is not accesible.";
+        } else if(urlParams.get('error') == "accountSuspended"){
+          title.innerHTML = "Invalid Access";
+          description.innerHTML = "You cannot do that. Your account has been suspended!";
+        } else if(urlParams.get('error') == "errorOccured"){
+          title.innerHTML = "Failure";
+          description.innerHTML = "An error has occurred.";
         }
         setTimeout(() => {
           toast.classList.add("active");
