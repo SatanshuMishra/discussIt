@@ -120,11 +120,11 @@
   font-size: 17px;
 }
 
-@media (max-width: 870px) {
+@media (max-width: 880px) {
   .right-container {
     display: none;
   }
   .spacer {
-    aspect-ratio: 960/450;
+    aspect-ratio: 960/470;
   }
 }

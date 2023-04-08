@@ -92,7 +92,7 @@
     <div class="header-container">
       <div class="view-info-container">
         <div class="icon-container">
-          <i class="fa-solid fa-comments"></i>
+           <i class="fa-regular fa-message"></i>
         </div>
         <span>Discussions</span>
       </div>

@@ -23,8 +23,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   // Close the dropdown if the user clicks outside of it
   window.onclick = function (event) {
     if (
-      !event.target.matches(".log-in") &&
-      !event.target.matches(".logged-in")
+      !document.getElementsByClassName("logged-in")[0].contains(event.target)
     ) {
       var dropdowns = document.getElementsByClassName("dropdown-content");
       var i;

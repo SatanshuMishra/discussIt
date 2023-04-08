@@ -43,7 +43,7 @@
             <a class="disabled"><i class="fa-solid fa-book"></i> &nbsp;Terms & Policies</a>';
         if((getUserByID($conn, $_SESSION["uid"])["administratorPermissions"])){
           echo '
-            <a href="./administrator-portal.php"><i class="fa-solid fa-hammer"></i> &nbsp;Admin Portal</a>
+            <a href="./administrator-dashboard.php"><i class="fa-solid fa-hammer"></i> &nbsp;Admin Portal</a>
           '; 
         }      
         echo '

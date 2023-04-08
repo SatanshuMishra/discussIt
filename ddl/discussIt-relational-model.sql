@@ -11,7 +11,8 @@ CREATE TABLE user (
   demeritPoints integer DEFAULT 0 NOT NULL,
   userKey varchar(255) NOT NULL,
   isSuspended boolean DEFAULT FALSE NOT NULL,
-  administratorPermissions boolean DEFAULT FALSE NOT NULL
+  administratorPermissions boolean DEFAULT FALSE NOT NULL,
+  createdAt datetime NOT NULL
   );
 
 CREATE TABLE discussion (

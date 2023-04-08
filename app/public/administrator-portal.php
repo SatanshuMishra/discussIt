@@ -38,7 +38,7 @@
       </div>
       <!-- <hr class="solid"> -->
       <ul class="nav-list">
-        <a class="disabled">
+        <a href="./administrator-dashboard.php">
           <li class="nav-option">
             <i class="fa-solid fa-chart-pie"></i>
           </li>
@@ -212,7 +212,7 @@
                         </span>
                       </a>
                       <a class="delete-link-btn" href="./scripts/suspend-account.php?iAFgo3q5J2hfCTv1SShA=true&uid='.$user["id"].'">
-                        <span class="tooltip" data-text="'.($user["isSuspended"]) ? 'Un-Suspend Account' : 'Suspend Account'.'">
+                        <span class="tooltip" data-text="Toggle Suspend Account">
                           <div class="option suspend">
                             <i class="fa-solid fa-icicles"></i>
                           </div>

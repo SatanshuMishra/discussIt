@@ -105,7 +105,7 @@ function CurrentPasswordMatch($conn, $currentPassword, $username){
  * @return void
  */ 
 function createUser($conn, $firstName, $lastName, $uname, $pwd){
-  $sql = "INSERT INTO user (firstName, lastName, username, password, demeritPoints, userKey, administratorPermissions) VALUES (?, ?, ?, ?, ?, ?, ?);";
+  $sql = "INSERT INTO user (firstName, lastName, username, password, demeritPoints, userKey, administratorPermissions, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
   $stmt = mysqli_stmt_init($conn);
   if(!mysqli_stmt_prepare($stmt, $sql)){
     header("location: ../signup.php?error=stmtfailedcreateuser");
@@ -113,12 +113,12 @@ function createUser($conn, $firstName, $lastName, $uname, $pwd){
   }
 
   $hashedPwd = encryptPassword($pwd, PASSWORD_DEFAULT);
-
+  $createdAt = gmdate('y-m-d h:i:s');
   $demeritPoints = 0;
   $userKey = implode("-", generateUUID());
   $adminPerms = 0;
   // SET DATA INTO PREPARED STATEMENT
-  mysqli_stmt_bind_param($stmt, "ssssisi", $firstName, $lastName, $uname, $hashedPwd, $demeritPoints, $userKey, $adminPerms);
+  mysqli_stmt_bind_param($stmt, "ssssisis", $firstName, $lastName, $uname, $hashedPwd, $demeritPoints, $userKey, $adminPerms, $createdAt);
 
   // EXECUTE $STMT PREPARED STATEMENT
   mysqli_stmt_execute($stmt);
@@ -503,7 +503,7 @@ function getTopics($conn, $discussid) {
  * @return array|false Returns array with query results for all the replies for the given discussion.
  */ 
 function getReplies($conn, $discussid){
-  $sql = "SELECT reply.id, authorId, replyTo, username, content, createdAt FROM reply JOIN user on reply.authorId = user.id WHERE discussionId = ? ORDER BY createdAt DESC;";
+  $sql = "SELECT reply.id, authorId, replyTo, username, content, reply.createdAt FROM reply JOIN user on reply.authorId = user.id WHERE discussionId = ? ORDER BY createdAt DESC;";
   $stmt = mysqli_stmt_init($conn);
   if(!mysqli_stmt_prepare($stmt, $sql)){
     header("location: ../index.php?error=stmtfailedgetreplies");
@@ -670,7 +670,7 @@ function generateSQL($authorCount, $titleCount, $topicCount){
 
 
 
-  return  "SELECT DISTINCT discussId, isVisible, authorId, postTitle, postContent, createdAt FROM topicType JOIN (SELECT discussId, isVisible, authorId, postTitle, postContent, createdAt, topicId FROM topicManager JOIN (SELECT * FROM user JOIN (SELECT discussion.id AS discussId, isVisible, authorId, postTitle, postContent, createdAt FROM discussion JOIN post ON discussion.id = post.discussionId WHERE isVisible = TRUE) AS discussPostTable ON user.id = discussPostTable.authorId".(($authorCount > 0  || $titleCount > 0) ? " WHERE ".
+  return  "SELECT DISTINCT discussId, isVisible, authorId, postTitle, postContent, createdAt FROM topicType JOIN (SELECT discussId, isVisible, authorId, postTitle, postContent, createdAt, topicId FROM topicManager JOIN (SELECT id, firstName, lastName, username, password, biography, twitterAccount, linkedinAccount, pgwebAddress, demeritPoints, userKey, isSuspended, administratorPermissions, discussId, isVisible, authorId, postTitle, postContent, discussPostTable.createdAt FROM user JOIN (SELECT discussion.id AS discussId, isVisible, authorId, postTitle, postContent, createdAt FROM discussion JOIN post ON discussion.id = post.discussionId WHERE isVisible = TRUE) AS discussPostTable ON user.id = discussPostTable.authorId".(($authorCount > 0  || $titleCount > 0) ? " WHERE ".
 
     (
       (
@@ -1534,4 +1534,103 @@ function toggleDiscussionVisibility($conn, $discussId){
   return ($wasSuccessful) ? "discussionUpdateSuccessfully" : "discussionUpdateUnsuccessful";
 }
 
+function getNumberOfUsers($conn){
+  $sql = "SELECT COUNT(*) AS numOfMembers FROM user;";
+  $stmt = mysqli_stmt_init($conn);
+
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    header("location: ../index.php?error=stmtfailedgetreplies");
+    exit();
+  }
+
+  // EXECUTE PREPARED STATEMENT
+  mysqli_stmt_execute($stmt);
+
+  // GET RESULT FROM $STMT PREPARED STATEMENT
+  $results = mysqli_stmt_get_result($stmt);
+  if($row = $results->fetch_all(MYSQLI_ASSOC)){
+    // CLOSE STATEMENT
+    mysqli_stmt_close($stmt);
+    return $row;
+  } else {
+    // CLOSE STATEMENT
+    mysqli_stmt_close($stmt);
+    return false;
+  }
+}
+
+function getNumberOfDiscussions($conn){
+  $sql = "SELECT COUNT(*) AS numOfMembers FROM discussion;";
+  $stmt = mysqli_stmt_init($conn);
+
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    header("location: ../index.php?error=stmtfailedgetreplies");
+    exit();
+  }
+
+  // EXECUTE PREPARED STATEMENT
+  mysqli_stmt_execute($stmt);
+
+  // GET RESULT FROM $STMT PREPARED STATEMENT
+  $results = mysqli_stmt_get_result($stmt);
+  if($row = $results->fetch_all(MYSQLI_ASSOC)){
+    // CLOSE STATEMENT
+    mysqli_stmt_close($stmt);
+    return $row;
+  } else {
+    // CLOSE STATEMENT
+    mysqli_stmt_close($stmt);
+    return false;
+  }
+}
+
+function getUsersByDay($conn){
+  $sql = "SELECT COUNT(*) AS count FROM user GROUP BY createdAt ORDER BY createdAt ASC LIMIT 6;";
+  $stmt = mysqli_stmt_init($conn);
+
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    header("location: ../index.php?error=stmtfailedgetreplies");
+    exit();
+  }
+
+  // EXECUTE PREPARED STATEMENT
+  mysqli_stmt_execute($stmt);
+
+  // GET RESULT FROM $STMT PREPARED STATEMENT
+  $results = mysqli_stmt_get_result($stmt);
+  if($row = $results->fetch_all(MYSQLI_ASSOC)){
+    // CLOSE STATEMENT
+    mysqli_stmt_close($stmt);
+    return $row;
+  } else {
+    // CLOSE STATEMENT
+    mysqli_stmt_close($stmt);
+    return false;
+  }
+}
+
+function getDiscussionsByDay($conn){
+  $sql = "SELECT COUNT(*) AS count FROM post GROUP BY createdAt ORDER BY createdAt ASC LIMIT 6;";
+  $stmt = mysqli_stmt_init($conn);
+
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    header("location: ../index.php?error=stmtfailedgetreplies");
+    exit();
+  }
+
+  // EXECUTE PREPARED STATEMENT
+  mysqli_stmt_execute($stmt);
+
+  // GET RESULT FROM $STMT PREPARED STATEMENT
+  $results = mysqli_stmt_get_result($stmt);
+  if($row = $results->fetch_all(MYSQLI_ASSOC)){
+    // CLOSE STATEMENT
+    mysqli_stmt_close($stmt);
+    return $row;
+  } else {
+    // CLOSE STATEMENT
+    mysqli_stmt_close($stmt);
+    return false;
+  }
+}
 ?>
