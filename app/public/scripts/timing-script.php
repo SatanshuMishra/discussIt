@@ -1,5 +1,5 @@
 <?php 
-//session_start();
+session_start();
 $createdAt =  $_GET["timestamp"];
 $currentTime = time();
 $timeSincePost = $currentTime - $createdAt;
