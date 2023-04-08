@@ -820,7 +820,7 @@ function getUserByID($conn, $userid){
   }
 
   // CLOSE STATEMENT
-  mysqli_stmt_close($stmt);
+  //mysqli_stmt_close($stmt);
 }
 
 
