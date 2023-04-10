@@ -1134,6 +1134,7 @@ function setProfilePicture($userid){
   $success = copy($from, $to);
   return $success;
 }
+
 /**
  * Updates user profile with additional details.
  * @param mysqli|false $conn MySQLi Connection Object
@@ -1265,7 +1266,19 @@ function removeUserByID($conn, $userid) {
   // CLOSE STATEMENT
   mysqli_stmt_close($stmt);
 
+  removeProfilePicture($userid);
+
   return ($wasSuccessful) ? "discussionDeleteSuccessful" : "discussionDeleteFailed";
+}
+
+/**
+ * Removes's the profile picture for a given user.
+ * @param mysqli|false $conn MySQLi Connection Object
+ * @param integer $userid User's ID
+ * @return void
+ */ 
+function removeProfilePicture($userid){
+  return unlink("../uploads/profile-$userid.png");
 }
 
 function removeTopicsByDiscussionID($conn, $discussId) {

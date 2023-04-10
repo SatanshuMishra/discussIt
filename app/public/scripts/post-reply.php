@@ -4,7 +4,7 @@
     if(isset($_POST['replyToId'])){
       $replyTo = $_POST['replyToId'];
     }
-    $replyContent = $_POST["post-reply-content"];
+    $replyContent = trim(strip_tags($_POST["post-reply-content"]));
     $discussionId = $_GET["id"];
     $authorId = $_SESSION["uid"];
 

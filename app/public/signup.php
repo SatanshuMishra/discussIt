@@ -52,8 +52,8 @@
         <input type="text" name="lastName" id="lastName" required oninvalid="this.setCustomValidity('Please enter a last name.')"
        oninput="setCustomValidity('')">
         <label id="usernameLabel" for="username">Username*</label><br>
-        <input type="text" name="username" id="username" required oninvalid="this.setCustomValidity('Please enter a username.')"
-       oninput="setCustomValidity('')"><br>
+        <input type="text" name="username" id="username" required oninvalid="this.setCustomValidity('Please enter a username between 6 and 30 characters.')"
+       oninput="setCustomValidity('')" minlength="6" maxlengthminlength="30"><br>
         <label id="passLabel" for="password">Password*</label><br>
         <div class="passwordCont">
           <input id="password" type="password" name="password" required oninvalid="this.setCustomValidity('Please enter a password.')"
@@ -109,6 +109,16 @@
           icon.addClass("fa-solid fa-circle-exclamation check-icon");
           title.innerHTML= "Sign Up Failed";
           description.innerHTML= "The username entered has already been taken.";
+        } else if(urlParams.get('error') == "usernametooshort"){
+          icon.removeClass();
+          icon.addClass("fa-solid fa-circle-exclamation check-icon");
+          title.innerHTML= "Username too short!";
+          description.innerHTML= "The username must be between 6 and 30 characters long.";
+        } else if(urlParams.get('error') == "usernametoolong"){
+          icon.removeClass();
+          icon.addClass("fa-solid fa-circle-exclamation check-icon");
+          title.innerHTML= "Username too long!";
+          description.innerHTML= "The username must be between 6 and 30 characters long.";
         } else {
           title.innerHTML = "Title";
           description.innerHTML = "This is a generic message!";

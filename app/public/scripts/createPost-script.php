@@ -2,8 +2,8 @@
 require_once "config.php";
 require_once "functions-scripts.php";
 if(isset($_POST['submit'])){
-    $postTitle = $_POST['title'];
-    $postContent = $_POST['content'];
+    $postTitle = trim(strip_tags($_POST['title']));
+    $postContent = trim(strip_tags($_POST['content']));
     $topicsArray = $_SESSION['topics'];
     $postCreator = $_SESSION['uname'];
     $numberOfTopics = sizeof($topicsArray);
