@@ -7,7 +7,7 @@ A unique take on a discussion board website.
 **Prerequisites:**
 
 - Download & Install [Docker Desktop](https://www.docker.com/).
-- At least 1.59 GB's of space locally in addition to the space required by Docker.
+- At least 1.59 GB of space locally in addition to the space required by Docker.
 - Stable Internet Connection
 
 Follow the following steps to run our website locally:
