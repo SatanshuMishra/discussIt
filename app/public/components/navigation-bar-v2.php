@@ -43,7 +43,7 @@
             <a class="disabled"><i class="fa-solid fa-book"></i> &nbsp;Terms & Policies</a>';
         if((getUserByID($conn, $_SESSION["uid"])["administratorPermissions"])){
           echo '
-            <a href="./administrator-portal.php"><i class="fa-solid fa-hammer"></i> &nbsp;Admin Portal</a>
+            <a href="./administrator-dashboard.php"><i class="fa-solid fa-hammer"></i> &nbsp;Admin Portal</a>
           '; 
         }      
         echo '
@@ -70,7 +70,7 @@
               <i class="fa-regular fa-user"></i> &nbsp;<i class="fa-solid fa-angle-down"></i>
             </button>
             <div id="myDropdown" class="dropdown-content">
-              <a class="disabled"><i class="fa-solid fa-circle-info"></i> &nbsp;Terms & Policies</a>
+              <a href = "../termsofSite.php" class="disabled"><i class="fa-solid fa-circle-info"></i> &nbsp;Terms & Policies</a>
             </div>
           </div>
         ';

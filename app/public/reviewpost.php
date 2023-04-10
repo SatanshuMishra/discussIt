@@ -1,17 +1,22 @@
 <?php session_start();
-$postContent=$_SESSION['content'];
-$postTitle=$_SESSION['postTitle'];
-$topics=$_SESSION['selectedTopics'][0];
-$topicsArray=json_decode($topics,true);
-$topic1="";
-$topic2="";
-$_SESSION['topics']=$topicsArray;
-if(count($topicsArray) > 0){
-    $topic1=$topicsArray[0];
-}
-if(count($topicsArray) >1){
-    $topic2=$topicsArray[1];
-}
+  require_once "./scripts/checkSuspendedStatus.php";
+  if($isSuspended){
+    header("Location: ./index.php?error=accountSuspended");
+    exit();
+  }
+  $postContent=$_SESSION['content'];
+  $postTitle=$_SESSION['postTitle'];
+  $topics=$_SESSION['selectedTopics'][0];
+  $topicsArray=json_decode($topics,true);
+  $topic1="";
+  $topic2="";
+  $_SESSION['topics']=$topicsArray;
+  if(count($topicsArray) > 0){
+      $topic1=$topicsArray[0];
+  }
+  if(count($topicsArray) >1){
+      $topic2=$topicsArray[1];
+  }
 ?>
 
 <!DOCTYPE html>

@@ -1,0 +1,62 @@
+.news {
+  /* background-color: #2bd073; */
+  aspect-ratio: 960/300;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url("../images/news.svg");
+}
+
+.gaming {
+  background-color: #d65780;
+  aspect-ratio: 960/300;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url("../images/gaming.svg");
+}
+
+.cooking {
+  background-color: #183446;
+  aspect-ratio: 960/300;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url("../images/cooking.svg");
+}
+
+.space {
+  background-color: #391e91;
+  aspect-ratio: 960/300;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url("../images/space.svg");
+}
+
+.positivity {
+  background-color: #ffb700;
+  aspect-ratio: 960/300;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url("../images/positivity.svg");
+}
+
+.q\&a {
+  background-color: #0090c1;
+  aspect-ratio: 960/300;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url("../images/qna.svg");
+}
+
+.sports {
+  background-color: #ef3e36;
+  aspect-ratio: 960/300;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url("../images/sports.svg");
+}

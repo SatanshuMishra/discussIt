@@ -32,11 +32,13 @@
   <nav class="nav-sidebar">
     <div class="upper-section">
       <div class="logo-container">
-        <img class="logo" src="./images/logoDarkBlue.png" alt="">
+        <a href="./index.php">
+          <img class="logo" src="./images/logoDarkBlue.png" alt="logo">
+        </a>
       </div>
       <!-- <hr class="solid"> -->
       <ul class="nav-list">
-        <a class="disabled">
+        <a href="./administrator-dashboard.php">
           <li class="nav-option">
             <i class="fa-solid fa-chart-pie"></i>
           </li>
@@ -210,7 +212,7 @@
                         </span>
                       </a>
                       <a class="delete-link-btn" href="./scripts/suspend-account.php?iAFgo3q5J2hfCTv1SShA=true&uid='.$user["id"].'">
-                        <span class="tooltip" data-text="Suspend Account">
+                        <span class="tooltip" data-text="Toggle Suspend Account">
                           <div class="option suspend">
                             <i class="fa-solid fa-icicles"></i>
                           </div>
@@ -260,6 +262,9 @@
         } else if(urlParams.get('message') == "usersuccessfullyremoved"){
           title.innerHTML= "Success";
           description.innerHTML= "The user was successfully banned!.";
+        } else if(urlParams.get('message') == "updatesuccessful"){
+          title.innerHTML= "Update Successful";
+          description.innerHTML= "The user was updated successfully!.";
         } 
         setTimeout(() => {
           toast.classList.add("active-toast");

@@ -9,7 +9,7 @@
     require_once 'functions-scripts.php';
 
     if($new_password == $confirm_password){
-      if(changePassword($conn, $username, $new_password)){
+      if(resetPassword($conn, $username, $new_password)){
         header("location: ../login.php?error=passwordresetsuccessful");
         exit();
       }

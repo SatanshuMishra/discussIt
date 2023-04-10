@@ -1,6 +1,7 @@
 <?php session_start();
   if(!isset($_GET["id"])){
-    header("location: index.php?error=discussionnotfound");;
+    header("location: index.php?error=discussionnotfound");
+    exit();
   }
   require_once 'scripts/config.php';
   require_once 'scripts/functions-scripts.php';
@@ -9,9 +10,15 @@
   $discussion = getDiscussion($conn, $discussionId);
 
   if(!$discussion){
-    header("location: index.php?error=discussionnotfound");;
+    header("location: index.php?error=discussionnotfound");
+    exit();
   }
   
+  if(!$discussion["isVisible"] && !(isset($_SESSION["uid"]) && getUserByID($conn, $_SESSION["uid"])["administratorPermissions"])){
+    header("location: index.php?error=discussionnotvisible");
+    exit();
+  }
+
   $post = getPost($conn, $discussionId);
   $topics = getTopics($conn, $discussionId);
   $replies = getReplies($conn, $discussionId);
@@ -32,6 +39,7 @@
 <html lang="en">
 <head>
   <!-- EXTERNAL CSS -->
+  <link rel="stylesheet" href="css/topic-colors.css">
   <link rel="stylesheet" href="css/discussion.css">
   <!-- LOCAL JS -->
   <script src="js/view-discussion.js"></script>
@@ -44,34 +52,47 @@
 <body>
   <element id="reference-element"></element>
   <?php include_once 'components/navigation-bar-v2.php'; ?>
+  <div class="toast">
+    <div class="toast-content">
+      <i class="fa-solid fa-circle-info check-icon"></i>
+      <div class="message">
+        <span class="text text-1"></span>
+        <span class="text text-2"></span>
+      </div>
+    </div>
+    <i class="fa-solid fa-xmark close-icon"></i>
+    <div class="progress">
+    </div>
+  </div>
   <div class="modal-container">
     <?php 
-      if(isset($_GET['replyId']) && isset($_GET['content']) && isset($_GET['author'])){
-        $modalReplyAuthor = getUserByID($conn, $_GET['author']);
+      if(isset($_GET['replyId'])){
+        $replyToContent = getReplyByID($conn, $_GET["replyId"]);
+        $author = getUserByID($conn, $replyToContent["authorId"]);
         echo '
-    <div class="modal">
-      <div class="reply" style="margin: 0;">
-        <div class="header">
-          <img id="profile-picture-reply" src="uploads/profile-'.$modalReplyAuthor['id'].'.png"/>
-          <div class="user-info">
-            <span class="username">'.$modalReplyAuthor['firstName']." ".$modalReplyAuthor['lastName'].'</span>
+          <div class="modal">
+            <div class="reply" style="margin: 0; border-radius: 0;">
+              <div class="header">
+                <img id="profile-picture-reply" src="uploads/profile-'.$author["id"].'.png"/>
+                <div class="user-info">
+                  <span class="username">'.$author["firstName"]." ".$author["lastName"].'</span>
+                </div>
+              </div>
+              <div class="body">
+                '.$replyToContent["content"].'
+              </div>
+            </div>
+            <form action="scripts/post-reply.php?id='.$discussionId.'" method="post">
+              <input type="hidden" name="replyToId" value="'.$replyToContent["id"].'">
+              <textarea id="post-reply" name="post-reply-content" rows="1" placeholder="Post a Reply"></textarea>
+              <div class="post-btn-cont">
+                <button id="modal-cancel-btn" type="button" name="cancel">Cancel</button>
+                <button id="post-reply-btn" type="submit" name="submit">Send</button>
+              </div>
+            </form>
           </div>
-        </div>
-        <div class="body">
-          '.$_GET['content'].'
-        </div>
-      </div>
-      <form action="scripts/post-reply.php?id='.$discussionId.'" method="post">
-        <input type="hidden" name="replyToId" value="'.$_GET['replyId'].'">
-        <textarea id="post-reply" name="post-reply-content" rows="1" placeholder="Post a Reply"></textarea>
-        <div class="post-btn-cont">
-          <button id="modal-cancel-btn" type="button" name="cancel">Cancel</button>
-          <button id="post-reply-btn" type="submit" name="submit">Send</button>
-        </div>
-      </form>
-    </div>
 
-    <script>$(\'.modal-container\').css(\'display\', \'block\');</script>
+          <script>$(\'.modal-container\').css(\'display\', \'block\');</script>
         ';
       }
     ?>
@@ -160,15 +181,23 @@
       </div>
       <div class="post-reply">
         <?php
-           if(isset($_SESSION["uid"])){
-            echo '
-            <form action="scripts/post-reply.php?id=' , $discussionId , '" method="post">
-              <textarea id="post-reply" name="post-reply-content" rows="1" placeholder="Post a Reply"></textarea>
-              <div class="post-btn-cont">
-                <button id="post-reply-btn" type="submit" name="submit">Send</button>
+          if(isset($_SESSION["uid"])){
+            if(getUserByID($conn, $_SESSION["uid"])["isSuspended"]) {
+              echo '
+              <div class="not-logged-in">
+                <h1>Your account as been suspended. You cannot post a comment!</h1>
               </div>
-            </form>
-            ';
+              ';
+            } else {
+              echo '
+              <form action="scripts/post-reply.php?id=' , $discussionId , '" method="post">
+                <textarea id="post-reply" name="post-reply-content" rows="1" placeholder="Post a Reply"></textarea>
+                <div class="post-btn-cont">
+                  <button id="post-reply-btn" type="submit" name="submit">Send</button>
+                </div>
+              </form>
+              ';
+            }
            } else{
             echo '
             <div class="not-logged-in">
@@ -176,7 +205,7 @@
               <a href="../login.php"><button class="login-post-btn">Log In</button></a>
             </div>
             ';
-           }
+          }
         ?>
 
       </div>
@@ -201,10 +230,36 @@
       $('#modal-cancel-btn').click(() => {
         $('.modal-container').css('display', 'none');
       });
-      function testFunction(){
-        console.log("REPLY BTN WAS CLICKED!");
+
+      let toast = document.querySelector(".toast");
+      let close = document.querySelector(".close-icon");
+      let progress = document.querySelector(".progress");
+
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      if(urlParams.has('message')){
+        let title = document.querySelector(".text-1");
+        let description = document.querySelector(".text-2");
+        if(urlParams.get('message') == "replySuccessfullyPosted"){
+          title.innerHTML= "Success!";
+          description.innerHTML= "Reply was posted successfully!";
+        } else if(urlParams.get('message') == "postSuccessfullyCreated"){
+          title.innerHTML= "Success!";
+          description.innerHTML= "Your post was created successfully!";
+        }
+        setTimeout(() => {
+          toast.classList.add("active");
+          progress.classList.add("active");
+          
+          setTimeout(() => {
+            toast.classList.remove("active");
+          }, 5000);
+        }, 50);
       }
 
+      close.addEventListener("click", () => {
+        toast.classList.remove("active");
+      })
     });
   </script>
 </body>

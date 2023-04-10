@@ -4,12 +4,18 @@
     header("Location: ./login.php?message=You must be logged in to create a new discussion.");
     exit();
   }
+  require_once "./scripts/checkSuspendedStatus.php";
+  if($isSuspended){
+    header("Location: ./index.php?error=accountSuspended");
+    exit();
+  }
 ?>
 <!DOCTYPE html>
 <html lang= "en">
 <head>
     <!-- EXTERNAL CSS -->
     <link rel="stylesheet" href="css/Creatediscussion.css">
+    <link rel="stylesheet" href="css/topic-colors.css">
     <!-- LOCAL JS -->
     <script type="text/javascript" src="./js/discussion.js"></script>
     <!-- HEADER INCLUDE -->
@@ -112,7 +118,7 @@
       </div>
       <div class="progression-btn-container">
         <div class="cancel-button">
-          <a href="index.php"><button class="btn-formatted cancel">Cancel</button></a>
+          <a href="index.php"><button class="btn-formatted cancel" type="button">Cancel</button></a>
         </div>
         <div class="continue-button">
           <button class="btn-formatted continue" id="continue-btn" type="submit" name="submit" value="Submit">Continue</button>
@@ -137,12 +143,19 @@
         close = document.querySelector(".close-icon");
         progress = document.querySelector(".progress");
 
+        title = document.querySelector(".text-1");
+        description = document.querySelector(".text-2");
+
+        title.innerHTML = "No Topics Selected";
+        description.innerHTML = "You must select between 1 - 2 topic.";
+
         setTimeout(() => {
           toast.classList.add("active");
           progress.classList.add("active");
 
           setTimeout(() => {
             toast.classList.remove("active");
+            progress.classList.remove("active");
           }, 5000);
         }, 50);
 

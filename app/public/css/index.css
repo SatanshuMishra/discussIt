@@ -276,9 +276,13 @@ body {
 }
 
 .feed-body {
-  max-height: 65em;
+  /* UN-COMMENT THIS TO RETURN TO ORIGINAL STATE */
+  /* max-height: 65em;  */
   padding: 0 1em 0 0;
   overflow-x: hidden;
+
+  /* COMMENT THIS OUT TO RETURN TO ORIGINAL STATE */
+  overflow-y: auto;
 }
 
 .feed-header {

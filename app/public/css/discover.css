@@ -121,12 +121,17 @@ body {
 
 .feed-body {
   width: 85%;
-  max-height: 65em;
   padding: 1em 1em 0 0;
-  overflow-x: scroll;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  /* UN-COMMENT THIS TO RETURN TO ORIGINAL STATE */
+  /* max-height: 65em;  */
+  overflow-x: hidden;
+
+  /* COMMENT THIS OUT TO RETURN TO ORIGINAL STATE */
+  overflow-y: auto;
 }
 
 .feed-header {
@@ -166,7 +171,7 @@ body {
 
 .discussion {
   width: 100%;
-  background-color: #080811;
+  background-color: #101010;
   border-radius: 10px;
   color: #fff;
   padding: 3em;
@@ -245,7 +250,6 @@ body {
 .news {
   /* background-color: #2bd073; */
   aspect-ratio: 960/300;
-  /* width: 100%; */
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -254,26 +258,56 @@ body {
 
 .gaming {
   background-color: #d65780;
+  aspect-ratio: 960/300;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url("../images/gaming.svg");
 }
 
 .cooking {
   background-color: #183446;
+  aspect-ratio: 960/300;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url("../images/cooking.svg");
 }
 
 .space {
   background-color: #391e91;
+  aspect-ratio: 960/300;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url("../images/space.svg");
 }
 
 .positivity {
   background-color: #ffb700;
+  aspect-ratio: 960/300;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url("../images/positivity.svg");
 }
 
 .q\&a {
   background-color: #0090c1;
+  aspect-ratio: 960/300;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url("../images/qna.svg");
 }
 
 .sports {
   background-color: #ef3e36;
+  aspect-ratio: 960/300;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url("../images/sports.svg");
 }
 
 .discussion > .body {

@@ -1,11 +1,16 @@
 <?php 
   session_start();
   if(!isset($_SESSION["uid"])){
-    header("location: ../index.php?error=notloggedin");
-    exit();
+    if($discussId = $_GET["discussionid"]){
+      header("Location: ../discussion.php?id=$discussId&error=replynotloggedin");
+      exit();
+    } else {
+      header("Location: ../index.php?error=invalidaccess");
+      exit();
+    }
   }
   if(!isset($_GET["replyid"])){
-    header("location: ../index.php?error=invalidaccess");
+    header("Location: ../index.php?error=invalidaccess");
     exit();
   }
 
@@ -13,14 +18,7 @@
   require_once 'functions-scripts.php';
 
   $discussId = $_GET["discussionid"];
-  $reply = getReplyByID($conn, $_GET["replyid"]);
-  $replyId = $reply['id'];
-  $author = getUserByID($conn, $reply['authorId']);
-  $authorId = $author['id'];
-  $content = $reply['content'];
+  $replyId = getReplyByID($conn, $_GET["replyid"])["id"];
 
-  header("Location: ../discussion.php?id=$discussId&replyId=$replyId&content=$content&author=$authorId");
-
-
-
+  header("Location: ../discussion.php?id=$discussId&replyId=$replyId");
 ?>

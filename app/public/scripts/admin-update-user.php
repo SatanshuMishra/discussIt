@@ -20,7 +20,7 @@
     $resetPassword = $_POST['reset-password'];
     $enteredDemeritPoints = $_POST['demerit-points'];
     $permissions = $_POST["permissions"];
-    $resetprofilePicture = $_POST["picture-reset"];
+    $resetprofilePicture = (isset($_POST["picture-reset"])) ? $_POST["picture-reset"] : false;
 
     $user = getUserByID($conn, $userid);
 

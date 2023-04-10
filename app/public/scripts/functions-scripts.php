@@ -70,6 +70,14 @@ function addTopic($conn, $discussionID,$topicID){
 
 }
 
+
+/**
+ * Checks is password is correct and returns a boolean value representing the result.
+ * @param mysqli|false $conn MySQLi Connection Object
+ * @param string $currentPassword User's Current Password
+ * @param string $username User's username
+ * @return false|true If the password is correct
+ */ 
 function CurrentPasswordMatch($conn, $currentPassword, $username){
   // PULL CURRENT USERNAME 
   $unameExists = usernameExists($conn, $username);
@@ -81,6 +89,7 @@ function CurrentPasswordMatch($conn, $currentPassword, $username){
   }else{
     //CREATE SESSION VARIABLE OF USERNAME FOR INSERT IF THERE IS A MATCH
     $_SESSION['User'] = $unameExists["username"];
+    return true;
   }
 }
 
@@ -96,7 +105,7 @@ function CurrentPasswordMatch($conn, $currentPassword, $username){
  * @return void
  */ 
 function createUser($conn, $firstName, $lastName, $uname, $pwd){
-  $sql = "INSERT INTO user (firstName, lastName, username, password, demeritPoints, userKey, administratorPermissions) VALUES (?, ?, ?, ?, ?, ?, ?);";
+  $sql = "INSERT INTO user (firstName, lastName, username, password, demeritPoints, userKey, administratorPermissions, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
   $stmt = mysqli_stmt_init($conn);
   if(!mysqli_stmt_prepare($stmt, $sql)){
     header("location: ../signup.php?error=stmtfailedcreateuser");
@@ -104,12 +113,12 @@ function createUser($conn, $firstName, $lastName, $uname, $pwd){
   }
 
   $hashedPwd = encryptPassword($pwd, PASSWORD_DEFAULT);
-
+  $createdAt = gmdate('y-m-d h:i:s');
   $demeritPoints = 0;
   $userKey = implode("-", generateUUID());
   $adminPerms = 0;
   // SET DATA INTO PREPARED STATEMENT
-  mysqli_stmt_bind_param($stmt, "ssssisi", $firstName, $lastName, $uname, $hashedPwd, $demeritPoints, $userKey, $adminPerms);
+  mysqli_stmt_bind_param($stmt, "ssssisis", $firstName, $lastName, $uname, $hashedPwd, $demeritPoints, $userKey, $adminPerms, $createdAt);
 
   // EXECUTE $STMT PREPARED STATEMENT
   mysqli_stmt_execute($stmt);
@@ -175,25 +184,6 @@ function createDiscussionOne($conn, $topic1) {
     return $discussionID;
 }
 
-
-/**
- * Randomly set's the default profile picture for a given user.
- * @param mysqli|false $conn MySQLi Connection Object
- * @param integer $userid User's ID
- * @return void
- */  
-
-
-
-/**
- * Log's in a user with the given username and password. Redirects the user to index.php upon successful login.
- * @param mysqli|false $conn MySQLi Connection Object
- * @param string $uname User's username
- * @param string $pwd User's password
- * @return void
- */ 
-
-
 function createPost($conn, $postContent,$postTitle,$topic1,$topic2, $postCreator){
     if($topic2 == null){
       $discussionId = createDiscussionOne($conn, $topic1);
@@ -230,11 +220,9 @@ function createPost($conn, $postContent,$postTitle,$topic1,$topic2, $postCreator
 
     //CLOSE STATEMENT
     mysqli_stmt_close($stmt);
+    return $discussionId;
     
 }
-
-
-
 
 function getTopicID($conn, $topic){
   $sql = "SELECT id FROM topicType WHERE topic = ?";
@@ -253,13 +241,8 @@ function getTopicID($conn, $topic){
   $row = mysqli_fetch_assoc($result);
   $id = $row['id'];
   
-  
-
   return $id;
-
-
 }
-
 
 /**
  * Log's in a user with the given username and password. Does NOT redirect the user to index.php upon successful login.
@@ -520,7 +503,7 @@ function getTopics($conn, $discussid) {
  * @return array|false Returns array with query results for all the replies for the given discussion.
  */ 
 function getReplies($conn, $discussid){
-  $sql = "SELECT user.id, username, content, createdAt FROM reply JOIN user on reply.authorId = user.id WHERE discussionId = ?;";
+  $sql = "SELECT reply.id, authorId, replyTo, username, content, reply.createdAt FROM reply JOIN user on reply.authorId = user.id WHERE discussionId = ? ORDER BY createdAt DESC;";
   $stmt = mysqli_stmt_init($conn);
   if(!mysqli_stmt_prepare($stmt, $sql)){
     header("location: ../index.php?error=stmtfailedgetreplies");
@@ -588,8 +571,11 @@ function postReply($conn, $replyTo, $authorid, $discussionid, $replyContent){
  * @param mysqli|false $conn MySQLi Connection Object
  * @return array|false Returns array with query results for all the discussions.
  */ 
-function getDiscussions($conn){
+function getDiscussions($conn, $onlyVisible = false){
   $sql = "SELECT discussion.id AS id, isVisible, authorId, postTitle, postContent, createdAt FROM discussion JOIN post ON discussion.id = post.discussionId ORDER BY createdAt DESC;";
+  if($onlyVisible){
+    $sql = "SELECT discussion.id AS id, isVisible, authorId, postTitle, postContent, createdAt FROM discussion JOIN post ON discussion.id = post.discussionId WHERE isVisible = TRUE ORDER BY createdAt DESC;";
+  }
   $stmt = mysqli_stmt_init($conn);
 
   if(!mysqli_stmt_prepare($stmt, $sql)){
@@ -684,7 +670,7 @@ function generateSQL($authorCount, $titleCount, $topicCount){
 
 
 
-  return  "SELECT DISTINCT discussId, isVisible, authorId, postTitle, postContent, createdAt FROM topicType JOIN (SELECT discussId, isVisible, authorId, postTitle, postContent, createdAt, topicId FROM topicManager JOIN (SELECT * FROM user JOIN (SELECT discussion.id AS discussId, isVisible, authorId, postTitle, postContent, createdAt FROM discussion JOIN post ON discussion.id = post.discussionId) AS discussPostTable ON user.id = discussPostTable.authorId".(($authorCount > 0  || $titleCount > 0) ? " WHERE ".
+  return  "SELECT DISTINCT discussId, isVisible, authorId, postTitle, postContent, createdAt FROM topicType JOIN (SELECT discussId, isVisible, authorId, postTitle, postContent, createdAt, topicId FROM topicManager JOIN (SELECT id, firstName, lastName, username, password, biography, twitterAccount, linkedinAccount, pgwebAddress, demeritPoints, userKey, isSuspended, administratorPermissions, discussId, isVisible, authorId, postTitle, postContent, discussPostTable.createdAt FROM user JOIN (SELECT discussion.id AS discussId, isVisible, authorId, postTitle, postContent, createdAt FROM discussion JOIN post ON discussion.id = post.discussionId WHERE isVisible = TRUE) AS discussPostTable ON user.id = discussPostTable.authorId".(($authorCount > 0  || $titleCount > 0) ? " WHERE ".
 
     (
       (
@@ -837,7 +823,7 @@ function getUserByID($conn, $userid){
   }
 
   // CLOSE STATEMENT
-  mysqli_stmt_close($stmt);
+  //mysqli_stmt_close($stmt);
 }
 
 
@@ -1148,6 +1134,7 @@ function setProfilePicture($userid){
   $success = copy($from, $to);
   return $success;
 }
+
 /**
  * Updates user profile with additional details.
  * @param mysqli|false $conn MySQLi Connection Object
@@ -1221,8 +1208,6 @@ function hasAdministratorPermissions($conn, $userid){
   return $user["administratorPermissions"] == true;
 }
 
-
-
 function updateUser($conn, $userid, $enteredUsername, $enteredFirstName, $enteredLastName, $enteredDemeritPoints, $enteredAdministratorPerms) {
   $sql = "UPDATE user SET username = ?, firstName = ?, lastName = ?, demeritPoints = ?, administratorPermissions = ? WHERE id = ? ;";
   $stmt = mysqli_stmt_init($conn);
@@ -1233,6 +1218,26 @@ function updateUser($conn, $userid, $enteredUsername, $enteredFirstName, $entere
 
   // SET DATA IN PREPARED STATEMENT
   mysqli_stmt_bind_param($stmt, "sssiii", $enteredUsername, $enteredFirstName, $enteredLastName, $enteredDemeritPoints, $enteredAdministratorPerms, $userid);
+
+  // EXECUTE STATEMENT
+  $wasSuccessful = mysqli_stmt_execute($stmt);
+
+  // CLOSE STATEMENT
+  mysqli_stmt_close($stmt);
+
+  return $wasSuccessful;
+}
+
+function updateUserName($conn, $userid, $enteredFirstName, $enteredLastName) {
+  $sql = "UPDATE user SET firstName = ?, lastName = ? WHERE id = ? ;";
+  $stmt = mysqli_stmt_init($conn);
+
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    return false;
+  }
+
+  // SET DATA IN PREPARED STATEMENT
+  mysqli_stmt_bind_param($stmt, "ssi", $enteredFirstName, $enteredLastName, $userid);
 
   // EXECUTE STATEMENT
   $wasSuccessful = mysqli_stmt_execute($stmt);
@@ -1261,7 +1266,228 @@ function removeUserByID($conn, $userid) {
   // CLOSE STATEMENT
   mysqli_stmt_close($stmt);
 
+  removeProfilePicture($userid);
+
+  return ($wasSuccessful) ? "discussionDeleteSuccessful" : "discussionDeleteFailed";
+}
+
+/**
+ * Removes's the profile picture for a given user.
+ * @param mysqli|false $conn MySQLi Connection Object
+ * @param integer $userid User's ID
+ * @return void
+ */ 
+function removeProfilePicture($userid){
+  return unlink("../uploads/profile-$userid.png");
+}
+
+function removeTopicsByDiscussionID($conn, $discussId) {
+  $sql = "DELETE FROM topicManager WHERE discussionId = ?;";
+  $stmt = mysqli_stmt_init($conn);
+  
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    header("location: ../index.php?error=stmtfailedremoveuser");
+    exit();
+  }
+
+  // SET DATA INTO PREPARED STATEMENT
+  mysqli_stmt_bind_param($stmt, "i", $discussId);
+
+  // EXECUTE $STMT PREPARED STATEMENT
+  $wasSuccessful = mysqli_stmt_execute($stmt);
+
+  // CLOSE STATEMENT
+  mysqli_stmt_close($stmt);
+
   return $wasSuccessful;
+}
+
+function removeReportsByDiscussionID($conn, $discussId) {
+  $sql = "DELETE FROM report WHERE discussionId = ?;";
+  $stmt = mysqli_stmt_init($conn);
+  
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    header("location: ../index.php?error=stmtfailedremoveuser");
+    exit();
+  }
+
+  // SET DATA INTO PREPARED STATEMENT
+  mysqli_stmt_bind_param($stmt, "i", $discussId);
+
+  // EXECUTE $STMT PREPARED STATEMENT
+  $wasSuccessful = mysqli_stmt_execute($stmt);
+
+  // CLOSE STATEMENT
+  mysqli_stmt_close($stmt);
+
+  return $wasSuccessful;
+}
+
+function removeReplyReactionsByDiscussionID($conn, $discussId) {
+  $sql = "DELETE FROM replyReactionManager WHERE discussionid = ?;";
+  $stmt = mysqli_stmt_init($conn);
+  
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    header("location: ../index.php?error=stmtfailedremoveuser");
+    exit();
+  }
+
+  // SET DATA INTO PREPARED STATEMENT
+  mysqli_stmt_bind_param($stmt, "i", $discussId);
+
+  // EXECUTE $STMT PREPARED STATEMENT
+  $wasSuccessful = mysqli_stmt_execute($stmt);
+
+  // CLOSE STATEMENT
+  mysqli_stmt_close($stmt);
+
+  return $wasSuccessful;
+}
+
+function removeDiscussionReactionsByDiscussionID($conn, $discussId) {
+  $sql = "DELETE FROM discussionReactionManager WHERE discussionid = ?;";
+  $stmt = mysqli_stmt_init($conn);
+  
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    header("location: ../index.php?error=stmtfailedremoveuser");
+    exit();
+  }
+
+  // SET DATA INTO PREPARED STATEMENT
+  mysqli_stmt_bind_param($stmt, "i", $discussId);
+
+  // EXECUTE $STMT PREPARED STATEMENT
+  $wasSuccessful = mysqli_stmt_execute($stmt);
+
+  // CLOSE STATEMENT
+  mysqli_stmt_close($stmt);
+
+  return $wasSuccessful;
+}
+
+function helperUpdateReplyByDiscussionID($conn, $discussId) {
+  $sql = "UPDATE reply SET replyTo = NULL WHERE discussionid = ?;";
+  $stmt = mysqli_stmt_init($conn);
+
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    return false;
+  }
+
+  // SET DATA IN PREPARED STATEMENT
+  mysqli_stmt_bind_param($stmt, "i", $discussId);
+
+  // EXECUTE STATEMENT
+  $wasSuccessful = mysqli_stmt_execute($stmt);
+
+  // CLOSE STATEMENT
+  mysqli_stmt_close($stmt);
+
+  return $wasSuccessful;
+}
+
+function removeReplyByDiscussionID($conn, $discussId) {
+  helperUpdateReplyByDiscussionID($conn, $discussId);
+  $sql = "DELETE FROM reply WHERE discussionId = ?;";
+  $stmt = mysqli_stmt_init($conn);
+  
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    header("location: ../index.php?error=stmtfailedremoveuser");
+    exit();
+  }
+
+  // SET DATA INTO PREPARED STATEMENT
+  mysqli_stmt_bind_param($stmt, "i", $discussId);
+
+  // EXECUTE $STMT PREPARED STATEMENT
+  $wasSuccessful = mysqli_stmt_execute($stmt);
+
+  // CLOSE STATEMENT
+  mysqli_stmt_close($stmt);
+
+  return $wasSuccessful;
+}
+
+
+function removePostByDiscussionID($conn, $discussId) {
+  $sql = "DELETE FROM post WHERE discussionId = ?;";
+  $stmt = mysqli_stmt_init($conn);
+  
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    header("location: ../index.php?error=stmtfailedremoveuser");
+    exit();
+  }
+
+  // SET DATA INTO PREPARED STATEMENT
+  mysqli_stmt_bind_param($stmt, "i", $discussId);
+
+  // EXECUTE $STMT PREPARED STATEMENT
+  $wasSuccessful = mysqli_stmt_execute($stmt);
+
+  // CLOSE STATEMENT
+  mysqli_stmt_close($stmt);
+
+  return $wasSuccessful;
+}
+
+function checkUserViolation($conn, $userId){
+  $user = getUserByID($conn, $userId);
+  if($user["demeritPoints"] >= 3){
+    suspendUserByID($conn, $userId);
+  }
+}
+
+function demeritUser($conn, $authorId) {
+  $author = getUserByID($conn, $authorId);
+  if($author["demeritPoints"] < 3){
+    $sql = "UPDATE user SET demeritPoints = demeritPoints + 1 WHERE id = ?;";
+    $stmt = mysqli_stmt_init($conn);
+
+    if(!mysqli_stmt_prepare($stmt, $sql)){
+      return false;
+    }
+
+    // SET DATA IN PREPARED STATEMENT
+    mysqli_stmt_bind_param($stmt, "i", $authorId);
+
+    // EXECUTE STATEMENT
+    $wasSuccessful = mysqli_stmt_execute($stmt);
+
+    // CLOSE STATEMENT
+    mysqli_stmt_close($stmt);
+
+    checkUserViolation($conn, $authorId);
+    return $wasSuccessful;
+  }
+}
+
+function removeDiscussionByID($conn, $discussId, $authorId) {
+  removeTopicsByDiscussionID($conn, $discussId);
+  removeReportsByDiscussionID($conn, $discussId);
+  removeReplyReactionsByDiscussionID($conn, $discussId);
+  removeDiscussionReactionsByDiscussionID($conn, $discussId);
+  removeReplyByDiscussionID($conn, $discussId);
+  removePostByDiscussionID($conn, $discussId);
+
+  $sql = "DELETE FROM discussion WHERE id = ?;";
+  $stmt = mysqli_stmt_init($conn);
+  
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    header("location: ../index.php?error=stmtfailedremoveuser");
+    exit();
+  }
+
+  // SET DATA INTO PREPARED STATEMENT
+  mysqli_stmt_bind_param($stmt, "i", $discussId);
+
+  // EXECUTE $STMT PREPARED STATEMENT
+  $wasSuccessful = mysqli_stmt_execute($stmt);
+
+  // CLOSE STATEMENT
+  mysqli_stmt_close($stmt);
+
+  demeritUser($conn, $authorId);
+
+  return ($wasSuccessful) ? "discussionDeleteSuccessful" : "discussionDeleteFailed";
 }
 
 function suspendUserByID($conn, $userid) {
@@ -1301,4 +1527,123 @@ function suspendUserByID($conn, $userid) {
   }
 }
 
+function toggleDiscussionVisibility($conn, $discussId){
+  $sql = "UPDATE discussion SET isVisible = NOT isVisible WHERE discussion.id = ?;";
+  $stmt = mysqli_stmt_init($conn);
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    header("location: ../signup.php?error=stmtfailedresetpassword");
+    exit();
+  }
+
+  // SET DATA IN PREPARED STATEMENT
+  mysqli_stmt_bind_param($stmt, "i", $discussId);
+
+  // EXECUTE STATEMENT
+  $wasSuccessful = mysqli_stmt_execute($stmt);
+
+  // CLOSE STATEMENT
+  mysqli_stmt_close($stmt);
+
+  return ($wasSuccessful) ? "discussionUpdateSuccessfully" : "discussionUpdateUnsuccessful";
+}
+
+function getNumberOfUsers($conn){
+  $sql = "SELECT COUNT(*) AS numOfMembers FROM user;";
+  $stmt = mysqli_stmt_init($conn);
+
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    header("location: ../index.php?error=stmtfailedgetreplies");
+    exit();
+  }
+
+  // EXECUTE PREPARED STATEMENT
+  mysqli_stmt_execute($stmt);
+
+  // GET RESULT FROM $STMT PREPARED STATEMENT
+  $results = mysqli_stmt_get_result($stmt);
+  if($row = $results->fetch_all(MYSQLI_ASSOC)){
+    // CLOSE STATEMENT
+    mysqli_stmt_close($stmt);
+    return $row;
+  } else {
+    // CLOSE STATEMENT
+    mysqli_stmt_close($stmt);
+    return false;
+  }
+}
+
+function getNumberOfDiscussions($conn){
+  $sql = "SELECT COUNT(*) AS numOfMembers FROM discussion;";
+  $stmt = mysqli_stmt_init($conn);
+
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    header("location: ../index.php?error=stmtfailedgetreplies");
+    exit();
+  }
+
+  // EXECUTE PREPARED STATEMENT
+  mysqli_stmt_execute($stmt);
+
+  // GET RESULT FROM $STMT PREPARED STATEMENT
+  $results = mysqli_stmt_get_result($stmt);
+  if($row = $results->fetch_all(MYSQLI_ASSOC)){
+    // CLOSE STATEMENT
+    mysqli_stmt_close($stmt);
+    return $row;
+  } else {
+    // CLOSE STATEMENT
+    mysqli_stmt_close($stmt);
+    return false;
+  }
+}
+
+function getUsersByDay($conn){
+  $sql = "SELECT COUNT(*) AS count FROM user GROUP BY createdAt ORDER BY createdAt ASC LIMIT 6;";
+  $stmt = mysqli_stmt_init($conn);
+
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    header("location: ../index.php?error=stmtfailedgetreplies");
+    exit();
+  }
+
+  // EXECUTE PREPARED STATEMENT
+  mysqli_stmt_execute($stmt);
+
+  // GET RESULT FROM $STMT PREPARED STATEMENT
+  $results = mysqli_stmt_get_result($stmt);
+  if($row = $results->fetch_all(MYSQLI_ASSOC)){
+    // CLOSE STATEMENT
+    mysqli_stmt_close($stmt);
+    return $row;
+  } else {
+    // CLOSE STATEMENT
+    mysqli_stmt_close($stmt);
+    return false;
+  }
+}
+
+function getDiscussionsByDay($conn){
+  $sql = "SELECT COUNT(*) AS count FROM post GROUP BY createdAt ORDER BY createdAt ASC LIMIT 6;";
+  $stmt = mysqli_stmt_init($conn);
+
+  if(!mysqli_stmt_prepare($stmt, $sql)){
+    header("location: ../index.php?error=stmtfailedgetreplies");
+    exit();
+  }
+
+  // EXECUTE PREPARED STATEMENT
+  mysqli_stmt_execute($stmt);
+
+  // GET RESULT FROM $STMT PREPARED STATEMENT
+  $results = mysqli_stmt_get_result($stmt);
+  if($row = $results->fetch_all(MYSQLI_ASSOC)){
+    // CLOSE STATEMENT
+    mysqli_stmt_close($stmt);
+    return $row;
+  } else {
+    // CLOSE STATEMENT
+    mysqli_stmt_close($stmt);
+    return false;
+  }
+}
 ?>

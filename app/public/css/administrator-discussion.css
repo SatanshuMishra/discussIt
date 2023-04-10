@@ -321,12 +321,16 @@ hr.solid {
   width: 35%;
 }
 
-.roles {
-  width: 27.5%;
+.discussion-title-cell {
+  width: 55%;
 }
 
 .options {
   width: 10%;
+}
+
+.discussion-title-cell > div > span {
+  font-size: 16px;
 }
 
 .cell {

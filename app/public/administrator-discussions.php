@@ -32,7 +32,9 @@
   <nav class="nav-sidebar">
     <div class="upper-section">
       <div class="logo-container">
-        <img class="logo" src="./images/logoDarkBlue.png" alt="">
+        <a href="./index.php">
+          <img class="logo" src="./images/logoDarkBlue.png" alt="">
+        </a>
       </div>
       <!-- <hr class="solid"> -->
       <ul class="nav-list">
@@ -73,7 +75,7 @@
     </div>
   </nav>
 
-    <div class="toast">
+  <div class="toast">
     <div class="toast-content">
       <i class="fa-solid fa-bell check-icon"></i>
       <div class="message">
@@ -90,17 +92,21 @@
     <div class="header-container">
       <div class="view-info-container">
         <div class="icon-container">
-          <i class="fa-solid fa-comments"></i>
+           <i class="fa-regular fa-message"></i>
         </div>
         <span>Discussions</span>
       </div>
       <div class="filter-container">
         <form method="post">
-          <input type="text" name="search" id="search" placeholder="Search User">
-
-          <?php 
-            //TODO: ADD ORDER-BY FUNCTIONALITY 
-          ?>
+          <input type="text" name="search" id="search" placeholder="Search Discussions">
+          <!-- <select>
+            <option>AUTHOR</option>
+            <option>TOPIC</option>
+          </select>
+          <select>
+            <option>ASC</option>
+            <option>DESC</option>
+          </select> -->
           <input class="search-submit disabled" type="button" value="Submit" />
         </form>
       </div>
@@ -169,55 +175,65 @@
       </div>
       <table id="members" class="members-table">
         <tr>
-          <th class="header-cell">Name</th>
-          <th class="header-cell">Status</th>
-          <th class="header-cell">Roles</th>
+          <th class="header-cell">Title</th>
+          <th class="header-cell">Author</th>
+          <!-- <th class="header-cell">Roles</th> -->
           <th class="header-cell">Actions</th>
         </tr>
         <tbody id="table-body">
         <?php 
-          $users = getUsers($conn);
-          if($users){
-            foreach($users as $user){
+          $discussions = getDiscussions($conn);
+          if($discussions){
+            foreach($discussions as $discussion){
+              $discussionAuthor = getUserByID($conn, $discussion["authorId"]);
               echo '
                 <tr class="member-row">
+                  <td class="discussion-title-cell">
+                    <div class="cell">
+                      <span>'.$discussion["postTitle"].'</span>
+                    </div>
+                  </td>
                   <td class="name">
                     <div class="cell name-cell">
-                      <img src="./uploads/profile-'.$user["id"].'.png?version=1231231" />
+                      <img src="./uploads/profile-'.$discussionAuthor["id"].'.png?version=1231231" />
                       <div class="text-info">
-                        <span class="name">'.$user["firstName"].' '.$user["lastName"].'</span>
-                        <span class="username">@'.$user["username"].'</span>
+                        <span class="name">'.$discussionAuthor["firstName"]." ".$discussionAuthor["lastName"].'</span>
+                        <span class="username">@'.$discussionAuthor["username"].'</span>
                       </div>
                     </div>
                   </td>
-                  <td class="roles">
-                    <div class="cell">'.
-                      (($user['isSuspended']) ? '<div class="suspended">Suspended</div>' : '<div class="active-member">Active</div>')
-                  .'</div>
-                  </td>
-                  <td class="roles">
-                    <div class="cell">'.
-                      (($user["administratorPermissions"]) ? '<div class="admin">Admin</div>' : '<div class="member">Member</div>')
-                  .'</div>
-                  </td>
                   <td class="options">
                     <div class="cell">
-                      <a class="delete-link-btn" href="./administrator-modify.php?userId='.$user["id"].'">
-                        <span class="tooltip" data-text="Modify Account">
-                          <div id="edit-'.$user["id"].'" class="option edit">
-                            <i class="fa-solid fa-brush"></i>
+                      <a class="delete-link-btn" href="./discussion.php?id='.$discussion["id"].'">
+                        <span class="tooltip" data-text="View Discussion">
+                          <div class="option ban">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
                           </div>
                         </span>
                       </a>
-                      <a class="delete-link-btn" href="./scripts/suspend-account.php?iAFgo3q5J2hfCTv1SShA=true&uid='.$user["id"].'">
-                        <span class="tooltip" data-text="Suspend Account">
-                          <div class="option suspend">
-                            <i class="fa-solid fa-icicles"></i>
-                          </div>
-                        </span>
-                      </a>
-                      <a class="delete-link-btn" href="./scripts/remove-account.php?iAFgo3q5J2hfCTv1SShA=true&uid='.$user["id"].'">
-                        <span class="tooltip" data-text="Ban Account">
+                      <a class="delete-link-btn" href="./scripts/admin-toggle-discussion-visibility.php?iAFgo3q5J2hfCTv1SShA=true&did='.$discussion["id"].'">
+                      ';
+              if($discussion["isVisible"]){
+                  echo ' 
+                      <span class="tooltip" data-text="Hide Discussion">
+                        <div class="option suspend">
+                          <i class="fa-solid fa-eye"></i>
+                        </div>
+                      </span>
+                        '; 
+              } else {
+                  echo ' 
+                      <span class="tooltip" data-text="Show Discussion">
+                        <div class="option suspend">
+                          <i class="fa-solid fa-eye-slash"></i>
+                        </div>
+                      </span>
+                        ';
+              }
+
+              echo '</a>
+                      <a class="delete-link-btn" href="./scripts/admin-delete-discussion.php?iAFgo3q5J2hfCTv1SShA=true&aid='.$discussionAuthor["id"].'&did='.$discussion["id"].'">
+                        <span class="tooltip" data-text="Delete Discussion">
                           <div class="option ban">
                             <i class="fa-solid fa-ban"></i>
                           </div>
@@ -251,15 +267,18 @@
       if(urlParams.has('message')){
         let title = document.querySelector(".text-1");
         let description = document.querySelector(".text-2");
-        if(urlParams.get('message') == "usersuccessfullysuspended"){
+        if(urlParams.get('message') == "discussionUpdateSuccessfully"){
           title.innerHTML= "Success";
-          description.innerHTML= "The user was successfully suspended!";
-        } else if(urlParams.get('message') == "usersuccessfullyunsuspended"){
+          description.innerHTML= "The discussion visibility was updated successfully!";
+        } else if(urlParams.get('message') == "discussionUpdateUnsuccessful"){
+          title.innerHTML= "Failure";
+          description.innerHTML= "The discussion visibility update was un-successful!";
+        } else if(urlParams.get('message') == "discussionDeleteSuccessful"){
           title.innerHTML= "Success";
-          description.innerHTML= "The user account un-suspended!";
-        } else if(urlParams.get('message') == "usersuccessfullyremoved"){
-          title.innerHTML= "Success";
-          description.innerHTML= "The user was successfully banned!.";
+          description.innerHTML= "The discussion was deleted successfully!.";
+        } else if(urlParams.get('message') == "discussionDeleteFailed"){
+          title.innerHTML= "Failure";
+          description.innerHTML= "The discussion delete failed!.";
         } 
         setTimeout(() => {
           toast.classList.add("active-toast");
@@ -275,9 +294,9 @@
         toast.classList.remove("active-toast");
       })
 
-      function loadUsers() {
+      function loadDiscussions() {
         let xhr = new XMLHttpRequest();
-        xhr.open('POST', './scripts/loadAdminUsers.php');
+        xhr.open('POST', './scripts/loadAdminDiscussions.php');
         xhr.send();
 
         xhr.onload = function(){
@@ -287,9 +306,9 @@
             document.querySelector('#table-body').innerHTML = xhr.response; // response is the server response
           }
         }
-        window.setTimeout(loadUsers, 1000);
+        window.setTimeout(loadDiscussions, 1000);
       }
-      loadUsers();
+      loadDiscussions();
     });
   </script>
 </body>

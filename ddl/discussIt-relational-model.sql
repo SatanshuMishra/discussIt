@@ -11,7 +11,8 @@ CREATE TABLE user (
   demeritPoints integer DEFAULT 0 NOT NULL,
   userKey varchar(255) NOT NULL,
   isSuspended boolean DEFAULT FALSE NOT NULL,
-  administratorPermissions boolean DEFAULT FALSE NOT NULL
+  administratorPermissions boolean DEFAULT FALSE NOT NULL,
+  createdAt datetime NOT NULL
   );
 
 CREATE TABLE discussion (
@@ -25,7 +26,7 @@ CREATE TABLE post (
   authorId integer NOT NULL,
   postTitle varchar(255) NOT NULL,
   postContent text NOT NULL,
-  createdAt datetime DEFAULT NOW() NOT NULL,
+  createdAt datetime NOT NULL,
   FOREIGN KEY (authorId) REFERENCES user (id),
   FOREIGN KEY (discussionId) REFERENCES discussion (id)
 );
@@ -36,7 +37,7 @@ CREATE TABLE reply (
   discussionId integer NOT NULL,
   authorId integer NOT NULL,
   content varchar(255) NOT NULL,
-  createdAt datetime DEFAULT NOW() NOT NULL,
+  createdAt datetime NOT NULL,
   FOREIGN KEY (discussionId) REFERENCES discussion (id),
   FOREIGN KEY (authorId) REFERENCES user (id),
   FOREIGN KEY (replyTo) REFERENCES reply (id)
@@ -67,7 +68,7 @@ CREATE TABLE report (
   discussionId integer NOT NULL,
   authorId integer NOT NULL,
   content integer NOT NULL,
-  reportedAt datetime DEFAULT NOW() NOT NULL,
+  reportedAt datetime NOT NULL,
   reviewed boolean DEFAULT FALSE NOT NULL,
   FOREIGN KEY (discussionId) REFERENCES discussion (id),
   FOREIGN KEY (authorId) REFERENCES user (id)
