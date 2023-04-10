@@ -21,7 +21,7 @@ Follow the following steps to run our website locally:
 
 5. Congratulations! The website is now up and running! To access the website, open any web browser (excluding Safari) and navigate to the following links depending on where you want to go:
 
-   a. You can access the website at `localhost` or `localhost/80:80`.
+   a. You can access the website at `localhost` or `localhost/80:80`.<br />
    b. You can access the database at `localhost:8080`. The credentials to login to the database are, **Server**: `discussIt-mysql`, Username: `discussIt`, & Password: `password`. These credentials may be changed in `docker-compose.yml`.
 
 > **IMPORTANT**
