@@ -1,4 +1,4 @@
-<div style="width:100%; display: flex; flex-direction:column; justify-content: center;">
+<div align="center" style="width:100%; display: flex; flex-direction:column; justify-content: center;">
    <div style="width:100%; display: flex; justify-content: center;">
       <img src="./app/public/images/readme-resources/README-banner.png">
    </div>
