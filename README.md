@@ -2,7 +2,7 @@
    <div style="width:100%; display: flex; justify-content: center;">
       <img src="./app/public/images/readme-resources/README-banner.png">
    </div>
-   <div style="width:100%; display: flex; justify-content: center; flex-wrap:wrap; margin: 10px 0;">
+   <div>
       <img style="padding: 4px;" src="https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white">
       <img style="padding: 4px;" src="https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white">
       <img style="padding: 4px;" src="https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white">
